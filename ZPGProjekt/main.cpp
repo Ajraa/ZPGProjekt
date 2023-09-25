@@ -99,6 +99,8 @@ int main(void)
 	glLoadIdentity();
 	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
+	float last_time = (float)glfwGetTime();
+	float angle = last_time;
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -106,7 +108,11 @@ int main(void)
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glRotatef(((float)glfwGetTime() * rotation) * 50.f, 0.f, 0.f, 1.f);
+
+		float time = (float)glfwGetTime();
+		angle += (time - last_time) * rotation;
+		last_time = time;
+		glRotatef(angle * 50.f, 0.f, 0.f, 1.f);
 
 		glBegin(GL_TRIANGLES);
 		glColor3f(1.f, 0.f, 0.f);
