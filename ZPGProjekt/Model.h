@@ -11,25 +11,17 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include "Shader.h"
-#include "Model.h"
-#include "Callback.h"
 
-class Engine
+class Model
 {
 public:
-	void start();
-	void run();
-	void createShaders();
-	void createModels();
-	void initialization();
+	Model(float* points) { this->points = points; };
+	void model();
+	GLuint getVBO() { return this->VBO; };
+	GLuint getVAO() { return this->VAO; };
 private:
-	GLFWwindow* window;
-	glm::mat4 Projection;
-	glm::mat4 ViewModel;
-	glm::mat4 View;
-	GLint status;
-	Shader* shader;
-	Model* model;
-	Callback* callback;
+	float* points;
+	GLuint VBO;
+	GLuint VAO;
 };
+

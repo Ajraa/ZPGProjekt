@@ -1,4 +1,3 @@
-#pragma once
 #include <stdlib.h>
 #include <iostream>
 //Include GLEW
@@ -11,25 +10,18 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include "Shader.h"
-#include "Model.h"
-#include "Callback.h"
 
-class Engine
+class Shader
 {
 public:
-	void start();
-	void run();
-	void createShaders();
-	void createModels();
-	void initialization();
+	Shader(const char* vertex_shader, const char* fragment_shader);
+	void shade();
+	GLuint getShaderProgram() { return this->shaderProgram; };
 private:
-	GLFWwindow* window;
-	glm::mat4 Projection;
-	glm::mat4 ViewModel;
-	glm::mat4 View;
-	GLint status;
-	Shader* shader;
-	Model* model;
-	Callback* callback;
+	GLuint vertexShader;
+	GLuint fragmentShader;
+	GLuint shaderProgram;
+	const char* vertex_shader;
+	const char* fragment_shader;
 };
+
