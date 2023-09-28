@@ -31,5 +31,4 @@ private:
 	GLint status;
 	Shader* shader;
 	Model* model;
-	Callback* callback;
 };

@@ -5,15 +5,12 @@
 class Callback
 {
 public:
-	Callback(GLFWwindow* window);
-	void error_callback(int error, const char* description);
-	void key_callback(int key, int scancode, int action, int mods);
-	void window_focus_callback(int focused);
-	void window_iconify_callback(int iconified);
-	void window_size_callback(int width, int height);
-	void cursor_callback(double x, double y);
-	void button_callback(int button, int action, int mode);
-private:
-	GLFWwindow* window;
+	static void error_callback(int error, const char* description);
+	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void window_focus_callback(GLFWwindow* window, int focused);
+	static void window_iconify_callback(GLFWwindow* window, int iconified);
+	static void window_size_callback(GLFWwindow* window, int width, int height);
+	static void cursor_callback(GLFWwindow* window, double x, double y);
+	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 }; 
 

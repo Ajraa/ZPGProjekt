@@ -87,7 +87,7 @@ void Engine::initialization()
     // Model matrix : an identity matrix (model will be at the origin)
         this->ViewModel = glm::mat4(1.0f);
 
-    glfwSetErrorCallback(error_callback);
+    glfwSetErrorCallback(Callback::error_callback);
     if (!glfwInit()) {
         fprintf(stderr, "ERROR: could not start GLFW3\n");
         exit(EXIT_FAILURE);
