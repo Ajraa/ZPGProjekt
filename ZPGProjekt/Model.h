@@ -15,7 +15,7 @@
 class Model
 {
 public:
-	Model(float* points) { this->points = points; };
+	Model(float* points);
 	void model();
 	GLuint getVBO() { return this->VBO; };
 	GLuint getVAO() { return this->VAO; };
