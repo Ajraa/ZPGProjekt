@@ -1,18 +1,17 @@
 #include "Model.h"
 
-Model::Model(float* points)
+Model::Model()
 {
-    this->points = points;
     this->VAO = 0;
     this->VBO = 0;   
 }
 
-void Model::model()
+void Model::model(float *points, int size)
 {
     //vertex buffer object (VBO)
     glGenBuffers(1, &VBO); // generate the VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, points, GL_STATIC_DRAW);
 
     //Vertex Array Object (VAO)
     glGenVertexArrays(1, &VAO); //generate the VAO
@@ -20,4 +19,6 @@ void Model::model()
     glEnableVertexAttribArray(0); //enable vertex attributes
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    
 }

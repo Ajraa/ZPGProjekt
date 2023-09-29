@@ -1,6 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <iostream>
+#include <vector>
 //Include GLEW
 #include <GL/glew.h>
 //Include GLFW
@@ -15,12 +16,11 @@
 class Model
 {
 public:
-	Model(float* points);
-	void model();
+	Model();
+	void model(float *points, int size);
 	GLuint getVBO() { return this->VBO; };
 	GLuint getVAO() { return this->VAO; };
 private:
-	float* points;
 	GLuint VBO;
 	GLuint VAO;
 };
