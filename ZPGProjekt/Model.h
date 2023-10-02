@@ -17,11 +17,12 @@ class Model
 {
 public:
 	Model();
-	void model(float *points, int size);
-	GLuint getVBO() { return this->VBO; };
+	~Model();
+	void createVAO();
+	void createVBO(float* points, int size);
 	GLuint getVAO() { return this->VAO; };
 private:
-	GLuint VBO;
 	GLuint VAO;
+	std::vector<GLuint> VBOs;
 };
 

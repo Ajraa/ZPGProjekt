@@ -18,6 +18,7 @@
 class Engine
 {
 public:
+	~Engine();
 	void start();
 	void run();
 	void createShaders();

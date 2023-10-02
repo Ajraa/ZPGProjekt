@@ -1,5 +1,10 @@
 ﻿#include "Engine.h"
 
+Engine::~Engine()
+{
+	delete this->model;
+}
+
 void Engine::start()
 {
 	this->initialization();
@@ -14,9 +19,9 @@ void Engine::run()
 		// clear color and depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader->getShaderProgram());
-		glBindVertexArray(this->model->getVAO());
+		//glBindVertexArray(this->model->getVAO());
 		// draw triangles
-		glDrawArrays(GL_TRIANGLES, 0, 3); //mode,first,count
+		glDrawArrays(GL_TRIANGLES, 0, 4); //mode,first,count
 		// update other events like input handling
 		glfwPollEvents();
 		// put the stuff we’ve been drawing onto the display
@@ -53,7 +58,7 @@ void Engine::createShaders()
 		"#version 330\n"
 		"out vec4 frag_colour;"
 		"void main () {"
-		"     frag_colour = vec4 (0.5, 0.0, 0.5, 1.0);"
+		"     frag_colour = vec4 (0.5, 0.7, 0.0, 1.0);"
 		"}";
 
 	//create and compile shaders
@@ -64,13 +69,22 @@ void Engine::createShaders()
 void Engine::createModels()
 {
 	float points[] = {
-	0.0f, 0.5f, 0.0f,
+	0.5f, 0.5f, 0.0f,
 	0.5f, -0.5f, 0.0f,
-   -0.5f, -0.5f, 0.0f
+   -0.5f, -0.5f, 0.0f,
+	};
+
+	float points2[] = {
+	-0.5f, -0.5f, 0.0f,
+	-0.5f, 0.5f, 0.0f,
+	0.5f, 0.5f, 0.0f,
 	};
 
 	this->model = new Model();
-	this->model->model(points, sizeof(points));
+	
+	this->model->createVBO(points2, sizeof(points2));
+	this->model->createVBO(points, sizeof(points));
+	this->model->createVAO();
 }
 
 void Engine::initialization()

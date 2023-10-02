@@ -2,7 +2,7 @@
 
 Shader::Shader(const char* vertex_shader, const char* fragment_shader)
 {
-	this->vertexShader = vertexShader;
+	this->vertex_shader = vertex_shader;
 	this->fragment_shader = fragment_shader;
     this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertex_shader, NULL);
