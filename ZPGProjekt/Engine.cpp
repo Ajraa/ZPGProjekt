@@ -47,19 +47,11 @@ void Engine::run()
 
 void Engine::createShaders()
 {
-	const char* vertex_shader =
-		"#version 330\n"
-		"layout(location=0) in vec3 vp;"
-		"void main () {"
-		"     gl_Position = vec4 (vp, 1.0);"
-		"}";
+	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/shader.ver";
+		
 
-	const char* fragment_shader =
-		"#version 330\n"
-		"out vec4 frag_colour;"
-		"void main () {"
-		"     frag_colour = vec4 (0.5, 0.7, 0.0, 1.0);"
-		"}";
+	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+		
 
 	//create and compile shaders
 	this->shader = new Shader(vertex_shader, fragment_shader);

@@ -14,10 +14,12 @@
 class Shader
 {
 public:
-	Shader(const char* vertex_shader, const char* fragment_shader);
+	Shader(const char* vertexFilePath, const char* fragmentFilePath);
 	void shade();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 private:
+	std::string readShaderFile(const char* filePath);
+
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
