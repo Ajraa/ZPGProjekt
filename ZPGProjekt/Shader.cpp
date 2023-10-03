@@ -19,6 +19,13 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
     glCompileShader(fragmentShader);
 }
 
+Shader::~Shader()
+{
+    glDeleteShader(this->vertexShader);
+    glDeleteShader(this->fragmentShader);
+    glDeleteProgram(this->shaderProgram);
+}
+
 void Shader::shade()
 {
     this->shaderProgram = glCreateProgram();

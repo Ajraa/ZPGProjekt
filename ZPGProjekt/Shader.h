@@ -15,6 +15,7 @@ class Shader
 {
 public:
 	Shader(const char* vertexFilePath, const char* fragmentFilePath);
+	~Shader();
 	void shade();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 private:

@@ -3,6 +3,7 @@
 Engine::~Engine()
 {
 	delete this->model;
+	delete this->shader;
 }
 
 void Engine::start()

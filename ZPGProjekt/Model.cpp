@@ -20,7 +20,7 @@ void Model::createVAO()
     glBindVertexArray(VAO); //bind the VAO
     glEnableVertexAttribArray(0); //enable vertex attributes
     std::cout << this->VBOs.size() << std::endl;
-    for (int i = 0; i < this->VBOs.size(); i++)   
+    for (int i = 0; i < this->VBOs.size(); i++)
         glBindBuffer(GL_ARRAY_BUFFER, this->VBOs[i]);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);   
 }
