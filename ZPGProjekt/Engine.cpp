@@ -16,31 +16,14 @@ void Engine::start()
 
 void Engine::run()
 {
-	//while (!glfwWindowShouldClose(window)) {
-	//	// clear color and depth buffer
-	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//	glUseProgram(shader->getShaderProgram());
-	//	//glBindVertexArray(this->model->getVAO());
-	//	// draw triangles
-	//	glDrawArrays(GL_TRIANGLES, 0, 3); //mode,first,count
-	//	// update other events like input handling
-	//	glfwPollEvents();
-	//	// put the stuff we’ve been drawing onto the display
-	//	glfwSwapBuffers(window);
-	//}
-	GLuint* VBO = this->model->getVBO();
-	while (true)
+	while (!glfwWindowShouldClose(window))
 	{
-		glBindVertexArray(model->getVAO());
+
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(shader->getShaderProgram());
-		for (size_t i = 0; i < this->model->getSize(); i++)
-		{
-			glBindVertexBuffer(0, VBO[i], 0, 3 * sizeof(float));
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-		}
-		glBindVertexArray(0);
+		
+		this->model->drawArrays();
+
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
@@ -90,7 +73,7 @@ void Engine::createModels()
 	0.5f, 0.5f, 0.0f,
 	};
 
-	this->model = new Model();
+	this->model = new Model(this->shader);
 	
 	this->model->addShape(points, sizeof(points));
 	this->model->addShape(points2, sizeof(points2));

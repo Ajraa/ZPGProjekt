@@ -11,21 +11,23 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "Shape.h"
+#include "Shader.h"
 
 class Model
 {
 public:
-	Model();
+	Model(Shader* shader);
 	~Model();
 	void createVAO();
 	void createVBO();
 	void addShape(float* points, int size);
-	GLuint getVAO() { return this->VAO; };
-	GLuint* getVBO() { return this->VBO; };
+	void prepareVBO();
 	int getSize() { return this->shapes.size(); };
+	void drawArrays();
 private:
 	GLuint VAO;
-	GLuint* VBO;
+	GLuint VBO;
 	std::vector<Shape> shapes;
+	Shader* shader;
 };
 

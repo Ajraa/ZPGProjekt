@@ -1,14 +1,14 @@
 #include "Model.h"
 
-Model::Model()
+Model::Model(Shader* shader)
 {
     this->VAO = 0;
+    this->shader = shader;
 }
 
 Model::~Model()
 {
-    for (int i = 0; i < this->getSize(); i++)
-        glDeleteBuffers(1, &this->VBO[i]);
+    glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
    
 }
@@ -30,15 +30,22 @@ void Model::createVAO()
 
 void Model::createVBO()
 {
-    glGenBuffers(2, VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+    glGenBuffers(2, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, this->shapes[0].getSize(), this->shapes[0].getPoints(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, this->shapes[1].getSize(), this->shapes[1].getPoints(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Model::addShape(float* points, int size)
 {
     this->shapes.push_back(Shape(points, size));
+}
+
+void Model::drawArrays()
+{
+    shader->useShaderProgram();
+    glBindVertexArray(VAO);
+    glBindVertexBuffer(0, VBO, 0, 3 * sizeof(float));
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }

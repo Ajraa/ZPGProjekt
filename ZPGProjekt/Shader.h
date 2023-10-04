@@ -18,6 +18,7 @@ public:
 	~Shader();
 	void shade();
 	GLuint getShaderProgram() { return this->shaderProgram; };
+	void useShaderProgram();
 private:
 	std::string readShaderFile(const char* filePath);
 

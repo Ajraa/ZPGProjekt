@@ -34,6 +34,11 @@ void Shader::shade()
     glLinkProgram(shaderProgram);
 }
 
+void Shader::useShaderProgram()
+{
+    glUseProgram(this->shaderProgram);
+}
+
 std::string Shader::readShaderFile(const char* filePath)
 {
     std::string shaderCode;
