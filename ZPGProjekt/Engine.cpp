@@ -2,7 +2,8 @@
 
 Engine::~Engine()
 {
-	delete this->model;
+	for (Model* model : this->models)
+		delete model;
 	delete this->shader;
 }
 
@@ -22,7 +23,8 @@ void Engine::run()
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		this->model->drawArrays();
+		for(Model* model: this->models)
+			model->drawArrays();
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -73,12 +75,13 @@ void Engine::createModels()
 	0.5f, 0.5f, 0.0f,
 	};
 
-	this->model = new Model(this->shader);
-	
-	this->model->addShape(points, sizeof(points));
-	this->model->addShape(points2, sizeof(points2));
-	this->model->createVAO();
-	this->model->createVBO();
+	this->models.push_back(new Model(this->shader, points, sizeof(points)));
+	this->models.push_back(new Model(this->shader, points2, sizeof(points2)));
+
+	for (Model* model : this->models) {
+		model->createVAO();
+		model->createVBO();
+	}
 }
 
 void Engine::initialization()

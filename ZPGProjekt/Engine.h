@@ -30,5 +30,5 @@ private:
 	glm::mat4 View;
 	GLint status;
 	Shader* shader;
-	Model* model;
+	std::vector<Model*> models;
 };

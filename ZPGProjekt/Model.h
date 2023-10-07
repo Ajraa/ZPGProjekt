@@ -16,18 +16,15 @@
 class Model
 {
 public:
-	Model(Shader* shader);
+	Model(Shader* shader, float* points, int size);
 	~Model();
 	void createVAO();
 	void createVBO();
-	void addShape(float* points, int size);
-	void prepareVBO();
-	int getSize() { return this->shapes.size(); };
 	void drawArrays();
 private:
 	GLuint VAO;
 	GLuint VBO;
-	std::vector<Shape> shapes;
+	Shape* shape;
 	Shader* shader;
 };
 

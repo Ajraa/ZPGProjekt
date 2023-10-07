@@ -1,9 +1,11 @@
 #include "Model.h"
 
-Model::Model(Shader* shader)
+
+Model::Model(Shader* shader, float* points, int size)
 {
     this->VAO = 0;
     this->shader = shader;
+    this->shape = new Shape(points, size);
 }
 
 Model::~Model()
@@ -30,16 +32,9 @@ void Model::createVAO()
 
 void Model::createVBO()
 {
-    glGenBuffers(2, &VBO);
+    glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->shapes[0].getSize(), this->shapes[0].getPoints(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->shapes[1].getSize(), this->shapes[1].getPoints(), GL_STATIC_DRAW);
-}
-
-void Model::addShape(float* points, int size)
-{
-    this->shapes.push_back(Shape(points, size));
+    glBufferData(GL_ARRAY_BUFFER, this->shape->getSize(), this->shape->getPoints(), GL_STATIC_DRAW);
 }
 
 void Model::drawArrays()
