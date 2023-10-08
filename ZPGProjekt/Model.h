@@ -11,12 +11,12 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "Shape.h"
-#include "Shader.h"
 
 class Model
 {
 public:
-	Model(Shader* shader, float* points, int size);
+	Model(float* points, int size);
+	Model(Shape* shape);
 	~Model();
 	void createVAO();
 	void createVBO();
@@ -25,6 +25,5 @@ private:
 	GLuint VAO;
 	GLuint VBO;
 	Shape* shape;
-	Shader* shader;
 };
 

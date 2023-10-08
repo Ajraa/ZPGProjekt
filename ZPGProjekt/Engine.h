@@ -13,6 +13,7 @@
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "Model.h"
 #include "Callback.h"
+#include "DrawableObject.h"
 
 class Engine
 {
@@ -20,8 +21,7 @@ public:
 	~Engine();
 	void start();
 	void run();
-	void createShaders();
-	void createModels();
+	void createObjects();
 	void initialization();
 private:
 	GLFWwindow* window;
@@ -29,6 +29,5 @@ private:
 	glm::mat4 ViewModel;
 	glm::mat4 View;
 	GLint status;
-	Shader* shader;
-	std::vector<Model*> models;
+	std::vector<DrawableObject*> objects;
 };
