@@ -54,9 +54,10 @@ void Engine::createObjects()
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
 
 	float points[] = {
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-   -0.5f, -0.5f, 0.0f,
+	 -.5f, -.5f, .5f,   1, 1, 0,
+	 -.5f, .5f, .5f,  1, 0, 0,
+	   .5f, .5f, .5f,  0, 0, 0,
+	   .5f, -.5f, .5f,  0, 1, 0,
 	};
 
 	float points2[] = {

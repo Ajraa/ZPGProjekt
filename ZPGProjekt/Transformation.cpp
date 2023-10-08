@@ -8,8 +8,6 @@ Transformation::Transformation()
 	this->transformationMatrix = glm::mat4(1.0f);
 }
 
-
-
 void Transformation::rotate(float degrees)
 {
 	this->transformationMatrix = glm::rotate(this->transformationMatrix, (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
