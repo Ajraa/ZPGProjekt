@@ -1,10 +1,9 @@
 #include "Model.h"
 
 
-Model::Model(Shader* shader, float* points, int size)
+Model::Model(float* points, int size)
 {
     this->VAO = 0;
-    this->shader = shader;
     this->shape = new Shape(points, size);
 }
 
@@ -39,7 +38,6 @@ void Model::createVBO()
 
 void Model::drawArrays()
 {
-    shader->useShaderProgram();
     glBindVertexArray(VAO);
     glBindVertexBuffer(0, VBO, 0, 3 * sizeof(float));
     glDrawArrays(GL_TRIANGLES, 0, 3);

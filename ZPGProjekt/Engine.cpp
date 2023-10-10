@@ -2,8 +2,8 @@
 
 Engine::~Engine()
 {
-	for (Model* model : this->models)
-		delete model;
+	for (DrawableObject* object : this->objects)
+		delete object;
 	delete this->shader;
 }
 
@@ -23,8 +23,8 @@ void Engine::run()
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		for(Model* model: this->models)
-			model->drawArrays();
+		for (DrawableObject* object : this->objects)
+			object->render();
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -50,7 +50,7 @@ void Engine::run()
 
 void Engine::createShaders()
 {
-	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/shader.ver";
+	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
 		
 
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
@@ -75,12 +75,12 @@ void Engine::createModels()
 	0.5f, 0.5f, 0.0f,
 	};
 
-	this->models.push_back(new Model(this->shader, points, sizeof(points)));
-	this->models.push_back(new Model(this->shader, points2, sizeof(points2)));
+	
+	this->objects.push_back(new DrawableObject(this->shader, new Model(points, sizeof(points))));
+	this->objects.push_back(new DrawableObject(this->shader, new Model(points2, sizeof(points2))));
 
-	for (Model* model : this->models) {
-		model->createVAO();
-		model->createVBO();
+	for (DrawableObject* object : this->objects) {
+		object->initializeModel();
 	}
 }
 
