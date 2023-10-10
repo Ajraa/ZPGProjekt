@@ -28,6 +28,5 @@ private:
 	glm::mat4 ViewModel;
 	glm::mat4 View;
 	GLint status;
-	Shader* shader;
 	std::vector<DrawableObject*> objects;
 };

@@ -10,7 +10,6 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 DrawableObject::~DrawableObject()
 {
 	delete this->shader;
-
 	delete this->model;
 }
 
@@ -31,6 +30,7 @@ void DrawableObject::scale(float scale)
 
 void DrawableObject::initializeModel()
 {
+	this->shader->shade();
 	this->model->createVAO();
 	this->model->createVBO();
 }

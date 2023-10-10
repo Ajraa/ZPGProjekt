@@ -4,7 +4,6 @@ Engine::~Engine()
 {
 	for (DrawableObject* object : this->objects)
 		delete object;
-	 delete this->shader;
 }
 
 void Engine::start()
@@ -54,10 +53,10 @@ void Engine::createObjects()
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
 
 	float points[] = {
-	 -.5f, -.5f, .5f,   1, 1, 0,
-	 -.5f, .5f, .5f,  1, 0, 0,
-	   .5f, .5f, .5f,  0, 0, 0,
-	   .5f, -.5f, .5f,  0, 1, 0,
+	 -.5f, -.5f, .5f,
+	 -.5f, .5f, .5f,
+	   .5f, .5f, .5f, 
+	   .5f, -.5f, .5f,
 	};
 
 	float points2[] = {
@@ -67,9 +66,8 @@ void Engine::createObjects()
 	};
 	
 	
-	
-	this->objects.push_back(new DrawableObject(this->shader, new Model(points, sizeof(points))));
-	this->objects.push_back(new DrawableObject(this->shader, new Model(points2, sizeof(points2))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 
 	for (DrawableObject* object : this->objects) {
