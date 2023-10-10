@@ -11,6 +11,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include "Model.h"
 #include "Callback.h"
 #include "DrawableObject.h"
 
@@ -28,6 +29,5 @@ private:
 	glm::mat4 ViewModel;
 	glm::mat4 View;
 	GLint status;
-	Shader* shader;
 	std::vector<DrawableObject*> objects;
 };

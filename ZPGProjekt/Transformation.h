@@ -23,7 +23,9 @@ public:
 	void translate(glm::mat4 view);
 	void scale(float scale);
 	void useTransform(GLint shader);
+
 private:
 	glm::mat4 transformationMatrix;
 	GLint idModelTransform;
 };
+
