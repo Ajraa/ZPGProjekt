@@ -1,39 +1,16 @@
 #include "DrawableObject.h"
 
-DrawableObject::DrawableObject(const char* vertexFilePath, const char* fragmentFilePath, float* points, int size)
-{
-	this->shader = new Shader(vertexFilePath, fragmentFilePath);
-	this->model = new Model(points, size);
-	this->transformation = new Transformation();
-}
-
-DrawableObject::DrawableObject(Shader* shader, Shape* shape)
-{
-	this->shader = shader;
-	this->model = new Model(shape);
-	this->transformation = new Transformation();
-}
-
 DrawableObject::DrawableObject(Shader* shader, Model* model)
 {
-	this->shader = shader;
 	this->model = model;
+	this->shader = shader;
 	this->transformation = new Transformation();
-}
-
-void DrawableObject::setShader(Shader* shader)
-{
-	this->shader = shader;
-}
-
-void DrawableObject::setModel(Model* model)
-{
-	this->model = model;
 }
 
 DrawableObject::~DrawableObject()
 {
 	delete this->shader;
+
 	delete this->model;
 }
 
