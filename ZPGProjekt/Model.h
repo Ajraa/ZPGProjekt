@@ -16,6 +16,7 @@ class Model
 {
 public:
 	Model(float* points, int size);
+
 	~Model();
 	void createVAO();
 	void createVBO();
@@ -23,6 +24,5 @@ public:
 private:
 	GLuint VAO;
 	GLuint VBO;
-	Shape* shape;
 };
 

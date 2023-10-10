@@ -9,7 +9,8 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 
 DrawableObject::~DrawableObject()
 {
-	//delete this->shader;
+	delete this->shader;
+
 	delete this->model;
 }
 
@@ -37,7 +38,6 @@ void DrawableObject::initializeModel()
 void DrawableObject::render()
 {
 	this->shader->useShaderProgram();
-	this->transformation->rotate(20);
 	this->transformation->useTransform(this->shader->getShaderProgram());
 	this->model->drawArrays();
 }

@@ -4,14 +4,13 @@ Engine::~Engine()
 {
 	for (DrawableObject* object : this->objects)
 		delete object;
-	delete this->shader;
+	 delete this->shader;
 }
 
 void Engine::start()
 {
 	this->initialization();
-	this->createShaders();
-	this->createModels();
+	this->createObjects();
 	this->run();
 }
 
@@ -36,37 +35,29 @@ void Engine::run()
 	exit(EXIT_SUCCESS);
 
 	this->status;
-	glGetProgramiv(shader->getShaderProgram(), GL_LINK_STATUS, &status);
+	//glGetProgramiv(shader->getShaderProgram(), GL_LINK_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		GLint infoLogLength;
-		glGetProgramiv(shader->getShaderProgram(), GL_INFO_LOG_LENGTH, &infoLogLength);
+		//glGetProgramiv(shader->getShaderProgram(), GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
-		glGetProgramInfoLog(shader->getShaderProgram(), infoLogLength, NULL, strInfoLog);
+		//glGetProgramInfoLog(shader->getShaderProgram(), infoLogLength, NULL, strInfoLog);
 		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
 		delete[] strInfoLog;
 	}
 }
 
-void Engine::createShaders()
+void Engine::createObjects()
 {
 	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
-		
 
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
-		
 
-	//create and compile shaders
-	this->shader = new Shader(vertex_shader, fragment_shader);
-	shader->shade();
-}
-
-void Engine::createModels()
-{
 	float points[] = {
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-   -0.5f, -0.5f, 0.0f,
+	 -.5f, -.5f, .5f,   1, 1, 0,
+	 -.5f, .5f, .5f,  1, 0, 0,
+	   .5f, .5f, .5f,  0, 0, 0,
+	   .5f, -.5f, .5f,  0, 1, 0,
 	};
 
 	float points2[] = {
@@ -74,10 +65,12 @@ void Engine::createModels()
 	-0.5f, 0.5f, 0.0f,
 	0.5f, 0.5f, 0.0f,
 	};
-
+	
+	
 	
 	this->objects.push_back(new DrawableObject(this->shader, new Model(points, sizeof(points))));
 	this->objects.push_back(new DrawableObject(this->shader, new Model(points2, sizeof(points2))));
+
 
 	for (DrawableObject* object : this->objects) {
 		object->initializeModel();

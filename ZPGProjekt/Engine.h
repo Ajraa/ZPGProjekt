@@ -20,8 +20,7 @@ public:
 	~Engine();
 	void start();
 	void run();
-	void createShaders();
-	void createModels();
+	void createObjects();
 	void initialization();
 private:
 	GLFWwindow* window;

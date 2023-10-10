@@ -7,6 +7,12 @@ Model::Model(float* points, int size)
     this->shape = new Shape(points, size);
 }
 
+Model::Model(Shape* shape)
+{
+    this->VAO = 0;
+    this->shape = shape;
+}
+
 Model::~Model()
 {
     glDeleteBuffers(1, &VBO);
@@ -25,6 +31,9 @@ void Model::createVAO()
     glVertexAttribBinding(0, 0);
     //Enable VAO
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)this->shape->getSize());
     //Done with VAO
     glBindVertexArray(0);
 }
