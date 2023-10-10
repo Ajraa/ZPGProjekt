@@ -15,7 +15,7 @@ void Transformation::rotate(float degrees)
 
 void Transformation::translate(glm::mat4 view)
 {
-	this->transformationMatrix = glm::translate(this->transformationMatrix, glm::vec3(0.0f, 0.0f, view));
+	this->transformationMatrix = glm::translate(this->transformationMatrix, glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void Transformation::scale(float scale)
