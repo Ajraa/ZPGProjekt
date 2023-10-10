@@ -50,6 +50,7 @@ void Engine::createObjects()
 {
 	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
 
+
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
 
 	float points[] = {
@@ -64,11 +65,9 @@ void Engine::createObjects()
 	-0.5f, 0.5f, 0.0f,
 	0.5f, 0.5f, 0.0f,
 	};
-	
-	
+		
 	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
 	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
-
 
 	for (DrawableObject* object : this->objects) {
 		object->initializeModel();
