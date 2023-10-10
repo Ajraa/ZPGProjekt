@@ -54,10 +54,10 @@ void Engine::createObjects()
 	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
 
 	float points[] = {
-	 -.5f, -.5f, .5f,   1, 1, 0,
-	 -.5f, .5f, .5f,  1, 0, 0,
-	   .5f, .5f, .5f,  0, 0, 0,
-	   .5f, -.5f, .5f,  0, 1, 0,
+	 -.5f, -.5f, .5f,
+	 -.5f, .5f, .5f,
+	   .5f, .5f, .5f, 
+	   .5f, -.5f, .5f,
 	};
 
 	float points2[] = {
@@ -65,13 +65,9 @@ void Engine::createObjects()
 	-0.5f, 0.5f, 0.0f,
 	0.5f, 0.5f, 0.0f,
 	};
-	
-	Model* model1 = new Model(points, sizeof(points));
-	Model* model2 = new Model(points2, sizeof(points2));
-	Shader* shader = new Shader(vertex_shader, fragment_shader);
-
-	this->objects.push_back(new DrawableObject(shader, model1));
-	this->objects.push_back(new DrawableObject(shader, model2));
+		
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
 		object->initializeModel();
