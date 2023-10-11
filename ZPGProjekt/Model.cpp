@@ -33,7 +33,7 @@ void Model::createVAO()
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)this->shape->getSize());
+    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)this->shape->getSize());
     //Done with VAO
     glBindVertexArray(0);
 }

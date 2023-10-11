@@ -9,14 +9,13 @@ public:
 	DrawableObject(const char* vertexFilePath, const char* fragmentFilePath, float* points, int size);
 	DrawableObject(Shader* shader, Shape* shape);
 	DrawableObject(Shader* shader, Model* model);
-	DrawableObject() {};
 	void setShader(Shader* shader);
 	void setModel(Model* model);
 	~DrawableObject();
 	void rotate(float degrees);
-	void translate(glm::mat4 view);
+	void translate(float z);
 	void scale(float scale);
-	void initializeModel();
+	void initialize();
 	void render();
 private:
 	Transformation* transformation;

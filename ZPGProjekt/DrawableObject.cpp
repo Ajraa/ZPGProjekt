@@ -42,9 +42,9 @@ void DrawableObject::rotate(float degrees)
 	this->transformation->rotate(degrees);
 }
 
-void DrawableObject::translate(glm::mat4 view)
+void DrawableObject::translate(float z)
 {
-	this->transformation->translate(view);
+	this->transformation->translate(z);
 }
 
 void DrawableObject::scale(float scale)
@@ -52,7 +52,7 @@ void DrawableObject::scale(float scale)
 	this->transformation->scale(scale);
 }
 
-void DrawableObject::initializeModel()
+void DrawableObject::initialize()
 {
 	this->shader->shade();
 	this->model->createVAO();

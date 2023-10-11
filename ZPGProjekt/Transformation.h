@@ -20,7 +20,7 @@ class Transformation
 public:
 	Transformation();
 	void rotate(float degrees);
-	void translate(glm::mat4 view);
+	void translate(float z);
 	void scale(float scale);
 	void useTransform(GLint shader);
 

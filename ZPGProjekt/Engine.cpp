@@ -15,14 +15,19 @@ void Engine::start()
 
 void Engine::run()
 {
+	for (DrawableObject* object : this->objects)
+		object->scale(0.2);
 	while (!glfwWindowShouldClose(window))
 	{
 
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		for (DrawableObject* object : this->objects)
+		for (DrawableObject* object : this->objects) {
+			object->translate(1);
+			object->rotate(10);
 			object->render();
+		}
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
@@ -48,29 +53,33 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
+	//const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
 
 
-	const char* fragment_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+	//const char* vertex_shader = = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+
+	const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
+	const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+	const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
 
 	float points[] = {
-	 -.5f, -.5f, .5f,
-	 -.5f, .5f, .5f,
-	   .5f, .5f, .5f, 
-	   .5f, -.5f, .5f,
+		-0.6f, -0.4f, 0.f,
+		.6f, -.4f, 0.f,
+		.6f, .6f, 0.f, 
+
 	};
 
 	float points2[] = {
-	-0.5f, -0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f,
-	0.5f, 0.5f, 0.0f,
+		-0.6f, -0.4f, 0.0f,
+		-0.6f, 0.6f, 0.0f,
+		0.6f, 0.6f, 0.0f,
 	};
-		
+
 	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
-		object->initializeModel();
+		object->initialize();
 	}
 }
 
