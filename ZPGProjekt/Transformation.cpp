@@ -10,17 +10,17 @@ Transformation::Transformation()
 
 void Transformation::rotate(float degrees)
 {
-	this->transformationMatrix = glm::rotate(this->transformationMatrix, (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
+	this->transformationMatrix = glm::rotate(glm::mat4(1.0f), (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void Transformation::translate(float z)
+void Transformation::translate(float x, float y, float z)
 {
-	this->transformationMatrix = glm::translate(this->transformationMatrix, glm::vec3(0.0f, 0.0f, z));
+	this->transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 }
 
 void Transformation::scale(float scale)
 {
-	this->transformationMatrix = glm::scale(this->transformationMatrix, glm::vec3(scale));
+	this->transformationMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
 }
 
 void Transformation::useTransform(GLint shader)

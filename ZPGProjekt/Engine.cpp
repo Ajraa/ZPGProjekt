@@ -16,16 +16,17 @@ void Engine::start()
 void Engine::run()
 {
 	for (DrawableObject* object : this->objects)
-		object->scale(0.2);
+		//object->scale(0.2);
 	while (!glfwWindowShouldClose(window))
 	{
 
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		//this->objects[0]->rotate(10);
+		//this->objects[1]->rotate(-10);
 		for (DrawableObject* object : this->objects) {
-			object->translate(1);
-			object->rotate(10);
+			object->translate(0.0, 0.0, 0.03);
 			object->render();
 		}
 

@@ -42,9 +42,9 @@ void DrawableObject::rotate(float degrees)
 	this->transformation->rotate(degrees);
 }
 
-void DrawableObject::translate(float z)
+void DrawableObject::translate(float x, float y, float z)
 {
-	this->transformation->translate(z);
+	this->transformation->translate(x, y, z);
 }
 
 void DrawableObject::scale(float scale)

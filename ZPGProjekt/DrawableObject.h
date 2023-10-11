@@ -13,7 +13,7 @@ public:
 	void setModel(Model* model);
 	~DrawableObject();
 	void rotate(float degrees);
-	void translate(float z);
+	void translate(float x, float y, float z);
 	void scale(float scale);
 	void initialize();
 	void render();
