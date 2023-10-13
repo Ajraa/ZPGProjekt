@@ -16,17 +16,16 @@ void Engine::start()
 void Engine::run()
 {
 	for (DrawableObject* object : this->objects)
-		//object->scale(0.2);
+		object->scale(1.0);
 	while (!glfwWindowShouldClose(window))
 	{
 
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		//this->objects[0]->rotate(10);
-		//this->objects[1]->rotate(-10);
+		//this->objects[0]->rotate(5);
+		//this->objects[1]->rotate(20);
 		for (DrawableObject* object : this->objects) {
-			object->translate(0.0, 0.0, 0.03);
+			object->rotate(5);
 			object->render();
 		}
 
@@ -54,14 +53,13 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	//const char* vertex_shader = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
+	const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/model.ver";
+	const char* fragment_shader =  "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/shader.frag";
+	const char* fragment_shader2 =  "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/shader2.frag";
 
-
-	//const char* vertex_shader = = "C:/Users/ajrac/source/repos/Ajraa/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
-
-	const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
-	const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
-	const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
+	//const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
+	//const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+	//const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
 
 	float points[] = {
 		-0.6f, -0.4f, 0.f,
@@ -76,8 +74,20 @@ void Engine::createObjects()
 		0.6f, 0.6f, 0.0f,
 	};
 
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(points2, sizeof(points2))));
+	/*float points[] = {
+	-0.5f, -0.5f, 0.0f,
+	-0.5f, 0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f
+	};
+
+	float points2[] = {
+	0.5f, 0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+   -0.5f, -0.5f, 0.0f,
+	};*/
+
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points)), false));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(points2, sizeof(points2)), false));
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();

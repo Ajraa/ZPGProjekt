@@ -14,11 +14,12 @@ DrawableObject::DrawableObject(Shader* shader, Shape* shape)
 	this->transformation = new Transformation();
 }
 
-DrawableObject::DrawableObject(Shader* shader, Model* model)
+DrawableObject::DrawableObject(Shader* shader, Model* model, bool composite)
 {
 	this->shader = shader;
 	this->model = model;
-	this->transformation = new Transformation();
+	if (composite) this->transformation = new TransformationComposite();
+	else this->transformation = new Transformation();
 }
 
 void DrawableObject::setShader(Shader* shader)
@@ -54,6 +55,8 @@ void DrawableObject::scale(float scale)
 
 void DrawableObject::initialize()
 {
+	if (this->transformation->isComposite())
+		((TransformationComposite*)this->transformation)->initComposite();
 	this->shader->shade();
 	this->model->createVAO();
 	this->model->createVBO();

@@ -19,13 +19,14 @@ class Transformation
 {
 public:
 	Transformation();
-	void rotate(float degrees);
-	void translate(float x, float y, float z);
-	void scale(float scale);
-	void useTransform(GLint shader);
-
-private:
+	virtual void rotate(float degrees);
+	virtual void translate(float x, float y, float z);
+	virtual void scale(float scale);
+	virtual void useTransform(GLint shader);
+	virtual bool isComposite();
+protected:
+	Transformation* parent;
 	glm::mat4 transformationMatrix;
-	GLint idModelTransform;
+	int idModelTransform;
 };
 
