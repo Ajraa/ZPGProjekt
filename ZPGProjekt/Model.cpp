@@ -22,20 +22,16 @@ Model::~Model()
 
 void Model::createVAO()
 {
-    //vertex setup
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-    //Sets up the format, *without* a buffer object.
-    glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
-    //Sets up where the buffer object comes from
-    glVertexAttribBinding(0, 0);
-    //Enable VAO
-    glEnableVertexAttribArray(0);
+    glGenVertexArrays(1, &VAO); //generate the VAO
+    glBindVertexArray(VAO); //bind the VAO
+    glEnableVertexAttribArray(0); //enable vertex attributes
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)0);
-    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)this->shape->getSize());
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*) 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*)(3*sizeof(float)));
+    
     //Done with VAO
-    glBindVertexArray(0);
+    //glBindVertexArray(0);
 }
 
 void Model::createVBO()
@@ -48,6 +44,5 @@ void Model::createVBO()
 void Model::drawArrays()
 {
     glBindVertexArray(VAO);
-    glBindVertexBuffer(0, VBO, 0, 3 * sizeof(float));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

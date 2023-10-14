@@ -58,8 +58,8 @@ void DrawableObject::initialize()
 	if (this->transformation->isComposite())
 		((TransformationComposite*)this->transformation)->initComposite();
 	this->shader->shade();
-	this->model->createVAO();
 	this->model->createVBO();
+	this->model->createVAO();
 }
 
 void DrawableObject::render()
