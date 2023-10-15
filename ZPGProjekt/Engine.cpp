@@ -15,15 +15,18 @@ void Engine::start()
 
 void Engine::run()
 {
+	glEnable(GL_DEPTH_TEST); //Z-buffer
+	float alpha = 0.1;
 	while (!glfwWindowShouldClose(window))
 	{
-
-		
+		this->camera->useProjection();
+		this->camera->useView();
+		alpha += 0.1;
+		std::cout << alpha << std::endl;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//this->objects[0]->rotate(5);
-		//this->objects[1]->rotate(20);
+		this->objects[0]->rotate(alpha);
+		this->objects[1]->rotate(alpha);
 		for (DrawableObject* object : this->objects) {
-			//object->rotate(5);
 			object->render();
 		}
 
@@ -37,13 +40,10 @@ void Engine::run()
 	exit(EXIT_SUCCESS);
 
 	this->status;
-	//glGetProgramiv(shader->getShaderProgram(), GL_LINK_STATUS, &status);
 	if (status == GL_FALSE)
 	{
 		GLint infoLogLength;
-		//glGetProgramiv(shader->getShaderProgram(), GL_INFO_LOG_LENGTH, &infoLogLength);
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
-		//glGetProgramInfoLog(shader->getShaderProgram(), infoLogLength, NULL, strInfoLog);
 		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
 		delete[] strInfoLog;
 	}
@@ -52,25 +52,22 @@ void Engine::run()
 void Engine::createObjects()
 {
 	const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/model.ver";
-	const char* fragment_shader =  "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/shader.frag";
-	const char* fragment_shader2 =  "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/shader2.frag";
-	const char* fragment_shader3 = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/model.frag";
+	const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/model.frag";
 
 	//const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
 	//const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
 	//const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
 
 	float points[] = { // x, y, z, r, g, b, a
-		-.5f, -.5f, .0f, 1, 1, 0, 1,
-		-.5f, .5f, .0f, 1, 0, 0, 1,
-		.5f, .5f, .0f, 0, 0, 0, 1,
-		.5f, -.5f, .0f, 0, 1, 0, 1
+		-.5f, -.5f, 10.0f, 1, 0, 0, 1,
+		-.5f, .5f, 10.0f, 0, 1, 0, 1,
+		.5f, .5f, 10.0f, 0, 0, 1, 1,
 	};
 
 	float points2[] = {
-		0.5f, 0.5f, 0.0f, 0, 0, 0, 1,
-		0.5f, -0.5f, 0.0f, 0, 1, 1, 1,
-		-0.5f, -0.5f, 0.0f, 1, 0, 1, 1
+		0.5f, 0.5f, 1.0f, 1, 0, 0, 1,
+		0.5f, -0.5f, 1.0f, 0, 1, 0, 1,
+		-0.5f, -0.5f, 1.0f, 1, 0, 1, 1
 	};
 
 	/*float points[] = {
@@ -85,27 +82,18 @@ void Engine::createObjects()
    -0.5f, -0.5f, 0.0f,
 	};*/
 
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader3), new Model(points, sizeof(points)), false));
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader3), new Model(points2, sizeof(points2)), false));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
+		this->camera->addShader(object->getShader());
 	}
 }
 
 void Engine::initialization()
 {
-	// Projection matrix : 45� Field of View, 4 : 3 ratio, display range : 0.1 unit < -> 100 units
-	this->Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 100.0f);
-
-	// Camera matrix
-	this->View = glm::lookAt(
-		glm::vec3(10, 10, 10), // Camera is at (4,3,-3), in World Space
-		glm::vec3(0, 0, 0), // and looks at the origin
-		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-	);
-	// Model matrix : an identity matrix (model will be at the origin)
-	this->ViewModel = glm::mat4(1.0f);
+	this->camera = new Camera();
 
 	glfwSetErrorCallback(Callback::error_callback);
 	if (!glfwInit()) {

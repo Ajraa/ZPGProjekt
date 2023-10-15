@@ -17,37 +17,36 @@ bool TransformationComposite::isComposite()
 
 void TransformationComposite::useTransform(GLint shader)
 {
+	this->transformationMatrix = glm::mat4(1.0f);
+	this->idModelTransform = glGetUniformLocation(shader, "modelMatrix");
+	if (this->idModelTransform == -1)
+		std::cout << "Problém s Uniform Location modelMatrix\n";
+	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, &this->transformationMatrix[0][0]);
+
 	for(Transformation* var : this->children) {
 		var->useTransform(shader);
 		if (var->isComposite())
 			((TransformationComposite*)var)->clear();
+		this->children.clear();
 	}
 }
 void TransformationComposite::translate(float x, float y, float z)
 {
 	TransformationLeaf* leaf = new TransformationLeaf();
 	leaf->translate(x, y, z);
-	((TransformationComposite*)this->children[0])->add(leaf);
+	this->children.push_back(leaf);
 }
 
 void TransformationComposite::scale(float scale)
 {
 	TransformationLeaf* leaf = new TransformationLeaf();
 	leaf->scale(scale);
-	((TransformationComposite*)this->children[1])->add(leaf);
+	this->children.push_back(leaf);
 }
 
 void TransformationComposite::rotate(float degrees)
 {
 	TransformationLeaf* leaf = new TransformationLeaf();
 	leaf->rotate(degrees);
-	((TransformationComposite*)this->children[2])->add(leaf);
-}
-
-
-void TransformationComposite::initComposite()
-{
-	this->add(new TransformationComposite()); // 0 translate
-	this->add(new TransformationComposite()); // 1 scale
-	this->add(new TransformationComposite()); // 2 rotate
+	this->children.push_back(leaf);
 }

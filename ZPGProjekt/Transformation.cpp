@@ -10,7 +10,7 @@ Transformation::Transformation()
 
 void Transformation::rotate(float degrees)
 {
-	this->transformationMatrix = glm::rotate(this->transformationMatrix, (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
+	this->transformationMatrix = glm::rotate(glm::mat4(1.0f), (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Transformation::translate(float x, float y, float z)
@@ -26,6 +26,8 @@ void Transformation::scale(float scale)
 void Transformation::useTransform(GLint shader)
 {
 	this->idModelTransform = glGetUniformLocation(shader, "modelMatrix");
+	if (this->idModelTransform == -1)
+		std::cout << "Problém s Uniform Location modelMatrix\n";
 	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, &this->transformationMatrix[0][0]);
 }
 

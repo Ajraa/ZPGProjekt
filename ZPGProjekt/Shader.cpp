@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Camera.h"
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -7,8 +8,8 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
 {
     std::string vertexTmp = readShaderFile(vertexFilePath);
     std::string fragmentTmp = readShaderFile(fragmentFilePath);
-    this->vertex_shader = vertexTmp.c_str();
-    this->fragment_shader = fragmentTmp.c_str();
+    const char* vertex_shader = vertexTmp.c_str();
+    const char* fragment_shader = fragmentTmp.c_str();
 
     int status;
 
@@ -53,6 +54,22 @@ void Shader::shade()
 void Shader::useShaderProgram()
 {
     glUseProgram(this->shaderProgram);
+}
+
+void Shader::useProjection(glm::mat4 projection)
+{
+    this->idProjectionMatrix = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
+    if (this->idProjectionMatrix == -1)
+        std::cout << "Problém s Uniform Location projectionMatrix\n";
+    glUniformMatrix4fv(this->idProjectionMatrix, 1, GL_FALSE, &projection[0][0]);
+}
+
+void Shader::useView(glm::mat4 view)
+{
+    this->idViewMatrix = glGetUniformLocation(this->shaderProgram, "viewMatrix");
+    if (this->idViewMatrix == -1)
+        std::cout << "Problém s Uniform Location viewMatrix\n";
+    glUniformMatrix4fv(this->idViewMatrix, 1, GL_FALSE, &view[0][0]);
 }
 
 std::string Shader::readShaderFile(const char* filePath)

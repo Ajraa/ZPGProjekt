@@ -14,6 +14,7 @@
 #include "Model.h"
 #include "Callback.h"
 #include "DrawableObject.h"
+#include "Camera.h"
 
 class Engine
 {
@@ -25,9 +26,7 @@ public:
 	void initialization();
 private:
 	GLFWwindow* window;
-	glm::mat4 Projection;
-	glm::mat4 ViewModel;
-	glm::mat4 View;
+	Camera* camera;
 	GLint status;
 	std::vector<DrawableObject*> objects;
 };

@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 
+class Camera;
 class Shader
 {
 public:
@@ -19,13 +20,15 @@ public:
 	void shade();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 	void useShaderProgram();
+	void useProjection(glm::mat4 projection);
+	void useView(glm::mat4 view);
 private:
 	std::string readShaderFile(const char* filePath);
 
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
-	const char* vertex_shader;
-	const char* fragment_shader;
+	int idProjectionMatrix;
+	int idViewMatrix;
 };
 
