@@ -28,6 +28,15 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
     glGetShaderiv(this->fragmentShader, GL_COMPILE_STATUS, &status);
     if (status != GL_TRUE)
         std::cout << "Fragment shader se nezkompiloval\n";
+
+    this->shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, fragmentShader);
+    glAttachShader(shaderProgram, vertexShader);
+    glLinkProgram(shaderProgram);
+
+    glGetProgramiv(this->shaderProgram, GL_LINK_STATUS, &status);
+    if (status != GL_TRUE)
+        std::cout << "Shader program se nezkompiloval\n";
 }
 
 Shader::~Shader()
@@ -35,20 +44,6 @@ Shader::~Shader()
     glDeleteShader(this->vertexShader);
     glDeleteShader(this->fragmentShader);
     glDeleteProgram(this->shaderProgram);
-}
-
-void Shader::shade()
-{
-
-    this->shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, fragmentShader);
-    glAttachShader(shaderProgram, vertexShader);
-    glLinkProgram(shaderProgram);
-
-    int status;
-    glGetProgramiv(this->shaderProgram, GL_LINK_STATUS, &status);
-    if (status != GL_TRUE)
-        std::cout << "Shader program se nezkompiloval\n";
 }
 
 void Shader::useShaderProgram()
@@ -61,7 +56,8 @@ void Shader::useProjection(glm::mat4 projection)
     this->idProjectionMatrix = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
     if (this->idProjectionMatrix == -1)
         std::cout << "Problém s Uniform Location projectionMatrix\n";
-    glUniformMatrix4fv(this->idProjectionMatrix, 1, GL_FALSE, &projection[0][0]);
+    glUniformMatrix4fv(this->idProjectionMatrix, 1, GL_FALSE, glm::value_ptr(projection));
+    
 }
 
 void Shader::useView(glm::mat4 view)
@@ -69,7 +65,7 @@ void Shader::useView(glm::mat4 view)
     this->idViewMatrix = glGetUniformLocation(this->shaderProgram, "viewMatrix");
     if (this->idViewMatrix == -1)
         std::cout << "Problém s Uniform Location viewMatrix\n";
-    glUniformMatrix4fv(this->idViewMatrix, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(this->idViewMatrix, 1, GL_FALSE, glm::value_ptr(view));
 }
 
 std::string Shader::readShaderFile(const char* filePath)

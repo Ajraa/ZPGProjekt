@@ -2,11 +2,13 @@
 class Shape
 {
 public:
-	Shape(float* points, int size);
-	float* getPoints();
+	Shape(const float* vertices, int size, int points);
+	const float* getVertices();
 	int getSize();
+	int getPoints();
 private:
-	float* points;
+	const float* vertices;
 	int size;
+	int points;
 };
 

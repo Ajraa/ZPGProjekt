@@ -35,6 +35,6 @@ void TransformationLeaf::useTransform(GLint shader)
 	this->idModelTransform = glGetUniformLocation(shader, "modelMatrix");
 	if (this->idModelTransform == -1)
 		std::cout << "Problém s Uniform Location modelMatrix\n";
-	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, &this->transformationMatrix[0][0]);
+	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, glm::value_ptr(this->transformationMatrix));
 }
 

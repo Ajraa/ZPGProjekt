@@ -1,10 +1,10 @@
 #include "Model.h"
 
 
-Model::Model(float* points, int size)
+Model::Model(const float* vertices, int size, int points)
 {
     this->VAO = 0;
-    this->shape = new Shape(points, size);
+    this->shape = new Shape(vertices, size, points);
 }
 
 Model::Model(Shape* shape)
@@ -27,8 +27,10 @@ void Model::createVAO()
     glEnableVertexAttribArray(0); //enable vertex attributes
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*) 0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*)(3*sizeof(float)));
+   /* glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*) 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*)(3*sizeof(float)));*/
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
     
     //Done with VAO
     //glBindVertexArray(0);
@@ -38,11 +40,11 @@ void Model::createVBO()
 {
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, this->shape->getSize(), this->shape->getPoints(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->shape->getSize(), this->shape->getVertices(), GL_STATIC_DRAW);
 }
 
 void Model::drawArrays()
 {
     glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, this->shape->getPoints());
 }

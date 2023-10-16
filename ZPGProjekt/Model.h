@@ -15,7 +15,7 @@
 class Model
 {
 public:
-	Model(float* points, int size);
+	Model(const float* vertices, int size, int points);
 	Model(Shape* shape);
 	~Model();
 	void createVAO();

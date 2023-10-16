@@ -3,12 +3,12 @@
 
 Camera::Camera()
 {
-	this->projection = glm::perspective(60.0f, 800.f / 600.f, 0.1f, 100.0f);
+	this->projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
 	this->eye = glm::vec3(5.0, 0, 0);
 	this->target = glm::vec3(0, 0, 0);
 	this->up = glm::vec3(0, 1, 0);
 	this->model = glm::mat4(1.0f);
-	this->view = glm::lookAt(eye, eye + target, up);
+	this->view = glm::lookAt(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 }
 
 void Camera::getCamera()

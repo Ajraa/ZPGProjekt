@@ -17,7 +17,6 @@ class Shader
 public:
 	Shader(const char* vertexFilePath, const char* fragmentFilePath);
 	~Shader();
-	void shade();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 	void useShaderProgram();
 	void useProjection(glm::mat4 projection);

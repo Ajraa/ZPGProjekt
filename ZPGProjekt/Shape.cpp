@@ -1,17 +1,23 @@
 #include "Shape.h"
 
-Shape::Shape(float* points, int size)
+Shape::Shape(const float* vertices, int size, int points)
 {
-	this->points = points;
+	this->vertices = vertices;
 	this->size = size;
+	this->points = points;
 }
 
-float* Shape::getPoints()
+const float* Shape::getVertices()
 {
-	return this->points;
+	return this->vertices;
 }
 
 int Shape::getSize()
 {
 	return this->size;
+}
+
+int Shape::getPoints()
+{
+	return this->points;
 }

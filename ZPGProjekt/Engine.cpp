@@ -1,4 +1,5 @@
 ﻿#include "Engine.h"
+#include "Sphere.h"
 
 Engine::~Engine()
 {
@@ -24,9 +25,8 @@ void Engine::run()
 		alpha += 0.1;
 		std::cout << alpha << std::endl;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		this->objects[0]->rotate(alpha);
-		this->objects[1]->rotate(alpha);
 		for (DrawableObject* object : this->objects) {
+			object->rotate(alpha);
 			object->render();
 		}
 
@@ -51,8 +51,8 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/model.ver";
-	const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/model.frag";
+	const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/sphere.ver";
+	const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/sphere.frag";
 
 	//const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
 	//const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
@@ -82,12 +82,12 @@ void Engine::createObjects()
    -0.5f, -0.5f, 0.0f,
 	};*/
 
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points, sizeof(points))));
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(sphere, sizeof(sphere), 2880)));
+	//this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
-		object->initialize();
 		this->camera->addShader(object->getShader());
+		object->initialize();
 	}
 }
 
