@@ -113,7 +113,7 @@ void Engine::initialization()
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(800, 600, "ZPG", NULL, NULL);
+	window = glfwCreateWindow(1200, 1080, "ZPG", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
