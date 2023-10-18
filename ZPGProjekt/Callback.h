@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <iostream>
+
 class Callback
 {
 public:
@@ -13,4 +14,3 @@ public:
 	static void cursor_callback(GLFWwindow* window, double x, double y);
 	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 }; 
-

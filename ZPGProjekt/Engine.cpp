@@ -9,8 +9,6 @@ Engine::~Engine()
 
 void Engine::start()
 {
-	this->lastX = 400;
-	this->lastY = 300;
 	this->initialization();
 	this->createObjects();
 	this->run();
@@ -19,10 +17,14 @@ void Engine::start()
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
-	float alpha = 0.1;
-	glfwSetCursorPosCallback(window, Callback::cursor_callback);
+	double x, y;
+	float alpha = 0;
+	//glfwSetCursorPosCallback(window, Callback::cursor_callback);
+	
 	while (!glfwWindowShouldClose(window))
 	{
+		glfwGetCursorPos(window, &x, &y);
+		this->camera->moveCursor(x, y);
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 			this->camera->moveForward();
 		}
@@ -35,10 +37,16 @@ void Engine::run()
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			this->camera->moveRight();
 		}
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			this->camera->moveUp();
+		}
+		if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+			this->camera->moveDown();
+		}
 
 		this->camera->useProjection();
 		this->camera->useView();
-		alpha += 0.1;
+		alpha += 0.5;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		for (DrawableObject* object : this->objects) {
 			object->rotate(alpha);
@@ -66,11 +74,11 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/sphere.ver";
-	const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/sphere.frag";
+	//const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/sphere.ver";
+	//const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/sphere.frag";
 
-	//const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/model.ver";
-	//const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader.frag";
+	const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/sphere.ver";
+	const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/sphere.frag";
 	//const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
 
 	float points[] = { // x, y, z, r, g, b, a
@@ -85,19 +93,8 @@ void Engine::createObjects()
 		-0.5f, -0.5f, 1.0f, 1, 0, 1, 1
 	};
 
-	/*float points[] = {
-	-0.5f, -0.5f, 0.0f,
-	-0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f
-	};
 
-	float points2[] = {
-	0.5f, 0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-   -0.5f, -0.5f, 0.0f,
-	};*/
-
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(sphere, sizeof(sphere), 2880)));
+	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4)))));
 	//this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
@@ -144,9 +141,4 @@ void Engine::initialization()
 	glfwGetFramebufferSize(window, &width, &height);
 	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
-}
-
-void Engine::cursor_callback(GLFWwindow* window, double x, double y)
-{
-
 }

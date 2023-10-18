@@ -19,11 +19,14 @@ public:
 	void addShader(Shader* shader);
 	void useProjection();
 	void useView();
-	void setTarget(float alpha, float fi);
+	void setTarget();
 	void moveForward();
 	void moveBackwards();
 	void moveLeft();
 	void moveRight();
+	void moveUp();
+	void moveDown();
+	void moveCursor(double x, double y);
 private:
 	glm::mat4 projection;
 	glm::mat4 model;
@@ -32,5 +35,11 @@ private:
 	glm::vec3 target;
 	glm::vec3 up;
 	std::vector<Shader*> shaders;
+	double lastX;
+	double lastY;
+	double sensitivity;
+	double alpha;
+	double fi;
+	glm::vec3 cameraSpeed;
 };
 
