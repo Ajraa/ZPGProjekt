@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClCompile Include="Callback.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraObserver.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
@@ -149,7 +148,6 @@
   <ItemGroup>
     <ClInclude Include="Callback.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraObserver.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Model.h" />

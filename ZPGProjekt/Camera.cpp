@@ -6,14 +6,14 @@ Camera::Camera()
 	this->projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
 	this->eye = glm::vec3(5.0, 0, 0);
 	this->target = glm::vec3(0, 0, 0);
-	this->up = glm::vec3(0, 1, 0);
+	this->up = glm::vec3(0.f, 1.f, 0.f);
 	this->model = glm::mat4(1.0f);
-	this->view = glm::lookAt(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+	this->view = glm::lookAt(eye, target, up);
 }
 
-void Camera::getCamera()
+void Camera::updateCamera()
 {
-	this->view = glm::lookAt(eye, eye + target, up);
+	this->view = glm::lookAt(eye, target, up);
 }
 
 void Camera::addShader(Shader* shader)
@@ -40,4 +40,26 @@ void Camera::setTarget(float alpha, float fi)
 	target.x = sin(alpha) * cos(fi);
 	target.z = sin(alpha) * sin(fi);
 	target.y = cos(alpha);
+}
+
+void Camera::moveForward()
+{
+	eye += glm::normalize(this->target);
+}
+
+void Camera::moveBackwards()
+{
+	eye -= glm::normalize(this->target);
+}
+
+void Camera::moveLeft()
+{
+	eye += (glm::normalize(glm::cross(target, up)));
+	this->updateCamera();
+}
+
+void Camera::moveRight()
+{
+	eye -= (glm::normalize(glm::cross(target, up)));
+	this->updateCamera();
 }

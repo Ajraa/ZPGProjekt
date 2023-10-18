@@ -9,6 +9,8 @@ Engine::~Engine()
 
 void Engine::start()
 {
+	this->lastX = 400;
+	this->lastY = 300;
 	this->initialization();
 	this->createObjects();
 	this->run();
@@ -18,12 +20,25 @@ void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	float alpha = 0.1;
+	glfwSetCursorPosCallback(window, Callback::cursor_callback);
 	while (!glfwWindowShouldClose(window))
 	{
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			this->camera->moveForward();
+		}
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			this->camera->moveBackwards();
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			this->camera->moveLeft();
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			this->camera->moveRight();
+		}
+
 		this->camera->useProjection();
 		this->camera->useView();
 		alpha += 0.1;
-		std::cout << alpha << std::endl;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		for (DrawableObject* object : this->objects) {
 			object->rotate(alpha);
@@ -129,4 +144,9 @@ void Engine::initialization()
 	glfwGetFramebufferSize(window, &width, &height);
 	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
+}
+
+void Engine::cursor_callback(GLFWwindow* window, double x, double y)
+{
+
 }

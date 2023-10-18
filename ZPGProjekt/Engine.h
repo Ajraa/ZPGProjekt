@@ -24,9 +24,12 @@ public:
 	void run();
 	void createObjects();
 	void initialization();
+	static void cursor_callback(GLFWwindow* window, double x, double y);
 private:
 	GLFWwindow* window;
 	Camera* camera;
 	GLint status;
 	std::vector<DrawableObject*> objects;
+	int lastX;
+	int lastY;
 };

@@ -28,7 +28,7 @@ void Callback::window_size_callback(GLFWwindow* window, int width, int height)
 
 void Callback::cursor_callback(GLFWwindow* window, double x, double y)
 {
-	printf("cursor_callback \n"); 
+	std::cout << x << " / " << y << std::endl;
 }
 
 void Callback::button_callback(GLFWwindow* window, int button, int action, int mode)

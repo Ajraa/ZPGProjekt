@@ -15,11 +15,15 @@ class Camera
 {
 public:
 	Camera();
-	void getCamera();
+	void updateCamera();
 	void addShader(Shader* shader);
 	void useProjection();
 	void useView();
 	void setTarget(float alpha, float fi);
+	void moveForward();
+	void moveBackwards();
+	void moveLeft();
+	void moveRight();
 private:
 	glm::mat4 projection;
 	glm::mat4 model;
