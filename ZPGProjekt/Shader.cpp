@@ -68,6 +68,11 @@ void Shader::useView(glm::mat4 view)
     glUniformMatrix4fv(this->idViewMatrix, 1, GL_FALSE, glm::value_ptr(view));
 }
 
+void Shader::setSubject(CameraSubject* subject)
+{
+    this->subject = subject;
+}
+
 std::string Shader::readShaderFile(const char* filePath)
 {
     std::string shaderCode;

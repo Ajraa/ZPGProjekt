@@ -74,12 +74,8 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	//const char* vertex_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/vertex/sphere.ver";
-	//const char* fragment_shader = "c:/users/ajrac/source/repos/ajraa/zpgprojekt/zpgprojekt/shaders/fragment/sphere.frag";
-
-	const char* vertex_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Vertex/sphere.ver";
-	const char* fragment_shader = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/sphere.frag";
-	//const char* fragment_shader2 = "C:/Users/LenovoYoga/source/repos/ZPGProjekt/ZPGProjekt/Shaders/Fragment/shader2.frag";
+	const char* vertex_shader = "shaders/vertex/sphere.ver";
+	const char* fragment_shader = "shaders/fragment/sphere.frag";
 
 	float points[] = { // x, y, z, r, g, b, a
 		-.5f, -.5f, 10.0f, 1, 0, 0, 1,
@@ -98,7 +94,7 @@ void Engine::createObjects()
 	//this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
 
 	for (DrawableObject* object : this->objects) {
-		this->camera->addShader(object->getShader());
+		this->camera->attach(object->getShader());
 		object->initialize();
 	}
 }

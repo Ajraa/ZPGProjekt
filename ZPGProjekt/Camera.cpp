@@ -23,21 +23,16 @@ void Camera::updateCamera()
 	this->view = glm::lookAt(eye, eye + target, up);
 }
 
-void Camera::addShader(Shader* shader)
-{
-	this->shaders.push_back(shader);
-}
-
 void Camera::useProjection()
 {
-	for (Shader* shader : this->shaders)
-		shader->useProjection(this->projection);
+	for (CameraObserver* observer : this->observers)
+		observer->useProjection(this->projection);
 }
 
 void Camera::useView()
 {
-	for (Shader* shader : this->shaders)
-		shader->useView(this->view);
+	for (CameraObserver* observer : this->observers)
+		observer->useView(this->view);
 }
 
 void Camera::setTarget()
@@ -102,4 +97,22 @@ void Camera::moveCursor(double x, double y)
 
 	this->setTarget();
 	
+}
+
+void Camera::attach(CameraObserver* observer)
+{
+	this->observers.push_back(observer);
+}
+
+void Camera::detach(CameraObserver* observer)
+{
+	int i = 0;
+	for (CameraObserver* obs : this->observers)
+	{
+		if (observer == obs)
+			break;
+		i++;
+	}
+	if (i < this->observers.size())
+		this->observers.erase(this->observers.begin() + i);
 }

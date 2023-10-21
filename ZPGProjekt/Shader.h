@@ -10,24 +10,26 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
+#include "CameraObserver.h"
 
 class Camera;
-class Shader
+class Shader : public CameraObserver
 {
 public:
 	Shader(const char* vertexFilePath, const char* fragmentFilePath);
 	~Shader();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 	void useShaderProgram();
-	void useProjection(glm::mat4 projection);
-	void useView(glm::mat4 view);
+	void useProjection(glm::mat4 projection) override;
+	void useView(glm::mat4 view) override;
+	void setSubject(CameraSubject* subject) override;
 private:
 	std::string readShaderFile(const char* filePath);
-
 	GLuint vertexShader;
 	GLuint fragmentShader;
 	GLuint shaderProgram;
 	int idProjectionMatrix;
 	int idViewMatrix;
+	CameraSubject* subject;
 };
 

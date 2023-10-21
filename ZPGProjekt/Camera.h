@@ -9,16 +9,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "CameraSubject.h"
 
 class Shader;
-class Camera
+class Camera : public CameraSubject
 {
 public:
 	Camera();
 	void updateCamera();
-	void addShader(Shader* shader);
-	void useProjection();
-	void useView();
+	void useProjection() override;
+	void useView() override;
 	void setTarget();
 	void moveForward();
 	void moveBackwards();
@@ -27,6 +27,8 @@ public:
 	void moveUp();
 	void moveDown();
 	void moveCursor(double x, double y);
+	void attach(CameraObserver* observer) override;
+	void detach(CameraObserver* observer) override;
 private:
 	glm::mat4 projection;
 	glm::mat4 model;
@@ -34,7 +36,7 @@ private:
 	glm::vec3 eye;
 	glm::vec3 target;
 	glm::vec3 up;
-	std::vector<Shader*> shaders;
+	std::vector<CameraObserver*> observers;
 	double lastX;
 	double lastY;
 	double sensitivity;
