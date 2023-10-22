@@ -29,6 +29,8 @@ public:
 	void moveCursor(double x, double y);
 	void attach(CameraObserver* observer) override;
 	void detach(CameraObserver* observer) override;
+	void update() override;
+	void setProjection(float height, float width);
 private:
 	glm::mat4 projection;
 	glm::mat4 model;

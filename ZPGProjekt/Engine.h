@@ -24,6 +24,7 @@ public:
 	void run();
 	void createObjects();
 	void initialization();
+	void processUserInput();
 private:
 	GLFWwindow* window;
 	Camera* camera;

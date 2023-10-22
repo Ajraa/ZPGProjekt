@@ -17,39 +17,23 @@ void Engine::start()
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
-	double x, y;
-	float alpha = 0;
-	//glfwSetCursorPosCallback(window, Callback::cursor_callback);
 	
+	float alpha = 0;
+	float x = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
-		glfwGetCursorPos(window, &x, &y);
-		this->camera->moveCursor(x, y);
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			this->camera->moveForward();
-		}
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-			this->camera->moveBackwards();
-		}
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-			this->camera->moveLeft();
-		}
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-			this->camera->moveRight();
-		}
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			this->camera->moveUp();
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-			this->camera->moveDown();
-		}
+		this->processUserInput();
 
-		this->camera->useProjection();
-		this->camera->useView();
+		this->camera->update();
 		alpha += 0.5;
+		x += 0.01;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		this->objects[3]->translate(50, 0.0, 0.0);
 		for (DrawableObject* object : this->objects) {
-			object->rotate(alpha);
+			//object->translate(x, 0.0, 0.0);
+			//object->rotate(alpha);
 			object->render();
 		}
 
@@ -76,22 +60,20 @@ void Engine::createObjects()
 {
 	const char* vertex_shader = "shaders/vertex/sphere.ver";
 	const char* fragment_shader = "shaders/fragment/sphere.frag";
+	const char* fragment_shader2 = "shaders/fragment/shader.frag";
 
-	float points[] = { // x, y, z, r, g, b, a
-		-.5f, -.5f, 10.0f, 1, 0, 0, 1,
-		-.5f, .5f, 10.0f, 0, 1, 0, 1,
-		.5f, .5f, 10.0f, 0, 0, 1, 1,
-	};
-
-	float points2[] = {
-		0.5f, 0.5f, 1.0f, 1, 0, 0, 1,
-		0.5f, -0.5f, 1.0f, 0, 1, 0, 1,
-		-0.5f, -0.5f, 1.0f, 1, 0, 1, 1
-	};
-
-
-	this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4)))));
-	//this->objects.push_back(new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(points2, sizeof(points2))));
+	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere1->translate(80.0, 200.0, 100.0);
+	this->objects.push_back(sphere1);
+	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere2->translate(-3.0, 0.0, 0.0);
+	this->objects.push_back(sphere2);
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, fragment_shader2), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere3->translate(0.0, 0.0, 3.0);
+	this->objects.push_back(sphere3);
+	DrawableObject* sphere4 = new DrawableObject(new Shader(vertex_shader, fragment_shader), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere4->translate(0.0, 0.0, -3.0);
+	this->objects.push_back(sphere4);
 
 	for (DrawableObject* object : this->objects) {
 		this->camera->attach(object->getShader());
@@ -109,7 +91,7 @@ void Engine::initialization()
 		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(1200, 1080, "ZPG", NULL, NULL);
+	window = glfwCreateWindow(800, 600, "ZPG", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		exit(EXIT_FAILURE);
@@ -137,4 +119,42 @@ void Engine::initialization()
 	glfwGetFramebufferSize(window, &width, &height);
 	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
+}
+
+void Engine::processUserInput()
+{
+
+	int previousWidth = 800;
+	int previousHeight = 600;
+	double x, y;
+
+	glfwGetCursorPos(window, &x, &y);
+	this->camera->moveCursor(x, y);
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		this->camera->moveForward();
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		this->camera->moveBackwards();
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		this->camera->moveLeft();
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		this->camera->moveRight();
+	}
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		this->camera->moveUp();
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+		this->camera->moveDown();
+	}
+
+	int currentWidth, currentHeight;
+	glfwGetFramebufferSize(window, &currentWidth, &currentHeight);
+	if (currentWidth != previousWidth || currentHeight != previousHeight)
+	{
+		previousHeight = currentHeight;
+		previousWidth = currentWidth;
+		this->camera->setProjection(currentHeight, currentWidth);
+	}
 }

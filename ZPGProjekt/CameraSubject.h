@@ -9,5 +9,6 @@ public:
 	virtual void detach(CameraObserver* observer) = 0;
 	virtual void useProjection() = 0;
 	virtual void useView() = 0;
+	virtual void update() = 0;
 };
 

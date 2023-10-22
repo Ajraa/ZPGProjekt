@@ -15,12 +15,12 @@ void Transformation::rotate(float degrees)
 
 void Transformation::translate(float x, float y, float z)
 {
-	this->transformationMatrix = glm::translate(this->transformationMatrix, glm::vec3(x, y, z));
+	this->transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 }
 
 void Transformation::scale(float scale)
 {
-	this->transformationMatrix = glm::scale(this->transformationMatrix, glm::vec3(scale));
+	this->transformationMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale));
 }
 
 void Transformation::useTransform(GLint shader)
