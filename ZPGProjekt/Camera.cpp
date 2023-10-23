@@ -124,7 +124,7 @@ void Camera::update()
 
 void Camera::setProjection(float height, float width)
 {
-	this->projection = glm::perspective(45.0f, height/width, 0.1f, 100.0f);
+	this->projection = glm::perspective(45.0f, width/height, 0.1f, 100.0f);
 }
 
 void Camera::useProjection(GLuint shaderProgram)

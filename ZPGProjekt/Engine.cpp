@@ -151,6 +151,7 @@ void Engine::processUserInput()
 	{
 		previousHeight = currentHeight;
 		previousWidth = currentWidth;
+		glViewport(0, 0, currentWidth, currentHeight);
 		this->camera->setProjection(currentHeight, currentWidth);
 	}
 }
