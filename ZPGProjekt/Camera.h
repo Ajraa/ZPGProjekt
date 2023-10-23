@@ -31,6 +31,9 @@ public:
 	void detach(CameraObserver* observer) override;
 	void update() override;
 	void setProjection(float height, float width);
+	void useProjection(GLuint shaderProgram) override;
+	void useView(GLuint shaderProgram) override;
+	void update(GLuint shaderProgram) override;
 private:
 	glm::mat4 projection;
 	glm::mat4 model;

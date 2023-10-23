@@ -3,15 +3,22 @@
 layout ( location = 0) in vec3 vp; // position
 // atribut 1 in VAO
 layout ( location = 1) in vec3 vn; // normal
-out vec4 worldPos;
-out vec3 worldNorm;
+
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+
+out VS_out
+{
+    vec3 fragNormal;
+    vec3 fragPos;
+} vs_out;
+
 void main ()
 {
-    worldPos = modelMatrix * vec4( vp, 1.0);
-    mat4 normal = modelMatrix; // problem - priste vysvetlime
-    worldNorm = vec3( normal * vec4( vn ,1.0));
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp ,1.0);
+    mat3 normalMatrix = mat3(transpose(inverse(modelMatrix)));
+    vec4 position = vec4(vp, 1.f);
+    vs_out.fragPos = (modelMatrix * position).xyz;
+    vs_out.fragNormal = normalMatrix * vn;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * position;
 }

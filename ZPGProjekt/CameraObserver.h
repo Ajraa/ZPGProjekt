@@ -20,5 +20,6 @@ public:
 	virtual void useProjection(glm::mat4 projection) = 0;
 	virtual void useView(glm::mat4 view) = 0;
 	virtual void setSubject(CameraSubject* subject) = 0;
+	virtual void notify() = 0;
 };
 

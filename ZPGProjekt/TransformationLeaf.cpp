@@ -38,3 +38,8 @@ void TransformationLeaf::useTransform(GLint shader)
 	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, glm::value_ptr(this->transformationMatrix));
 }
 
+glm::mat4 TransformationLeaf::getMatrix()
+{
+	return this->transformationMatrix;
+}
+

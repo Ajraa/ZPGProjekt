@@ -17,18 +17,20 @@ bool TransformationComposite::isComposite()
 
 void TransformationComposite::useTransform(GLint shader)
 {
+	
 	this->transformationMatrix = glm::mat4(1.0f);
-	this->idModelTransform = glGetUniformLocation(shader, "modelMatrix");
-	if (this->idModelTransform == -1)
-		std::cout << "Problém s Uniform Location modelMatrix\n";
-	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, glm::value_ptr(this->transformationMatrix));
-
 	for(Transformation* var : this->children) {
-		var->useTransform(shader);
+		//var->useTransform(shader);
+		this->transformationMatrix *= ((TransformationLeaf*)var)->getMatrix();
 		if (var->isComposite())
 			((TransformationComposite*)var)->clear();
 		this->children.clear();
 	}
+	
+	this->idModelTransform = glGetUniformLocation(shader, "modelMatrix");
+	if (this->idModelTransform == -1)
+		std::cout << "Problém s Uniform Location modelMatrix\n";
+	glUniformMatrix4fv(this->idModelTransform, 1, GL_FALSE, glm::value_ptr(this->transformationMatrix));
 }
 void TransformationComposite::translate(float x, float y, float z)
 {

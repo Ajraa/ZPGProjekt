@@ -126,3 +126,25 @@ void Camera::setProjection(float height, float width)
 {
 	this->projection = glm::perspective(45.0f, height/width, 0.1f, 100.0f);
 }
+
+void Camera::useProjection(GLuint shaderProgram)
+{
+	int idMatrix = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	if (idMatrix == -1)
+		std::cout << "Problém s Uniform Location projectionMatrix\n";
+	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->projection));
+}
+
+void Camera::useView(GLuint shaderProgram)
+{
+	int idMatrix = glGetUniformLocation(shaderProgram, "viewMatrix");
+	if (idMatrix == -1)
+		std::cout << "Problém s Uniform Location viewMatrix\n";
+	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->view));
+}
+
+void Camera::update(GLuint shaderProgram)
+{
+	this->useProjection(shaderProgram);
+	this->useView(shaderProgram);
+}

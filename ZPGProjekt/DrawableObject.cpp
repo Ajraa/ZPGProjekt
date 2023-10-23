@@ -52,6 +52,7 @@ void DrawableObject::initialize()
 void DrawableObject::render()
 {
 	this->shader->useShaderProgram();
+	this->shader->notify();
 	this->transformation->useTransform(this->shader->getShaderProgram());
 	this->model->drawArrays();
 }

@@ -31,9 +31,7 @@ void Model::createVAO()
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (GLvoid*)(3*sizeof(float)));*/
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-    
-    //Done with VAO
-    //glBindVertexArray(0);
+   
 }
 
 void Model::createVBO()
@@ -45,6 +43,25 @@ void Model::createVBO()
 
 void Model::drawArrays()
 {
-    glBindVertexArray(VAO);
+    glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, this->shape->getPoints());
+
+    GLenum error;
+    while ((error = glGetError()) != GL_NO_ERROR) {
+        switch (error) {
+        case GL_INVALID_ENUM:
+            std::cout << this->VAO <<": Invalid enum" << std::endl;
+            break;
+        case GL_INVALID_VALUE:
+            std::cout << this->VAO << ": Ivalid value" << std::endl;
+            break;
+        case GL_INVALID_OPERATION:
+            std::cout << this->VAO << ": Invalid operation" << std::endl;
+            break;
+        case GL_OUT_OF_MEMORY:
+            std::cout << this->VAO << ": Out of memory" << std::endl;
+            break;
+            // Add more cases for other error codes if needed
+        }
+    }
 }

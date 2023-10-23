@@ -4,12 +4,14 @@
 #include <string>
 #include <sstream>
 
-Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
+Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath, CameraSubject* subject)
 {
     std::string vertexTmp = readShaderFile(vertexFilePath);
     std::string fragmentTmp = readShaderFile(fragmentFilePath);
     const char* vertex_shader = vertexTmp.c_str();
     const char* fragment_shader = fragmentTmp.c_str();
+    this->subject = subject;
+    this->subject->attach(this);
 
     int status;
 
@@ -71,6 +73,11 @@ void Shader::useView(glm::mat4 view)
 void Shader::setSubject(CameraSubject* subject)
 {
     this->subject = subject;
+}
+
+void Shader::notify()
+{
+    this->subject->update(this->shaderProgram);
 }
 
 std::string Shader::readShaderFile(const char* filePath)

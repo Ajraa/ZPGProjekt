@@ -16,13 +16,14 @@ class Camera;
 class Shader : public CameraObserver
 {
 public:
-	Shader(const char* vertexFilePath, const char* fragmentFilePath);
+	Shader(const char* vertexFilePath, const char* fragmentFilePath, CameraSubject* subject);
 	~Shader();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 	void useShaderProgram();
 	void useProjection(glm::mat4 projection) override;
 	void useView(glm::mat4 view) override;
 	void setSubject(CameraSubject* subject) override;
+	void notify() override;
 private:
 	std::string readShaderFile(const char* filePath);
 	GLuint vertexShader;
