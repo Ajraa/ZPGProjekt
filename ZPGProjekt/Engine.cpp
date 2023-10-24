@@ -61,15 +61,18 @@ void Engine::run()
 void Engine::createObjects()
 {
 	const char* vertex_shader = "shaders/vertex/sphereLight.ver";
-	const char* fragment_shader = "shaders/fragment/phong.frag";
+	const char* constant = "shaders/fragment/shader.frag";
+	const char* lambert = "shaders/fragment/lambert.frag";
+	const char* phong = "shaders/fragment/phong.frag";
+	const char* blinn = "shaders/fragment/blinn.frag";
 
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, fragment_shader, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, constant, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere1);
-	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, fragment_shader, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, lambert, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere2);
-	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, fragment_shader, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere3);
-	DrawableObject* sphere4 = new DrawableObject(new Shader(vertex_shader, fragment_shader, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere4 = new DrawableObject(new Shader(vertex_shader, blinn, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere4);
 
 	for (DrawableObject* object : this->objects)

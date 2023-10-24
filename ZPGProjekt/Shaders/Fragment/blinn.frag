@@ -11,9 +11,9 @@ void main ()
     vec3 norm = normalize(fs_in.fragNormal);
     vec3 pos = fs_in.fragPos;
     vec3 lightDir = normalize(lightPosition - pos);
-    vec3 reflectDir = reflect(- lightDir , norm );
+    vec3 halfwayDir = normalize ( lightDir + norm );
 
-    float spec = pow( max( dot( norm , reflectDir ), 0.0) ,32);
+    float spec = pow( max( dot( norm , halfwayDir ), 0.0) ,32);
 
     vec4 diffuse = spec * vec4( 0.385, 0.647, 0.812, 1.0);
     vec4 ambient = vec4( 0.1, 0.1, 0.1, 1.0);

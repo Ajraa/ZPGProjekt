@@ -1,5 +1,5 @@
 #version 330
 out vec4 frag_colour;
 void main () {
-frag_colour = vec4 (0.5, 0.7, 0.0, 1.0);
+frag_colour = vec4 ( 0.385 , 0.647 , 0.812 , 1.0 );
 }
