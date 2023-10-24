@@ -61,7 +61,7 @@ void Engine::run()
 void Engine::createObjects()
 {
 	const char* vertex_shader = "shaders/vertex/sphereLight.ver";
-	const char* fragment_shader = "shaders/fragment/lambert.frag";
+	const char* fragment_shader = "shaders/fragment/phong.frag";
 
 	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, fragment_shader, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere1);

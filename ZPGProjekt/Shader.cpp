@@ -20,16 +20,24 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath, CameraS
     glCompileShader(vertexShader);
 
     glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &status);
-    if (status != GL_TRUE)
-        std::cout << "Vertex shader se nezkompiloval\n";
+    if (status != GL_TRUE) {
+      std::cout << "Vertex shader se nezkompiloval\n";
+      GLchar InfoLog[256];
+      glGetShaderInfoLog(vertexShader, sizeof(InfoLog), NULL, InfoLog);
+      std::cout << InfoLog << std::endl;
+    }
 
     this->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragment_shader, NULL);
     glCompileShader(fragmentShader);
 
     glGetShaderiv(this->fragmentShader, GL_COMPILE_STATUS, &status);
-    if (status != GL_TRUE)
-        std::cout << "Fragment shader se nezkompiloval\n";
+    if (status != GL_TRUE) {
+      std::cout << "Fragment shader se nezkompiloval\n";
+      GLchar InfoLog[256];
+      glGetShaderInfoLog(fragmentShader, sizeof(InfoLog), NULL, InfoLog);
+      std::cout << InfoLog << std::endl;
+    }
 
     this->shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, fragmentShader);
