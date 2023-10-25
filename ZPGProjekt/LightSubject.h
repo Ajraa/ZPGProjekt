@@ -11,15 +11,15 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include "CameraSubject.h"
+#include "LightObserver.h"
 
-class CameraSubject;
-class CameraObserver
+class LightSubject
 {
 public:
-	virtual void useProjection(glm::mat4 projection) = 0;
-	virtual void useView(glm::mat4 view) = 0;
-	virtual void setSubject(CameraSubject* subject) = 0;
-	virtual void notifyCamera() = 0;
+	virtual void attach(LightObserver* observer) = 0;
+	virtual void detach(LightObserver* observer) = 0;
+	virtual void useLightPosition(GLuint shaderProgram) = 0;
+	virtual void useLightColor(GLuint shaderProgram) = 0;
+	virtual void update(GLuint shaderProgram) = 0;
 };
 

@@ -143,8 +143,17 @@ void Camera::useView(GLuint shaderProgram)
 	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->view));
 }
 
+void Camera::useCameraPosition(GLuint shaderProgram)
+{
+	int idMatrix = glGetUniformLocation(shaderProgram, "cameraPosition");
+	if (idMatrix == -1)
+		std::cout << "Problém s Uniform Location cameraPosition\n";
+	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->eye));
+}
+
 void Camera::update(GLuint shaderProgram)
 {
 	this->useProjection(shaderProgram);
 	this->useView(shaderProgram);
+	this->useCameraPosition(shaderProgram);
 }

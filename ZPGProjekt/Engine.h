@@ -15,6 +15,7 @@
 #include "Callback.h"
 #include "DrawableObject.h"
 #include "Camera.h"
+#include "Light.h"
 
 class Engine
 {
@@ -26,6 +27,7 @@ public:
 	void initialization();
 	void processUserInput();
 private:
+	Light* light;
 	GLFWwindow* window;
 	Camera* camera;
 	GLint status;

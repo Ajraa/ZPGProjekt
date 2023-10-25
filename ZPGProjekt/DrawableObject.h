@@ -18,6 +18,7 @@ public:
 	void scale(float scale);
 	void initialize();
 	void render();
+	void addLight(Light* light);
 private:
 	Transformation* transformation;
 	Model* model;

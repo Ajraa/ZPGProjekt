@@ -33,6 +33,7 @@ public:
 	void setProjection(float height, float width);
 	void useProjection(GLuint shaderProgram) override;
 	void useView(GLuint shaderProgram) override;
+	void useCameraPosition(GLuint shaderProgram);
 	void update(GLuint shaderProgram) override;
 private:
 	glm::mat4 projection;

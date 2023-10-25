@@ -83,9 +83,19 @@ void Shader::setSubject(CameraSubject* subject)
     this->subject = subject;
 }
 
-void Shader::notify()
+void Shader::notifyCamera()
 {
     this->subject->update(this->shaderProgram);
+}
+
+void Shader::notifyLight()
+{
+  this->light->update(this->shaderProgram);
+}
+
+void Shader::setLight(LightSubject* light)
+{
+  this->light = light;
 }
 
 std::string Shader::readShaderFile(const char* filePath)

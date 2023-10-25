@@ -67,23 +67,25 @@ void Engine::createObjects()
 	const char* phong = "shaders/fragment/phong.frag";
 	const char* blinn = "shaders/fragment/blinn.frag";
 	
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, lambert, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere1);
-	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, lambert, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere2);
-	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, lambert, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere3);
-	DrawableObject* sphere4 = new DrawableObject(new Shader(vertex_shader, lambert, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere4 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	this->objects.push_back(sphere4);
 
-	for (DrawableObject* object : this->objects)
+	for (DrawableObject* object : this->objects) {
 		object->initialize();
-	
+		object->addLight(this->light);
+	}
 }
 
 void Engine::initialization()
 {
 	this->camera = new Camera();
+	this->light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
 
 	glfwSetErrorCallback(Callback::error_callback);
 	if (!glfwInit()) {

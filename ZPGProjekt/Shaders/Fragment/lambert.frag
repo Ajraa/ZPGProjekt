@@ -5,9 +5,9 @@ in VS_out
     vec3 fragPos;
 } fs_in;
 out vec4 fragColor;
+uniform vec3 lightPosition;
 void main()
 {
-    vec3 lightPosition = vec3(0.0,0.0,0.0);
     vec3 norm = normalize(fs_in.fragNormal);
     vec3 lightDir = normalize(lightPosition - fs_in.fragPos);
     float dot_product = max(dot(lightDir, norm), 0.0);

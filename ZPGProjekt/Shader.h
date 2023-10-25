@@ -11,9 +11,10 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "CameraObserver.h"
+#include "Light.h"
 
 class Camera;
-class Shader : public CameraObserver
+class Shader : public CameraObserver, public LightObserver
 {
 public:
 	Shader(const char* vertexFilePath, const char* fragmentFilePath, CameraSubject* subject);
@@ -23,7 +24,9 @@ public:
 	void useProjection(glm::mat4 projection) override;
 	void useView(glm::mat4 view) override;
 	void setSubject(CameraSubject* subject) override;
-	void notify() override;
+	void notifyCamera() override;
+	void setLight(LightSubject* light);
+	void notifyLight() override;
 private:
 	std::string readShaderFile(const char* filePath);
 	GLuint vertexShader;
@@ -32,5 +35,6 @@ private:
 	int idProjectionMatrix;
 	int idViewMatrix;
 	CameraSubject* subject;
+	LightSubject* light;
 };
 

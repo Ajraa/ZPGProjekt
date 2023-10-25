@@ -52,7 +52,13 @@ void DrawableObject::initialize()
 void DrawableObject::render()
 {
 	this->shader->useShaderProgram();
-	this->shader->notify();
+	this->shader->notifyCamera();
+	this->shader->notifyLight();
 	this->transformation->useTransform(this->shader->getShaderProgram());
 	this->model->drawArrays();
+}
+
+void DrawableObject::addLight(Light* light)
+{
+	this->shader->setLight(light);
 }
