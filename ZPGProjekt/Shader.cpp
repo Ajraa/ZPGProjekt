@@ -85,7 +85,8 @@ void Shader::setSubject(CameraSubject* subject)
 
 void Shader::notifyCamera()
 {
-    this->subject->update(this->shaderProgram);
+    //this->subject->update(this->shaderProgram);
+    ((Camera*)this->subject)->updateShader(this);
 }
 
 void Shader::notifyLight()
@@ -141,6 +142,22 @@ void Shader::useSpecular(glm::vec3 specular)
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location matSpecular\n";
     glUniform3fv(idMatrix, 1, glm::value_ptr(specular));
+}
+
+void Shader::useTransformationMatrix(glm::mat4 transform)
+{
+    int idMatrix = glGetUniformLocation(this->shaderProgram, "modelMatrix");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location modelMatrix\n";
+    glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(transform));
+}
+
+void Shader::useCameraPosition(glm::vec3 eye)
+{
+    int idMatrix = glGetUniformLocation(this->shaderProgram, "cameraPosition");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location cameraPosition\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(eye));
 }
 
 void Shader::updateLight()

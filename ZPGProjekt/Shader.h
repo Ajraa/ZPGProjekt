@@ -33,6 +33,8 @@ public:
 	void useDiffuse(glm::vec3 diffuse);
 	void useShininess(GLfloat shininess);
 	void useSpecular(glm::vec3 specular);
+	void useTransformationMatrix(glm::mat4 transform);
+	void useCameraPosition(glm::vec3 eye);
 	void updateLight();
 private:
 	std::string readShaderFile(const char* filePath);

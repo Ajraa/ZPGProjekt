@@ -13,6 +13,7 @@ public:
 	virtual void rotate(float degrees) override;
 	virtual void translate(float x, float y, float z) override;
 	virtual void scale(float scale) override;
+	virtual glm::mat4 getMatrix() override;
 private:
 	std::vector<Transformation*> children;
 };

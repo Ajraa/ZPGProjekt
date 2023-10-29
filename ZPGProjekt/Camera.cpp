@@ -157,3 +157,10 @@ void Camera::update(GLuint shaderProgram)
 	this->useView(shaderProgram);
 	this->useCameraPosition(shaderProgram);
 }
+
+void Camera::updateShader(CameraObserver* shader)
+{
+	((Shader*)shader)->useProjection(this->projection);
+	((Shader*)shader)->useView(this->view);
+	((Shader*)shader)->useCameraPosition(this->eye);
+}

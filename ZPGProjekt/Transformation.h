@@ -24,6 +24,7 @@ public:
 	virtual void scale(float scale);
 	virtual void useTransform(GLint shader);
 	virtual bool isComposite();
+	virtual glm::mat4 getMatrix();
 protected:
 	Transformation* parent;
 	glm::mat4 transformationMatrix;

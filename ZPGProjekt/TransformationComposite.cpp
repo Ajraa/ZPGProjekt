@@ -17,10 +17,8 @@ bool TransformationComposite::isComposite()
 
 void TransformationComposite::useTransform(GLint shader)
 {
-	
 	this->transformationMatrix = glm::mat4(1.0f);
 	for(Transformation* var : this->children) {
-		//var->useTransform(shader);
 		this->transformationMatrix *= ((TransformationLeaf*)var)->getMatrix();
 		if (var->isComposite())
 			((TransformationComposite*)var)->clear();
@@ -44,6 +42,18 @@ void TransformationComposite::scale(float scale)
 	TransformationLeaf* leaf = new TransformationLeaf();
 	leaf->scale(scale);
 	this->children.push_back(leaf);
+}
+
+glm::mat4 TransformationComposite::getMatrix()
+{
+	this->transformationMatrix = glm::mat4(1.0f);
+	for (Transformation* var : this->children) {
+		this->transformationMatrix *= ((TransformationLeaf*)var)->getMatrix();
+		if (var->isComposite())
+			((TransformationComposite*)var)->clear();
+	}
+	this->children.clear();
+	return this->transformationMatrix;
 }
 
 void TransformationComposite::rotate(float degrees)

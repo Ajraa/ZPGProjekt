@@ -35,6 +35,7 @@ public:
 	void useView(GLuint shaderProgram) override;
 	void useCameraPosition(GLuint shaderProgram);
 	void update(GLuint shaderProgram) override;
+	void updateShader(CameraObserver* shader);
 private:
 	glm::mat4 projection;
 	glm::mat4 model;

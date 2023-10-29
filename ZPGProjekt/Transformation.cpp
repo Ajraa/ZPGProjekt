@@ -36,4 +36,9 @@ bool Transformation::isComposite()
 	return false;
 }
 
+glm::mat4 Transformation::getMatrix()
+{
+	return this->transformationMatrix;
+}
+
 
