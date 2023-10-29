@@ -29,6 +29,10 @@ public:
 	void notifyLight() override;
 	void useLightPosition();
 	void useLightColor();
+	void useAmbient(glm::vec3 ambient);
+	void useDiffuse(glm::vec3 diffuse);
+	void useShininess(GLfloat shininess);
+	void useSpecular(glm::vec3 specular);
 	void updateLight();
 private:
 	std::string readShaderFile(const char* filePath);

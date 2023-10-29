@@ -96,7 +96,6 @@ void Shader::notifyLight()
 void Shader::useLightPosition()
 {
     glm::vec3 lightPosition = ((Light*)this->light)->getLightPosition();
-    std::cout << "Yup1" << std::endl;
     int idMatrix = glGetUniformLocation(shaderProgram, "lightPosition");
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightPosition\n";
@@ -106,11 +105,42 @@ void Shader::useLightPosition()
 void Shader::useLightColor()
 {
     glm::vec3 lightColor = ((Light*)this->light)->getLightColor();
-    std::cout << "Yup2" << std::endl;
     int idMatrix = glGetUniformLocation(shaderProgram, "lightColor");
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightColor\n";
     glUniform4fv(idMatrix, 1, glm::value_ptr(lightColor));
+}
+
+void Shader::useAmbient(glm::vec3 ambient)
+{
+    int idMatrix = glGetUniformLocation(shaderProgram, "matAmbient");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location matAmbient\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(ambient));
+}
+
+void Shader::useDiffuse(glm::vec3 diffuse)
+{
+    int idMatrix = glGetUniformLocation(shaderProgram, "matDiffuse");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location matDiffuse\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(diffuse));
+}
+
+void Shader::useShininess(GLfloat shininess)
+{
+    int idMatrix = glGetUniformLocation(shaderProgram, "matShininess");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location matShininess\n";
+    glUniform1fv(idMatrix, 1, &shininess);
+}
+
+void Shader::useSpecular(glm::vec3 specular)
+{
+    int idMatrix = glGetUniformLocation(shaderProgram, "matSpecular");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location matSpecular\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(specular));
 }
 
 void Shader::updateLight()

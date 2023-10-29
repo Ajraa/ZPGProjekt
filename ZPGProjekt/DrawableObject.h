@@ -4,11 +4,13 @@
 #include "Shader.h"
 #include "TransformationComposite.h"
 #include "TransformationLeaf.h"
+#include "Material.h"
 
 class DrawableObject
 {
 public:
 	DrawableObject(Shader* shader, Model* model);
+	void setMaterial(Material* material);
 	void setShader(Shader* shader);
 	Shader* getShader();
 	void setModel(Model* model);
@@ -23,5 +25,6 @@ private:
 	Transformation* transformation;
 	Model* model;
 	Shader* shader;
+	Material* material;
 };
 

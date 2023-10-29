@@ -7,6 +7,11 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 	this->transformation = new TransformationComposite();
 }
 
+void DrawableObject::setMaterial(Material* material)
+{
+	this->material = material;
+}
+
 void DrawableObject::setShader(Shader* shader)
 {
 	this->shader = shader;
@@ -55,6 +60,10 @@ void DrawableObject::render()
 	this->shader->notifyCamera();
 	//this->shader->notifyLight();
 	this->shader->updateLight();
+	this->shader->useAmbient(this->material->getAmbient());
+	this->shader->useDiffuse(this->material->getDiffuse());
+	this->shader->useShininess(this->material->getShininess());
+	this->shader->useSpecular(this->material->getSpecular());
 	this->transformation->useTransform(this->shader->getShaderProgram());
 	this->model->drawArrays();
 }
