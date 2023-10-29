@@ -20,10 +20,15 @@ void Engine::run()
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	
 	float alpha = 0;
-	float x = -6;
-	float y = 0;
-	float xp = 0.1;
-	float yp = 0.1;
+	float x;
+	float y;
+	float x2;
+	float y2;
+	float angle = 0.0f;
+	float centerX = 3.0f;
+	float centerY = 0.0f;
+	float radius = 30.0f;
+	float radius2 = 10.0f;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -31,15 +36,19 @@ void Engine::run()
 
 		//this->camera->update();
 		alpha += 0.5;
-		x += xp;
-		y += yp;
-		if (x >= 6 || x <= -6) xp *= -1;
-		if (y >= 6 || y <= -6) yp *= -1;
-
+		angle += 0.01f;
+		x = centerX + radius * cos(angle);
+		y = centerY + radius * sin(angle);
+		x2 = x + radius2 * cos(angle);
+		y2 = y + radius2 * sin(angle);
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		this->objects[0]->translate(3, 0, 0);
-		this->objects[1]->translate(x, y, 0);
+		this->objects[0]->scale(3.0);
+		this->objects[2]->scale(0.5f);
+		this->objects[0]->translate(centerX, centerY, 0.f);
+		this->objects[1]->translate(x, y, 0.f);
+		this->objects[2]->translate(x2, y2, 0.f);
 		
 		for (DrawableObject* object : this->objects) {
 			object->rotate(alpha);
@@ -80,6 +89,9 @@ void Engine::createObjects()
 	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere2->setMaterial(pearl);
 	this->objects.push_back(sphere2);
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere3->setMaterial(pearl);
+	this->objects.push_back(sphere3);
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
