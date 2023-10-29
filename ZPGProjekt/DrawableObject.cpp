@@ -38,6 +38,11 @@ void DrawableObject::rotate(float degrees)
 	this->transformation->rotate(degrees);
 }
 
+void DrawableObject::rotate(float degrees, glm::vec3 point)
+{
+	this->transformation->rotate(degrees, point);
+}
+
 void DrawableObject::translate(float x, float y, float z)
 {
 	this->transformation->translate(x, y, z);

@@ -20,6 +20,7 @@ class Transformation
 public:
 	Transformation();
 	virtual void rotate(float degrees);
+	virtual void rotate(float degrees, glm::vec3 point);
 	virtual void translate(float x, float y, float z);
 	virtual void scale(float scale);
 	virtual void useTransform(GLint shader);

@@ -13,6 +13,11 @@ void Transformation::rotate(float degrees)
 	this->transformationMatrix = glm::rotate(glm::mat4(1.0f), (float)glm::radians(degrees), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
+void Transformation::rotate(float degrees, glm::vec3 point)
+{
+	this->transformationMatrix = glm::rotate(glm::mat4(1.0f), (float)glm::radians(degrees), point);
+}
+
 void Transformation::translate(float x, float y, float z)
 {
 	this->transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));

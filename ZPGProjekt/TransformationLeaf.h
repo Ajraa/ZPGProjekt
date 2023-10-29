@@ -8,6 +8,7 @@ public:
 	TransformationLeaf();
 	bool isComposite() override;
 	virtual void rotate(float degrees) override;
+	virtual void rotate(float degrees, glm::vec3 point);
 	virtual void translate(float x, float y, float z) override;
 	virtual void scale(float scale) override;
 	void useTransform(GLint shader) override;

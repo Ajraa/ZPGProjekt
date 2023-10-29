@@ -62,3 +62,10 @@ void TransformationComposite::rotate(float degrees)
 	leaf->rotate(degrees);
 	this->children.push_back(leaf);
 }
+
+void TransformationComposite::rotate(float degrees, glm::vec3 point)
+{
+	TransformationLeaf* leaf = new TransformationLeaf();
+	leaf->rotate(degrees, point);
+	this->children.push_back(leaf);
+}
