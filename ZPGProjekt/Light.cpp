@@ -30,22 +30,24 @@ void Light::detach(LightObserver* observer)
 
 void Light::useLightPosition(GLuint shaderProgram)
 {
+	std::cout << "Yup1" << std::endl;
 	int idMatrix = glGetUniformLocation(shaderProgram, "lightPosition");
 	if (idMatrix == -1)
 		std::cout << "Problém s Uniform Location lightPosition\n";
-	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->lightPosition));
+	glUniform3fv(idMatrix, 1, glm::value_ptr(this->lightPosition));
 }
 
 void Light::useLightColor(GLuint shaderProgram)
 {
+	std::cout << "Yup2" << std::endl;
 	int idMatrix = glGetUniformLocation(shaderProgram, "lightColor");
 	if (idMatrix == -1)
 		std::cout << "Problém s Uniform Location lightColor\n";
-	glUniformMatrix4fv(idMatrix, 1, GL_FALSE, glm::value_ptr(this->lightColor));
+	glUniform4fv(idMatrix, 1, glm::value_ptr(this->lightColor));
 }
 
 void Light::update(GLuint shaderProgram)
 {
 	this->useLightPosition(shaderProgram);
-	this->useLightPosition(shaderProgram);
+	this->useLightColor(shaderProgram);
 }

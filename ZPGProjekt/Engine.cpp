@@ -51,7 +51,7 @@ void Engine::run()
 
 	this->status;
 	if (status == GL_FALSE)
-	{
+	{                                   
 		GLint infoLogLength;
 		GLchar* strInfoLog = new GLchar[infoLogLength + 1];
 		fprintf(stderr, "Linker failure: %s\n", strInfoLog);
