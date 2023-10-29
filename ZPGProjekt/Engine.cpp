@@ -1,6 +1,8 @@
 ﻿#include "Engine.h"
 #include "Sphere.h"
 #include "Models/suzi_flat.h"
+#include "Models/bushes.h"
+#include "Models/tree.h"
 
 Engine::~Engine()
 {
@@ -15,44 +17,30 @@ void Engine::start()
 	this->run();
 }
 
+std::vector<float> xs;
+std::vector<float> ys;
+std::vector<float> zs;
+
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	
-	float alpha = 0;
-	float x;
-	float y;
-	float x2;
-	float y2;
-	float angle = 0.0f;
-	float centerX = 3.0f;
-	float centerY = 0.0f;
-	float radius = 30.0f;
-	float radius2 = 10.0f;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
 
 		//this->camera->update();
-		alpha += 0.5;
-		angle += 0.01f;
-		x = centerX + radius * cos(angle);
-		y = centerY + radius * sin(angle);
-		x2 = x + radius2 * cos(angle);
-		y2 = y + radius2 * sin(angle);
+		
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		this->objects[0]->scale(3.0);
-		this->objects[2]->scale(0.5f);
-		this->objects[0]->translate(centerX, centerY, 0.f);
-		this->objects[1]->translate(x, y, 0.f);
-		this->objects[2]->translate(x2, y2, 0.f);
 		
+		int i = 0;
 		for (DrawableObject* object : this->objects) {
-			object->rotate(alpha);
+			object->translate(xs[i], ys[i], zs[i]);
 			object->render();
+			i++;
 		}
 
 		glfwPollEvents();
@@ -82,16 +70,42 @@ void Engine::createObjects()
 	const char* phong = "shaders/fragment/phong.frag";
 	const char* blinn = "shaders/fragment/blinn.frag";
 	
+	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere1->setMaterial(pearl);
-	this->objects.push_back(sphere1);
-	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere2->setMaterial(pearl);
-	this->objects.push_back(sphere2);
-	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere3->setMaterial(pearl);
-	this->objects.push_back(sphere3);
+	for (size_t i = 0; i < 33; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float) (rand() % 100));
+		ys.push_back((float)(rand() % 100));
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 33; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(bushes, sizeof(bushes), (sizeof(bushes) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)(rand() % 100));
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 33; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(tree, sizeof(tree), (sizeof(tree) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)(rand() % 100));
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 33; i++) {
+
+	}
+
+	for (size_t i = 0; i < 33; i++) {
+
+	}
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
