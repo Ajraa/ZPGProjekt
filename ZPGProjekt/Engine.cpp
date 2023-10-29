@@ -17,10 +17,6 @@ void Engine::start()
 	this->run();
 }
 
-std::vector<float> xs;
-std::vector<float> ys;
-std::vector<float> zs;
-
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
@@ -36,11 +32,10 @@ void Engine::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		
-		int i = 0;
+		this->objects[0]->translate(2.0, 0.0, 0.0);
+		this->objects[1]->translate(-2.0, 0.0, 0.0);
 		for (DrawableObject* object : this->objects) {
-			object->translate(xs[i], ys[i], zs[i]);
 			object->render();
-			i++;
 		}
 
 		glfwPollEvents();
@@ -68,44 +63,18 @@ void Engine::createObjects()
 	const char* constant = "shaders/fragment/shader.frag";
 	const char* lambert = "shaders/fragment/lambert.frag";
 	const char* phong = "shaders/fragment/phong.frag";
+	const char* phongb = "shaders/fragment/phongb.frag";
 	const char* blinn = "shaders/fragment/blinn.frag";
 	
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	for (size_t i = 0; i < 33; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float) (rand() % 100));
-		ys.push_back((float)(rand() % 100));
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 33; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(bushes, sizeof(bushes), (sizeof(bushes) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 33; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(tree, sizeof(tree), (sizeof(tree) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 33; i++) {
-
-	}
-
-	for (size_t i = 0; i < 33; i++) {
-
-	}
+	
+		DrawableObject* obj1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+		obj1->setMaterial(pearl);
+		this->objects.push_back(obj1);
+		DrawableObject* obj2 = new DrawableObject(new Shader(vertex_shader, phongb, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+		obj2->setMaterial(pearl);
+		this->objects.push_back(obj2);
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
