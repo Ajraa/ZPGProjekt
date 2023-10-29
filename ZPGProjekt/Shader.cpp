@@ -93,6 +93,32 @@ void Shader::notifyLight()
   this->light->update(this->shaderProgram);
 }
 
+void Shader::useLightPosition()
+{
+    glm::vec3 lightPosition = ((Light*)this->light)->getLightPosition();
+    std::cout << "Yup1" << std::endl;
+    int idMatrix = glGetUniformLocation(shaderProgram, "lightPosition");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location lightPosition\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(lightPosition));
+}
+
+void Shader::useLightColor()
+{
+    glm::vec3 lightColor = ((Light*)this->light)->getLightColor();
+    std::cout << "Yup2" << std::endl;
+    int idMatrix = glGetUniformLocation(shaderProgram, "lightColor");
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location lightColor\n";
+    glUniform4fv(idMatrix, 1, glm::value_ptr(lightColor));
+}
+
+void Shader::updateLight()
+{
+    this->useLightPosition();
+    this->useLightColor();
+}
+
 void Shader::setLight(LightSubject* light)
 {
   this->light = light;

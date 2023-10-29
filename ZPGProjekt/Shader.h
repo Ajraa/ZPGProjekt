@@ -27,6 +27,9 @@ public:
 	void notifyCamera() override;
 	void setLight(LightSubject* light);
 	void notifyLight() override;
+	void useLightPosition();
+	void useLightColor();
+	void updateLight();
 private:
 	std::string readShaderFile(const char* filePath);
 	GLuint vertexShader;

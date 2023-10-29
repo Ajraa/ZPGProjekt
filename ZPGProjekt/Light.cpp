@@ -28,6 +28,16 @@ void Light::detach(LightObserver* observer)
 		this->observers.erase(this->observers.begin() + i);
 }
 
+glm::vec3 Light::getLightPosition()
+{
+	return this->lightPosition;
+}
+
+glm::uvec4 Light::getLightColor()
+{
+	return this->lightColor;
+}
+
 void Light::useLightPosition(GLuint shaderProgram)
 {
 	std::cout << "Yup1" << std::endl;

@@ -20,6 +20,8 @@ public:
 	Light(glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength);
 	void attach(LightObserver* observer) override;
 	void detach(LightObserver* observer) override;
+	glm::vec3 getLightPosition();
+	glm::uvec4 getLightColor();
 	void useLightPosition(GLuint shaderProgram) override;
 	void useLightColor(GLuint shaderProgram) override;
 	void update(GLuint shaderProgram) override;
