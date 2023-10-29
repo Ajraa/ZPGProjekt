@@ -3,6 +3,7 @@
 #include "Models/suzi_flat.h"
 #include "Models/bushes.h"
 #include "Models/tree.h"
+#include "Models/gift.h"
 
 Engine::~Engine()
 {
@@ -72,7 +73,7 @@ void Engine::createObjects()
 	
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	for (size_t i = 0; i < 33; i++) {
+	for (size_t i = 0; i < 20; i++) {
 		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
@@ -81,7 +82,7 @@ void Engine::createObjects()
 		zs.push_back((float)(rand() % 100));
 	}
 
-	for (size_t i = 0; i < 33; i++) {
+	for (size_t i = 0; i < 20; i++) {
 		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(bushes, sizeof(bushes), (sizeof(bushes) / (6 * 4))));
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
@@ -90,7 +91,7 @@ void Engine::createObjects()
 		zs.push_back((float)(rand() % 100));
 	}
 
-	for (size_t i = 0; i < 33; i++) {
+	for (size_t i = 0; i < 20; i++) {
 		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(tree, sizeof(tree), (sizeof(tree) / (6 * 4))));
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
@@ -99,12 +100,22 @@ void Engine::createObjects()
 		zs.push_back((float)(rand() % 100));
 	}
 
-	for (size_t i = 0; i < 33; i++) {
-
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(suziFlat, sizeof(suziFlat), (sizeof(suziFlat) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)(rand() % 100));
+		zs.push_back((float)(rand() % 100));
 	}
 
-	for (size_t i = 0; i < 33; i++) {
-
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(gift, sizeof(gift), (sizeof(gift) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)(rand() % 100));
+		zs.push_back((float)(rand() % 100));
 	}
 
 	for (DrawableObject* object : this->objects) {
