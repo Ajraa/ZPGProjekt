@@ -11,7 +11,7 @@ void main () {
     vec3 halfwayDir = lightDir + viewDir;
     vec3 reflectDir = reflect(-normalize(lightDir), normalize(ex_worldNormal));
     float dot_product = max(dot(normalize(lightDir), normalize(ex_worldNormal)), 0.0);
-    float spec = pow(max(dot(normalize(halfwayDir), normalize(reflectDir)), 0.0), 32);
+    float spec = pow(max(dot(normalize(halfwayDir), normalize(ex_worldNormal)), 0.0), 32);
     vec4 specular = 0.4 * spec * lightColor;
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
         specular = vec4 (0.0 , 0.0 , 0.0 , 0.0); 
