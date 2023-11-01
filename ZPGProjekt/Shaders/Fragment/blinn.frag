@@ -6,13 +6,13 @@ uniform vec4 lightColor;
 uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
 void main () {
-    vec3 lightDir = lightPosition - ex_worldPosition.xyz / ex_worldPosition.w;
-    vec3 viewDir = cameraPosition - ex_worldPosition.xyz/ex_worldPosition.w;
-    vec3 halfwayDir = lightDir + viewDir;
-    vec3 reflectDir = reflect(-normalize(lightDir), normalize(ex_worldNormal));
-    float dot_product = max(dot(normalize(lightDir), normalize(ex_worldNormal)), 0.0);
-    float spec = pow(max(dot(normalize(halfwayDir), normalize(reflectDir)), 0.0), 32);
-    vec4 specular = 0.4 * spec * lightColor;
+    vec3 lightDir = normalize(lightPosition - ex_worldPosition.xyz / ex_worldPosition.w);
+    vec3 viewDir = normalize(cameraPosition - ex_worldPosition.xyz/ex_worldPosition.w);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    
+    float dot_product = max(dot(lightDir, ex_worldNormal), 0.0);
+    float spec = pow(max(dot(halfwayDir, ex_worldNormal), 0.0), 16.0);
+    vec4 specular = spec * lightColor;
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
         specular = vec4 (0.0 , 0.0 , 0.0 , 0.0); 
     }
