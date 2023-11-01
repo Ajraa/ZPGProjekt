@@ -4,6 +4,7 @@
 #include "Models/bushes.h"
 #include "Models/tree.h"
 #include "Models/gift.h"
+#include "Models/plain.h"
 
 Engine::~Engine()
 {
@@ -39,6 +40,8 @@ void Engine::run()
 		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
+			if (i == 0)
+				object->scale(10000);
 			object->translate(xs[i], ys[i], zs[i]);
 			object->render();
 			i++;
@@ -70,15 +73,19 @@ void Engine::createObjects()
 	const char* lambert = "shaders/fragment/lambert.frag";
 	const char* phong = "shaders/fragment/phong.frag";
 	const char* blinn = "shaders/fragment/blinn.frag";
-	
-	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+	DrawableObject* p = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
+	p->setMaterial(pearl);
+	this->objects.push_back(p);
+	xs.push_back((float)0);
+	ys.push_back((float)0);
+	zs.push_back((float)0);
 	for (size_t i = 0; i < 20; i++) {
 		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
 		xs.push_back((float) (rand() % 100));
-		ys.push_back((float)(rand() % 100));
+		ys.push_back((float)1);
 		zs.push_back((float)(rand() % 100));
 	}
 
@@ -87,7 +94,7 @@ void Engine::createObjects()
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
 		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
 		zs.push_back((float)(rand() % 100));
 	}
 
@@ -96,7 +103,7 @@ void Engine::createObjects()
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
 		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
 		zs.push_back((float)(rand() % 100));
 	}
 
@@ -105,7 +112,7 @@ void Engine::createObjects()
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
 		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
+		ys.push_back((float)1);
 		zs.push_back((float)(rand() % 100));
 	}
 
@@ -114,8 +121,8 @@ void Engine::createObjects()
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
 		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)(rand() % 100));
-		zs.push_back((float)(rand() % 100));
+		ys.push_back((float)1);
+		zs.push_back((float) (rand() % 100));
 	}
 
 	for (DrawableObject* object : this->objects) {
