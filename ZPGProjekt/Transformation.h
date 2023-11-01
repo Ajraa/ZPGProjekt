@@ -26,6 +26,7 @@ public:
 	virtual void useTransform(GLint shader);
 	virtual bool isComposite();
 	virtual glm::mat4 getMatrix();
+	virtual void rotateAround(float angle, glm::vec3 point, glm::vec3 origin) = 0;
 protected:
 	Transformation* parent;
 	glm::mat4 transformationMatrix;

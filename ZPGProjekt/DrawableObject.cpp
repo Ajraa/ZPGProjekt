@@ -78,3 +78,13 @@ void DrawableObject::addLight(Light* light)
 {
 	this->shader->setLight(light);
 }
+
+void DrawableObject::rotateAround(float angle, glm::vec3 point, glm::vec3 origin)
+{
+	this->transformation->rotateAround(angle, point, origin);
+}
+
+glm::vec3 DrawableObject::getXYZ()
+{
+	return ((TransformationComposite*)this->transformation)->getXYZ();
+}

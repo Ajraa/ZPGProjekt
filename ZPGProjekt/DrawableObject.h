@@ -22,6 +22,8 @@ public:
 	void initialize();
 	void render();
 	void addLight(Light* light);
+	void rotateAround(float angle, glm::vec3 point, glm::vec3 origin);
+	glm::vec3 getXYZ();
 private:
 	Transformation* transformation;
 	Model* model;

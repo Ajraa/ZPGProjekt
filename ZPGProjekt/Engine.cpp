@@ -20,19 +20,24 @@ void Engine::run()
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	
 	float alpha = 0.f;
+	float beta = 0.f;
+	float x = 0;
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
 
 		//this->camera->update();
 		
-		alpha += 0.5;
+		alpha += 1;
+		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		
+		this->objects[0]->scale(3);
+		this->objects[1]->rotateAround(beta, glm::vec3(0.0, 0.0, 0.0), glm::vec3(15.0, 0.0, 0.0));
+		this->objects[2]->rotateAround(alpha, this->objects[1]->getXYZ(), glm::vec3(10.0, 0.0, 0.0));
+		this->objects[2]->scale(0.25);
 		for (DrawableObject* object : this->objects) {
-			object->translate(2.0, 0.0, 0.0);
-			object->rotate(alpha, glm::vec3(1.0, 2.3, 3.0));
+			
 			object->render();
 		}
 
@@ -64,9 +69,15 @@ void Engine::createObjects()
 	const char* blinn = "shaders/fragment/blinn.frag";
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(suziFlat, sizeof(suziFlat), (sizeof(suziFlat) / (6 * 4))));
+	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, constant, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere1->setMaterial(pearl);
 	this->objects.push_back(sphere1);
+	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere2->setMaterial(pearl);
+	this->objects.push_back(sphere2);
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	sphere3->setMaterial(pearl);
+	this->objects.push_back(sphere3);
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
