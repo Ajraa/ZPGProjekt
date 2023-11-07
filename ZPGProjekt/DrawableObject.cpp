@@ -72,9 +72,15 @@ void DrawableObject::render()
 	this->model->drawArrays();
 }
 
-void DrawableObject::addLight(Light* light)
+void DrawableObject::addLight(LightSubject* light)
 {
-	this->shader->setLight(light);
+	this->shader->addLight(light);
+}
+
+void DrawableObject::setLight(std::vector<Light*> lights)
+{
+	for (LightSubject* light : lights)
+		this->shader->addLight(light);
 }
 
 void DrawableObject::rotateAround(float angle, glm::vec3 point, glm::vec3 origin)

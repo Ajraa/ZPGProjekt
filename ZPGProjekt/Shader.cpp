@@ -89,22 +89,42 @@ void Shader::notifyCamera()
     ((Camera*)this->subject)->updateShader(this);
 }
 
-void Shader::notifyLight()
+void Shader::addLight(LightSubject* light)
 {
-  this->light->update(this);
+    this->lights.push_back(light);
 }
 
-void Shader::useLightPosition(glm::vec3 lightPosition)
+void Shader::notifyLight()
 {
-    int idMatrix = glGetUniformLocation(shaderProgram, "lightPosition");
+    int index = 0;
+    for (LightSubject* light : this->lights)
+    {
+        if (Light* l = dynamic_cast<Light*>(light))
+        {
+            l->update(this, index++);
+        }
+    }
+}
+
+void Shader::useLightPosition(glm::vec3 lightPosition, int index)
+{
+    std::string str = "lights[";
+    str.append(std::to_string(index));
+    str.append("].lightPosition");
+    const char* c_str = str.c_str();
+    int idMatrix = glGetUniformLocation(shaderProgram, c_str);
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightPosition\n";
     glUniform3fv(idMatrix, 1, glm::value_ptr(lightPosition));
 }
 
-void Shader::useLightColor(glm::vec3 lightColor)
+void Shader::useLightColor(glm::vec3 lightColor, int index)
 {
-    int idMatrix = glGetUniformLocation(shaderProgram, "lightColor");
+    std::string str = "lights[";
+    str.append(std::to_string(index));
+    str.append("].lightColor");
+    const char* c_str = str.c_str();
+    int idMatrix = glGetUniformLocation(shaderProgram, c_str);
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightColor\n";
     glUniform4fv(idMatrix, 1, glm::value_ptr(lightColor));
@@ -166,17 +186,42 @@ void Shader::useCameraTarget(glm::vec3 front)
   glUniform3fv(idMatrix, 1, glm::value_ptr(front));
 }
 
-void Shader::useLightType(int type)
+void Shader::useLightType(int type, int index)
 {
-  int idMatrix = glGetUniformLocation(this->shaderProgram, "type");
-  if (idMatrix == -1)
-    std::cout << "Problém s Uniform Location cameraFront\n";
-  glUniform1i(idMatrix, type);
+    std::string str = "lights[";
+    str.append(std::to_string(index));
+    str.append("].type");
+    const char* c_str = str.c_str();
+    int idMatrix = glGetUniformLocation(this->shaderProgram, c_str);
+    if (idMatrix == -1)
+      std::cout << "Problém s Uniform Location type\n";
+    glUniform1i(idMatrix, type);
 }
 
-void Shader::setLight(LightSubject* light)
+void Shader::useLight(glm::vec4 lightColor, glm::vec3 lightPosition, LightType type, int index)
 {
-  this->light = light;
+    struct {
+        glm::vec4 lightColor;
+        glm::vec3 lightPosition;
+        int type;
+    } lightPoint;
+
+    lightPoint.lightColor = lightColor;
+    lightPoint.lightPosition = lightPosition;
+    lightPoint.type = type;
+
+    std::string str = "lights[";
+    str.append(std::to_string(index));
+    str.append("]");
+    const char* c_str = str.c_str();
+    int idMatrix = glGetUniformLocation(this->shaderProgram, c_str);
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location cameraFront\n";
+}
+
+void Shader::setLight(std::vector<LightSubject*> lights)
+{
+  this->lights = lights;
 }
 
 std::string Shader::readShaderFile(const char* filePath)

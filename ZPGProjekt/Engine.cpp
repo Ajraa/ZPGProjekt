@@ -27,7 +27,7 @@ void Engine::run()
 	{
 		this->processUserInput();
 
-		if (Reflector* v = dynamic_cast<Reflector*>(this->light)) {
+		if (Reflector* v = dynamic_cast<Reflector*>(this->lights[0])) {
 			v->updatePosition(this->camera->getPosition());
 		}
 
@@ -42,9 +42,9 @@ void Engine::run()
 		this->objects[2]->rotateAround(alpha, this->objects[1]->getXYZ(), glm::vec3(10.0, 0.0, 0.0));
 		this->objects[2]->scale(0.25);
 		this->objects[3]->translate(20.0, 0.0, 0.0);
-		this->objects[3]->scale(100000);
+		this->objects[3]->scale(2);
 		for (DrawableObject* object : this->objects) {
-			
+			object->rotate(beta);
 			object->render();
 		}
 
@@ -92,15 +92,16 @@ void Engine::createObjects()
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();
-		object->addLight(this->light);
+		object->setLight(this->lights);
 	}
 }
 
 void Engine::initialization()
 {
 	this->camera = new Camera();
-	//this->light = new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
-	this->light = new Light(LightType::Direction, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
+	this->lights.push_back(new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Direction, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Direction, glm::vec3(0.0f, -5.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1));
 
 	glfwSetErrorCallback(Callback::error_callback);
 	if (!glfwInit()) {

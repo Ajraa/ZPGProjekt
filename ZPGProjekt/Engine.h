@@ -28,7 +28,7 @@ public:
 	void initialization();
 	void processUserInput();
 private:
-	Light* light;
+	std::vector<Light*> lights;
 	GLFWwindow* window;
 	Camera* camera;
 	GLint status;

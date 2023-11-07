@@ -25,7 +25,7 @@ public:
 	glm::uvec4 getLightColor();
 	void useLightPosition(GLuint shaderProgram) override;
 	void useLightColor(GLuint shaderProgram) override;
-	void update(LightObserver* obs) override;
+	void update(LightObserver* obs, int index) override;
 	void setLightPosition(glm::vec3 position);
 private:
 	glm::vec3 lightPosition;

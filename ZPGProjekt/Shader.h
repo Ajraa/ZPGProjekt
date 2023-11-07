@@ -25,10 +25,11 @@ public:
 	void useView(glm::mat4 view) override;
 	void setSubject(CameraSubject* subject) override;
 	void notifyCamera() override;
-	void setLight(LightSubject* light);
+	void addLight(LightSubject* light);
+	void setLight(std::vector<LightSubject*> lights);
 	void notifyLight() override;
-	void useLightPosition(glm::vec3 lightPosition);
-	void useLightColor(glm::vec3 lightColor);
+	void useLightPosition(glm::vec3 lightPosition, int index);
+	void useLightColor(glm::vec3 lightColor, int index);
 	void useAmbient(glm::vec3 ambient);
 	void useDiffuse(glm::vec3 diffuse);
 	void useShininess(GLfloat shininess);
@@ -36,8 +37,8 @@ public:
 	void useTransformationMatrix(glm::mat4 transform);
 	void useCameraPosition(glm::vec3 eye);
 	void useCameraTarget(glm::vec3 target);
-	void useLightType(int type);
-	void updateLight();
+	void useLightType(int type, int index);
+	void useLight(glm::vec4 lightColor, glm::vec3 lightPosition, LightType type, int index);
 private:
 	std::string readShaderFile(const char* filePath);
 	GLuint vertexShader;
@@ -46,6 +47,6 @@ private:
 	int idProjectionMatrix;
 	int idViewMatrix;
 	CameraSubject* subject;
-	LightSubject* light;
+	std::vector<LightSubject*> lights;
 };
 

@@ -21,7 +21,8 @@ public:
 	void scale(float scale);
 	void initialize();
 	void render();
-	void addLight(Light* light);
+	void addLight(LightSubject* light);
+	void setLight(std::vector<Light*> lights);
 	void rotateAround(float angle, glm::vec3 point, glm::vec3 origin);
 	glm::vec3 getXYZ();
 private:
