@@ -25,6 +25,7 @@ public:
 	void useLightPosition(GLuint shaderProgram) override;
 	void useLightColor(GLuint shaderProgram) override;
 	void update(GLuint shaderProgram) override;
+	void setLightPosition(glm::vec3 position);
 private:
 	glm::vec3 lightPosition;
 	glm::vec4 lightColor;

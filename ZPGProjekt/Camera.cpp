@@ -164,3 +164,8 @@ void Camera::updateShader(CameraObserver* shader)
 	((Shader*)shader)->useView(this->view);
 	((Shader*)shader)->useCameraPosition(this->eye);
 }
+
+glm::vec3 Camera::getPosition()
+{
+	return this->eye;
+}

@@ -61,3 +61,8 @@ void Light::update(GLuint shaderProgram)
 	this->useLightPosition(shaderProgram);
 	this->useLightColor(shaderProgram);
 }
+
+void Light::setLightPosition(glm::vec3 position)
+{
+	this->lightPosition = position;
+}

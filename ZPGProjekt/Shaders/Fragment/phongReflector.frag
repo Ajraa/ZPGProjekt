@@ -18,10 +18,14 @@ void main () {
     float spec = pow(max(dot(normalize(viewDir), normalize(reflectDir)), 0.0), (matShininess * 128));
     vec4 specular = vec4(matSpecular, 1.0) * spec * lightColor;
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
-        specular = vec4(0.0 , 0.0 , 0.0 , 0.0); 
+        specular = vec4 (0.0 , 0.0 , 0.0 , 0.0); 
     }
     
     vec4 diffuse = dot_product * vec4(matDiffuse, 1.0) * lightColor;
+    if (dot(lightPosition , (ex_worldPosition.xyz / ex_worldPosition.w)) <= cos(radians(45.0))) {
+        diffuse = vec4(0.0 , 0.0 , 0.0 , 0.0); 
+        specular = vec4(0.0 , 0.0 , 0.0 , 0.0); 
+    }
     vec4 ambient = lightColor * vec4(matAmbient, 1.0);
     vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
     float dist = distance(lightPosition, ( ex_worldPosition.xyz / ex_worldPosition.w));

@@ -16,6 +16,7 @@
 #include "DrawableObject.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Reflector.h"
 
 class Engine
 {
