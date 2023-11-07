@@ -24,5 +24,7 @@ void main () {
     vec4 diffuse = dot_product * vec4(matDiffuse, 1.0) * lightColor;
     vec4 ambient = lightColor * vec4(matAmbient, 1.0);
     vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
-    out_Color = (ambient + diffuse + specular) * objectColor;
+    float dist = distance(lightPosition, ( ex_worldPosition.xyz / ex_worldPosition.w));
+    float att = 1.0 / (1.0 + 0.01*dist + 0.01*dist*dist);
+    out_Color = (ambient + diffuse + specular) * objectColor * att;
 }
