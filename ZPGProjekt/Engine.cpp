@@ -1,6 +1,7 @@
 ﻿#include "Engine.h"
 #include "Sphere.h"
 #include "Models/suzi_flat.h"
+#include "Models/plain.h"
 
 Engine::~Engine()
 {
@@ -40,6 +41,8 @@ void Engine::run()
 		this->objects[1]->rotateAround(beta, glm::vec3(0.0, 0.0, 0.0), glm::vec3(15.0, 0.0, 0.0));
 		this->objects[2]->rotateAround(alpha, this->objects[1]->getXYZ(), glm::vec3(10.0, 0.0, 0.0));
 		this->objects[2]->scale(0.25);
+		this->objects[3]->translate(20.0, 0.0, 0.0);
+		this->objects[3]->scale(100000);
 		for (DrawableObject* object : this->objects) {
 			
 			object->render();
@@ -83,6 +86,9 @@ void Engine::createObjects()
 	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere3->setMaterial(pearl);
 	this->objects.push_back(sphere3);
+	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
+	pl->setMaterial(pearl);
+	this->objects.push_back(pl);
 
 	for (DrawableObject* object : this->objects) {
 		object->initialize();

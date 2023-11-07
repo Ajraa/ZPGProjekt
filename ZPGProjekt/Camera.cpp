@@ -163,6 +163,7 @@ void Camera::updateShader(CameraObserver* shader)
 	((Shader*)shader)->useProjection(this->projection);
 	((Shader*)shader)->useView(this->view);
 	((Shader*)shader)->useCameraPosition(this->eye);
+	((Shader*)shader)->useCameraTarget(this->target);
 }
 
 glm::vec3 Camera::getPosition()

@@ -160,6 +160,14 @@ void Shader::useCameraPosition(glm::vec3 eye)
     glUniform3fv(idMatrix, 1, glm::value_ptr(eye));
 }
 
+void Shader::useCameraTarget(glm::vec3 front)
+{
+  int idMatrix = glGetUniformLocation(this->shaderProgram, "cameraFront");
+  if (idMatrix == -1)
+    std::cout << "Problém s Uniform Location cameraFront\n";
+  glUniform3fv(idMatrix, 1, glm::value_ptr(front));
+}
+
 void Shader::updateLight()
 {
     this->useLightPosition();
