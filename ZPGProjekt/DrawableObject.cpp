@@ -63,13 +63,11 @@ void DrawableObject::render()
 {
 	this->shader->useShaderProgram();
 	this->shader->notifyCamera();
-	//this->shader->notifyLight();
-	this->shader->updateLight();
+	this->shader->notifyLight();
 	this->shader->useAmbient(this->material->getAmbient());
 	this->shader->useDiffuse(this->material->getDiffuse());
 	this->shader->useShininess(this->material->getShininess());
 	this->shader->useSpecular(this->material->getSpecular());
-	//this->transformation->useTransform(this->shader->getShaderProgram());
 	this->shader->useTransformationMatrix(this->transformation->getMatrix());
 	this->model->drawArrays();
 }

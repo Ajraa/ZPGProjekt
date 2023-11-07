@@ -1,8 +1,9 @@
 #include "Light.h"
 #include "Shader.h"
 
-Light::Light(glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength)
+Light::Light(LightType type, glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength)
 {
+	this->type = type;
 	this->lightPosition = lightPosition;
 	this->lightColor = lightColor;
 	this->intensity = intensity;
@@ -56,10 +57,13 @@ void Light::useLightColor(GLuint shaderProgram)
 	glUniform4fv(idMatrix, 1, glm::value_ptr(this->lightColor));
 }
 
-void Light::update(GLuint shaderProgram)
+void Light::update(LightObserver* obs)
 {
-	this->useLightPosition(shaderProgram);
-	this->useLightColor(shaderProgram);
+	if (Shader* s = dynamic_cast<Shader*>(obs)) {
+		s->useLightPosition(this->lightPosition);
+		s->useLightColor(this->lightColor);
+		s->useLightType(this->type);
+	}
 }
 
 void Light::setLightPosition(glm::vec3 position)

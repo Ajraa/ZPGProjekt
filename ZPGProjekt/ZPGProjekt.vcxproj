@@ -162,6 +162,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightObserver.h" />
     <ClInclude Include="LightSubject.h" />
+    <ClInclude Include="LightType.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Reflector.h" />

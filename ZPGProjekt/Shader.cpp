@@ -91,21 +91,19 @@ void Shader::notifyCamera()
 
 void Shader::notifyLight()
 {
-  this->light->update(this->shaderProgram);
+  this->light->update(this);
 }
 
-void Shader::useLightPosition()
+void Shader::useLightPosition(glm::vec3 lightPosition)
 {
-    glm::vec3 lightPosition = ((Light*)this->light)->getLightPosition();
     int idMatrix = glGetUniformLocation(shaderProgram, "lightPosition");
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightPosition\n";
     glUniform3fv(idMatrix, 1, glm::value_ptr(lightPosition));
 }
 
-void Shader::useLightColor()
+void Shader::useLightColor(glm::vec3 lightColor)
 {
-    glm::vec3 lightColor = ((Light*)this->light)->getLightColor();
     int idMatrix = glGetUniformLocation(shaderProgram, "lightColor");
     if (idMatrix == -1)
         std::cout << "Problém s Uniform Location lightColor\n";
@@ -168,10 +166,12 @@ void Shader::useCameraTarget(glm::vec3 front)
   glUniform3fv(idMatrix, 1, glm::value_ptr(front));
 }
 
-void Shader::updateLight()
+void Shader::useLightType(int type)
 {
-    this->useLightPosition();
-    this->useLightColor();
+  int idMatrix = glGetUniformLocation(this->shaderProgram, "type");
+  if (idMatrix == -1)
+    std::cout << "Problém s Uniform Location cameraFront\n";
+  glUniform1i(idMatrix, type);
 }
 
 void Shader::setLight(LightSubject* light)

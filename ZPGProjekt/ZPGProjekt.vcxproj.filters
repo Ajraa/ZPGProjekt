@@ -122,5 +122,8 @@
     <ClInclude Include="Reflector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LightType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

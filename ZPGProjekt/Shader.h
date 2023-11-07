@@ -27,8 +27,8 @@ public:
 	void notifyCamera() override;
 	void setLight(LightSubject* light);
 	void notifyLight() override;
-	void useLightPosition();
-	void useLightColor();
+	void useLightPosition(glm::vec3 lightPosition);
+	void useLightColor(glm::vec3 lightColor);
 	void useAmbient(glm::vec3 ambient);
 	void useDiffuse(glm::vec3 diffuse);
 	void useShininess(GLfloat shininess);
@@ -36,6 +36,7 @@ public:
 	void useTransformationMatrix(glm::mat4 transform);
 	void useCameraPosition(glm::vec3 eye);
 	void useCameraTarget(glm::vec3 target);
+	void useLightType(int type);
 	void updateLight();
 private:
 	std::string readShaderFile(const char* filePath);

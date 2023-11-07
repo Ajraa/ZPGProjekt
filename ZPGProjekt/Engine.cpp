@@ -77,16 +77,16 @@ void Engine::createObjects()
 	const char* phongReflector = "shaders/fragment/phongReflector.frag";
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere1->setMaterial(pearl);
 	this->objects.push_back(sphere1);
-	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere2->setMaterial(pearl);
 	this->objects.push_back(sphere2);
-	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 	sphere3->setMaterial(pearl);
 	this->objects.push_back(sphere3);
-	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phongReflector, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
+	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
 
@@ -99,7 +99,8 @@ void Engine::createObjects()
 void Engine::initialization()
 {
 	this->camera = new Camera();
-	this->light = new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
+	//this->light = new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
+	this->light = new Light(LightType::Direction, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
 
 	glfwSetErrorCallback(Callback::error_callback);
 	if (!glfwInit()) {

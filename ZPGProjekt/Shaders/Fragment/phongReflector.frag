@@ -17,6 +17,7 @@ void main () {
     vec3 reflectDir = reflect(-normalize(lightDir), normalize(ex_worldNormal));
     float dot_product = max(dot(normalize(lightDir), normalize(ex_worldNormal)), 0.0);
     float spec = pow(max(dot(normalize(viewDir), normalize(reflectDir)), 0.0), (matShininess * 128));
+    
     vec4 specular = vec4(matSpecular, 1.0) * spec * lightColor;
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
         specular = vec4(0.0 , 0.0 , 0.0 , 0.0); 

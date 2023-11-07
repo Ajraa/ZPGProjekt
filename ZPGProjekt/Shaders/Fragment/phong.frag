@@ -5,10 +5,12 @@ out vec4 out_Color;
 uniform vec4 lightColor;
 uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
+uniform vec3 cameraFront;
 uniform vec3 matAmbient;
 uniform vec3 matDiffuse;
 uniform float matShininess;
 uniform vec3 matSpecular;
+uniform int type;
 
 void main () {
     vec3 lightDir = lightPosition - ex_worldPosition.xyz / ex_worldPosition.w;
@@ -26,5 +28,19 @@ void main () {
     vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
     float dist = distance(lightPosition, ( ex_worldPosition.xyz / ex_worldPosition.w));
     float att = 1.0 / (1.0 + 0.01*dist + 0.01*dist*dist);
-    out_Color = (ambient + diffuse + specular) * objectColor * att;
+    
+    //int type = 2;
+    
+    if ( type == 1) {
+        out_Color = (ambient + diffuse + specular) * objectColor * att;
+    }
+
+    if ( type == 2) {
+        float theta = dot(normalize(lightDir), normalize(-cameraFront));
+        if (theta > cos(radians(30.0))) {
+            out_Color = (ambient + diffuse + specular) * objectColor * att;
+        } else {
+            out_Color = vec4(0.0 , 0.0 , 0.0 , 0.0);
+        }
+    }
 }

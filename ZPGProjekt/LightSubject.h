@@ -20,6 +20,6 @@ public:
 	virtual void detach(LightObserver* observer) = 0;
 	virtual void useLightPosition(GLuint shaderProgram) = 0;
 	virtual void useLightColor(GLuint shaderProgram) = 0;
-	virtual void update(GLuint shaderProgram) = 0;
+	virtual void update(LightObserver* obs) = 0;
 };
 

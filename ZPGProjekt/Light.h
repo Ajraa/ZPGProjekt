@@ -13,18 +13,19 @@
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include <vector>
 #include "LightSubject.h"
+#include "LightType.h"
 
 class Light : public LightSubject
 {
 public:
-	Light(glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength);
+	Light(LightType type, glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength);
 	void attach(LightObserver* observer) override;
 	void detach(LightObserver* observer) override;
 	glm::vec3 getLightPosition();
 	glm::uvec4 getLightColor();
 	void useLightPosition(GLuint shaderProgram) override;
 	void useLightColor(GLuint shaderProgram) override;
-	void update(GLuint shaderProgram) override;
+	void update(LightObserver* obs) override;
 	void setLightPosition(glm::vec3 position);
 private:
 	glm::vec3 lightPosition;
@@ -32,5 +33,6 @@ private:
 	float intensity;
 	float specularStrength;
 	std::vector<LightObserver*> observers;
+	LightType type;
 };
 
