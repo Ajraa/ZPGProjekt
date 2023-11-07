@@ -13,6 +13,11 @@ Light::Light(LightType type, glm::vec3 lightPosition, glm::vec4 lightColor, floa
 	this->specularStrength = specularStrength;
 }
 
+void Light::setDirection(glm::vec3 direction)
+{
+	this->direction = direction;
+}
+
 void Light::attach(LightObserver* observer)
 {
 	this->observers.push_back(observer);
@@ -66,7 +71,8 @@ void Light::update(LightObserver* obs, int index)
 		s->useLightPosition(this->lightPosition, index);
 		s->useLightColor(this->lightColor, index);
 		s->useLightType(this->type, index);
-		
+		if (this->type == LightType::Direction)
+			s->useLightDirection(this->direction, index);
 	}
 }
 

@@ -30,6 +30,7 @@ public:
 	void notifyLight() override;
 	void useLightPosition(glm::vec3 lightPosition, int index);
 	void useLightColor(glm::vec3 lightColor, int index);
+	void useLightDirection(glm::vec3 lightDirection, int index);
 	void useAmbient(glm::vec3 ambient);
 	void useDiffuse(glm::vec3 diffuse);
 	void useShininess(GLfloat shininess);

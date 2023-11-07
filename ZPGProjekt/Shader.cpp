@@ -130,6 +130,18 @@ void Shader::useLightColor(glm::vec3 lightColor, int index)
     glUniform4fv(idMatrix, 1, glm::value_ptr(lightColor));
 }
 
+void Shader::useLightDirection(glm::vec3 lightDirection, int index)
+{
+    std::string str = "lights[";
+    str.append(std::to_string(index));
+    str.append("].lightDirection");
+    const char* c_str = str.c_str();
+    int idMatrix = glGetUniformLocation(shaderProgram, c_str);
+    if (idMatrix == -1)
+        std::cout << "Problém s Uniform Location lightDirection\n";
+    glUniform3fv(idMatrix, 1, glm::value_ptr(lightDirection));
+}
+
 void Shader::useAmbient(glm::vec3 ambient)
 {
     int idMatrix = glGetUniformLocation(shaderProgram, "matAmbient");

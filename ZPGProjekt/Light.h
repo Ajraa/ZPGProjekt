@@ -19,6 +19,7 @@ class Light : public LightSubject
 {
 public:
 	Light(LightType type, glm::vec3 lightPosition, glm::vec4 lightColor, float intensity, float specularStrength);
+	void setDirection(glm::vec3 direction);
 	void attach(LightObserver* observer) override;
 	void detach(LightObserver* observer) override;
 	glm::vec3 getLightPosition();
@@ -30,6 +31,7 @@ public:
 private:
 	glm::vec3 lightPosition;
 	glm::vec4 lightColor;
+	glm::vec3 direction;
 	float intensity;
 	float specularStrength;
 	std::vector<LightObserver*> observers;
