@@ -134,7 +134,7 @@ void Engine::createObjects()
 void Engine::initialization()
 {
 	this->camera = new Camera();
-	this->light = new Light(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
+	this->light = new Light(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec4(1.0, 1.0, 1.0, 1.0), 1, 1);
 
 	glfwSetErrorCallback(Callback::error_callback);
 	if (!glfwInit()) {
