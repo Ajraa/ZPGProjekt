@@ -37,12 +37,8 @@ void Engine::run()
 		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		this->objects[0]->scale(3);
-		this->objects[1]->rotateAround(beta, glm::vec3(0.0, 0.0, 0.0), glm::vec3(15.0, 0.0, 0.0));
-		this->objects[2]->rotateAround(alpha, this->objects[1]->getXYZ(), glm::vec3(10.0, 0.0, 0.0));
-		this->objects[2]->scale(0.25);
-		this->objects[3]->scale(200);
 		for (DrawableObject* object : this->objects) {
+			object->scale(50);
 			object->render();
 		}
 
@@ -73,22 +69,25 @@ void Engine::createObjects()
 	const char* phong = "shaders/fragment/phong.frag";
 	const char* blinn = "shaders/fragment/blinn.frag";
 	const char* phongReflector = "shaders/fragment/phongReflector.frag";
+
+	const float triangle[48] = {
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f
+	};
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* sphere1 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere1->setMaterial(pearl);
-	this->objects.push_back(sphere1);
-	DrawableObject* sphere2 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere2->setMaterial(pearl);
-	this->objects.push_back(sphere2);
-	DrawableObject* sphere3 = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-	sphere3->setMaterial(pearl);
-	this->objects.push_back(sphere3);
-	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
+	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (6 * 4))));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
 
+	int i = 0;
 	for (DrawableObject* object : this->objects) {
+		object->setTextureId(i++);
 		object->initialize();
 		object->setLight(this->lights);
 	}

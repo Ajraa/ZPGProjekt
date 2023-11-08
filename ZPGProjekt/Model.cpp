@@ -26,10 +26,20 @@ void Model::createVAO()
     glBindVertexArray(VAO); //bind the VAO
     glEnableVertexAttribArray(0); //enable vertex attributes
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
    
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
+
+    glActiveTexture(GL_TEXTURE0);
+    GLuint textureID = SOIL_load_OGL_texture("Textures/grass.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    if (textureID == NULL) {
+      std::cout << "An error occurred while loading texture." << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    glBindTexture(GL_TEXTURE_2D, textureID);
    
 }
 
@@ -44,4 +54,14 @@ void Model::drawArrays()
 {
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_TRIANGLES, 0, this->shape->getPoints());
+}
+
+void Model::setTextureID(int id)
+{
+  this->textureID = id;
+}
+
+int Model::getTextureId()
+{
+  return this->textureID;
 }

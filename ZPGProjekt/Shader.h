@@ -39,7 +39,7 @@ public:
 	void useCameraPosition(glm::vec3 eye);
 	void useCameraTarget(glm::vec3 target);
 	void useLightType(int type, int index);
-	void useLight(glm::vec4 lightColor, glm::vec3 lightPosition, LightType type, int index);
+	void useTextureId(int id);
 private:
 	std::string readShaderFile(const char* filePath);
 	GLuint vertexShader;

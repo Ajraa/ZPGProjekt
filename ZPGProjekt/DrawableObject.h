@@ -25,6 +25,7 @@ public:
 	void setLight(std::vector<Light*> lights);
 	void rotateAround(float angle, glm::vec3 point, glm::vec3 origin);
 	glm::vec3 getXYZ();
+	void setTextureId(int id);
 private:
 	Transformation* transformation;
 	Model* model;

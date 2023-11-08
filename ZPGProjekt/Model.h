@@ -4,7 +4,7 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
+#include <SOIL.h>
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
@@ -21,7 +21,10 @@ public:
 	void createVAO();
 	void createVBO();
 	void drawArrays();
+	void setTextureID(int id);
+	int getTextureId();
 private:
+	int textureID;
 	GLuint VAO;
 	GLuint VBO;
 	Shape* shape;

@@ -1,6 +1,7 @@
 #version 400
 in vec4 ex_worldPosition;
 in vec3 ex_worldNormal;
+in vec2 vt_out;
 out vec4 out_Color;
 
 uniform vec3 cameraPosition;
@@ -9,7 +10,7 @@ uniform vec3 matAmbient;
 uniform vec3 matDiffuse;
 uniform float matShininess;
 uniform vec3 matSpecular;
-
+uniform sampler2D textureUnitID;
 
 struct LightPoint {
     vec4 lightColor;
@@ -83,7 +84,7 @@ void calculateSpotlight(int i) {
 }
 
 void main () {
-    out_Color = vec4(0.0 , 0.0 , 0.0 , 0.0);
+    out_Color = texture(textureUnitID, vt_out);
     for (int i = 0; i < 3; i++) {
 
         if (lights[i].type == 0)
@@ -94,7 +95,7 @@ void main () {
 
         if (lights[i].type == 2) 
             calculateSpotlight(i);
-        
+              
     }
 }
 

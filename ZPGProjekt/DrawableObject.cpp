@@ -69,6 +69,7 @@ void DrawableObject::render()
 	this->shader->useShininess(this->material->getShininess());
 	this->shader->useSpecular(this->material->getSpecular());
 	this->shader->useTransformationMatrix(this->transformation->getMatrix());
+	this->shader->useTextureId(this->model->getTextureId());
 	this->model->drawArrays();
 }
 
@@ -91,4 +92,9 @@ void DrawableObject::rotateAround(float angle, glm::vec3 point, glm::vec3 origin
 glm::vec3 DrawableObject::getXYZ()
 {
 	return ((TransformationComposite*)this->transformation)->getXYZ();
+}
+
+void DrawableObject::setTextureId(int id)
+{
+	this->model->setTextureID(id);
 }

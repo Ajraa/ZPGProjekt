@@ -210,25 +210,12 @@ void Shader::useLightType(int type, int index)
     glUniform1i(idMatrix, type);
 }
 
-void Shader::useLight(glm::vec4 lightColor, glm::vec3 lightPosition, LightType type, int index)
+void Shader::useTextureId(int id)
 {
-    struct {
-        glm::vec4 lightColor;
-        glm::vec3 lightPosition;
-        int type;
-    } lightPoint;
-
-    lightPoint.lightColor = lightColor;
-    lightPoint.lightPosition = lightPosition;
-    lightPoint.type = type;
-
-    std::string str = "lights[";
-    str.append(std::to_string(index));
-    str.append("]");
-    const char* c_str = str.c_str();
-    int idMatrix = glGetUniformLocation(this->shaderProgram, c_str);
-    if (idMatrix == -1)
-        std::cout << "Problém s Uniform Location cameraFront\n";
+  GLint idMatrix = glGetUniformLocation(shaderProgram, "textureUnitID");
+  if (idMatrix == -1)
+    std::cout << "Problém s Uniform Location texture ID\n";
+  glUniform1i(idMatrix, id);
 }
 
 void Shader::setLight(std::vector<LightSubject*> lights)
