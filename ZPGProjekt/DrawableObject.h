@@ -26,10 +26,12 @@ public:
 	void rotateAround(float angle, glm::vec3 point, glm::vec3 origin);
 	glm::vec3 getXYZ();
 	void setTextureId(int id);
+	void setTexture(const char* texture);
 private:
 	Transformation* transformation;
 	Model* model;
 	Shader* shader;
 	Material* material;
+	const char* texture;
 };
 

@@ -20,27 +20,39 @@ Model::~Model()
    
 }
 
-void Model::createVAO()
+void Model::createVAO(const char* texture)
 {
     glGenVertexArrays(1, &VAO); //generate the VAO
     glBindVertexArray(VAO); //bind the VAO
-    glEnableVertexAttribArray(0); //enable vertex attributes
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-   
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
+    
+    if (texture != NULL) {
+        std::cout << "yup" << std::endl;
+        glEnableVertexAttribArray(0); //enable vertex attributes
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    glActiveTexture(GL_TEXTURE0);
-    GLuint textureID = SOIL_load_OGL_texture("Textures/grass.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-    if (textureID == NULL) {
-      std::cout << "An error occurred while loading texture." << std::endl;
-      exit(EXIT_FAILURE);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
+
+        glActiveTexture(GL_TEXTURE0);
+        GLuint textureID = SOIL_load_OGL_texture("Textures/grass.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+        if (textureID == NULL) {
+            std::cout << "An error occurred while loading texture." << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        glBindTexture(GL_TEXTURE_2D, textureID);
     }
-    glBindTexture(GL_TEXTURE_2D, textureID);
-   
+    else {
+        glEnableVertexAttribArray(0); //enable vertex attributes
+        glEnableVertexAttribArray(1);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (GLvoid*)(3 * sizeof(float)));
+    }
+
 }
 
 void Model::createVBO()

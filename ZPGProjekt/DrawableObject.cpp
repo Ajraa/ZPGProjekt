@@ -5,6 +5,7 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 	this->shader = shader;
 	this->model = model;
 	this->transformation = new TransformationComposite();
+	this->texture = NULL;
 }
 
 void DrawableObject::setMaterial(Material* material)
@@ -56,7 +57,7 @@ void DrawableObject::scale(float scale)
 void DrawableObject::initialize()
 {
 	this->model->createVBO();
-	this->model->createVAO();
+	this->model->createVAO(this->texture);
 }
 
 void DrawableObject::render()
@@ -97,4 +98,9 @@ glm::vec3 DrawableObject::getXYZ()
 void DrawableObject::setTextureId(int id)
 {
 	this->model->setTextureID(id);
+}
+
+void DrawableObject::setTexture(const char* texture)
+{
+	this->texture = texture;
 }

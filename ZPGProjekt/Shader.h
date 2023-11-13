@@ -18,6 +18,7 @@ class Shader : public CameraObserver, public LightObserver
 {
 public:
 	Shader(const char* vertexFilePath, const char* fragmentFilePath, CameraSubject* subject);
+	Shader(const char* vertexFilePath, const char* fragmentFilePath);
 	~Shader();
 	GLuint getShaderProgram() { return this->shaderProgram; };
 	void useShaderProgram();

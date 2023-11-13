@@ -2,6 +2,9 @@
 #include "Sphere.h"
 #include "Models/suzi_flat.h"
 #include "Models/plain.h"
+#include "Models/gift.h"
+#include "Models/tree.h"
+#include "Models/bushes.h"
 
 Engine::~Engine()
 {
@@ -16,6 +19,10 @@ void Engine::start()
 	this->run();
 }
 
+std::vector<float> xs;
+std::vector<float> ys;
+std::vector<float> zs;
+
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
@@ -23,6 +30,8 @@ void Engine::run()
 	float alpha = 0.f;
 	float beta = 0.f;
 	float x = 0;
+
+	SkyCube* sc = new SkyCube();
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
@@ -37,8 +46,14 @@ void Engine::run()
 		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		int i = 0;
+		
+		
+		sc->drawArrays();
 		for (DrawableObject* object : this->objects) {
-			object->scale(50);
+			object->translate(xs[i], ys[i], zs[i]);
+			this->objects[0]->scale(200);
+			i++;
 			object->render();
 		}
 
@@ -80,12 +95,64 @@ void Engine::createObjects()
 		-0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f
 	};
 	
+	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (6 * 4))));
+	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
+	//pl->setTexture("textures/grass.png");
+	xs.push_back((float)0);
+	ys.push_back((float)-1);
+	zs.push_back((float)0);
 
-	int i = 0;
+
+
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(bushes, sizeof(bushes), (sizeof(bushes) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(tree, sizeof(tree), (sizeof(tree) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(suziFlat, sizeof(suziFlat), (sizeof(suziFlat) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back((float)0);
+		zs.push_back((float)(rand() % 100));
+	}
+
+	for (size_t i = 0; i < 20; i++) {
+		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(gift, sizeof(gift), (sizeof(gift) / (6 * 4))));
+		obj->setMaterial(pearl);
+		this->objects.push_back(obj);
+		xs.push_back((float)(rand() % 100));
+		ys.push_back(0);
+		zs.push_back((float)(rand() % 100));
+	}
+
+	int i = 10;
 	for (DrawableObject* object : this->objects) {
 		object->setTextureId(i++);
 		object->initialize();

@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
@@ -10,24 +11,20 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-#include "Shape.h"
 #include "Renderable.h"
 
-class Model
+
+class Shader;
+class SkyCube : public Renderable
 {
 public:
-	Model(const float* vertices, int size, int points);
-	Model(Shape* shape);
-	~Model();
-	void createVAO(const char* texture);
-	void createVBO();
-	void drawArrays();
-	void setTextureID(int id);
-	int getTextureId();
+	SkyCube();
+	void createVAO() override;
+	void createVBO() override;
+	void drawArrays() override;
 private:
-	int textureID;
 	GLuint VAO;
 	GLuint VBO;
-	Shape* shape;
+	Shader* shader;
 };
 
