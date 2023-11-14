@@ -25,7 +25,6 @@ std::vector<float> zs;
 
 void Engine::run()
 {
-	std::cout << "Start run" << std::endl;
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	
 	float alpha = 0.f;
@@ -51,11 +50,11 @@ void Engine::run()
 		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		int i = 0;
-		
-		sc->scale(10000);
+		sc->rotate(alpha);
+		sc->scale(0.2);
 		sc->render();
 		objects[1]->render();
+		int i = 0;
 		for (DrawableObject* object : this->objects) {
 			object->translate(xs[i], ys[i], zs[i]);
 			if ( i == 0)
@@ -112,7 +111,7 @@ void Engine::createObjects()
 	zs.push_back((float)0);
 
 
-	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (8 * 4))));
+	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (6 * 4))));
 	tr->setMaterial(pearl);
 	this->objects.push_back(tr);
 	tr->setTexture("textures/grass.png");
