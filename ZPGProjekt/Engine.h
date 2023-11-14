@@ -17,7 +17,6 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Reflector.h"
-#include "SkyCube.h"
 
 class Engine
 {

@@ -5,11 +5,13 @@
 #include "TransformationComposite.h"
 #include "TransformationLeaf.h"
 #include "Material.h"
+#include "SkyCube.h"
 
 class DrawableObject
 {
 public:
 	DrawableObject(Shader* shader, Model* model);
+	DrawableObject(Shader* shader);
 	void setMaterial(Material* material);
 	void setShader(Shader* shader);
 	Shader* getShader();
@@ -29,7 +31,7 @@ public:
 	void setTexture(const char* texture);
 private:
 	Transformation* transformation;
-	Model* model;
+	Renderable* model;
 	Shader* shader;
 	Material* material;
 	const char* texture;

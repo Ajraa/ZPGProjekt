@@ -2,11 +2,9 @@
 #include "Models/skycube.h"
 #include "Shader.h"
 
-SkyCube::SkyCube()
+SkyCube::SkyCube() 
 {
-    const char* vertex = "shaders/vertex/skybox.ver";
-    const char* fragment = "shaders/fragment/skybox.frag";
-    this->shader = new Shader(vertex, fragment);
+    this->textureId = 0;
 }
 
 void SkyCube::createVAO()
@@ -25,22 +23,22 @@ void SkyCube::createVAO()
 
     glBindTexture(GL_TEXTURE_2D, image);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-    this->createVAO();
-    this->createVBO();
 }
 
 void SkyCube::createVBO()
 {
     glGenBuffers(1, &VBO); // generate the VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skycube), &skycube[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(skycube), skycube, GL_STATIC_DRAW);
 }
 
 void SkyCube::drawArrays()
 {
     glBindVertexArray(this->VAO);
-    this->shader->useShaderProgram();
-    this->shader->useTransformationMatrix(glm::mat4(1.0));
-    this->shader->useTextureId(0);
-    glDrawArrays(GL_TRIANGLES, 0, 108);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+int SkyCube::getTextureId()
+{
+    return this->textureId;
 }

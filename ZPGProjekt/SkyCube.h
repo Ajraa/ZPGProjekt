@@ -22,9 +22,11 @@ public:
 	void createVAO() override;
 	void createVBO() override;
 	void drawArrays() override;
+	int getTextureId() override;
 private:
 	GLuint VAO;
 	GLuint VBO;
 	Shader* shader;
+	int textureId;
 };
 

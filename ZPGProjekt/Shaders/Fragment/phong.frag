@@ -79,7 +79,7 @@ void calculateSpotlight(int i) {
     if (theta > cos(radians(30.0))) {
         out_Color += (ambient + diffuse + specular) * objectColor * att;
     } else {
-        out_Color += vec4(0.0 , 0.0 , 0.0 , 0.0);
+        out_Color += 0.1 * ambient * objectColor;
     }
 }
 

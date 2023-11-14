@@ -5,12 +5,14 @@ Model::Model(const float* vertices, int size, int points)
 {
     this->VAO = 0;
     this->shape = new Shape(vertices, size, points);
+    this->texture = NULL;
 }
 
 Model::Model(Shape* shape)
 {
     this->VAO = 0;
     this->shape = shape;
+    this->texture = NULL;
 }
 
 Model::~Model()
@@ -20,12 +22,12 @@ Model::~Model()
    
 }
 
-void Model::createVAO(const char* texture)
+void Model::createVAO()
 {
     glGenVertexArrays(1, &VAO); //generate the VAO
     glBindVertexArray(VAO); //bind the VAO
     
-    if (texture != NULL) {
+    if (this->texture != NULL) {
         std::cout << "yup" << std::endl;
         glEnableVertexAttribArray(0); //enable vertex attributes
         glEnableVertexAttribArray(1);
@@ -37,7 +39,7 @@ void Model::createVAO(const char* texture)
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (GLvoid*)(6 * sizeof(float)));
 
         glActiveTexture(GL_TEXTURE0);
-        GLuint textureID = SOIL_load_OGL_texture("Textures/grass.png", SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+        GLuint textureID = SOIL_load_OGL_texture(texture, SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
         if (textureID == NULL) {
             std::cout << "An error occurred while loading texture." << std::endl;
             exit(EXIT_FAILURE);
@@ -76,4 +78,9 @@ void Model::setTextureID(int id)
 int Model::getTextureId()
 {
   return this->textureID;
+}
+
+void Model::setTexture(const char* texture)
+{
+    this->texture = texture;
 }

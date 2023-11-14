@@ -13,21 +13,23 @@
 #include "Shape.h"
 #include "Renderable.h"
 
-class Model
+class Model : public Renderable
 {
 public:
 	Model(const float* vertices, int size, int points);
 	Model(Shape* shape);
 	~Model();
-	void createVAO(const char* texture);
-	void createVBO();
-	void drawArrays();
+	void createVAO() override;
+	void createVBO() override;
+	void drawArrays() override;
 	void setTextureID(int id);
-	int getTextureId();
+	int getTextureId() override;
+	void setTexture(const char* texture);
 private:
 	int textureID;
 	GLuint VAO;
 	GLuint VBO;
 	Shape* shape;
+	const char* texture;
 };
 

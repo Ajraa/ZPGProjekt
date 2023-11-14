@@ -8,6 +8,13 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 	this->texture = NULL;
 }
 
+DrawableObject::DrawableObject(Shader* shader)
+{
+	this->shader = shader;
+	this->model = new SkyCube();
+	this->transformation = new TransformationComposite();
+}
+
 void DrawableObject::setMaterial(Material* material)
 {
 	this->material = material;
@@ -57,18 +64,22 @@ void DrawableObject::scale(float scale)
 void DrawableObject::initialize()
 {
 	this->model->createVBO();
-	this->model->createVAO(this->texture);
+	this->model->createVAO();
 }
 
 void DrawableObject::render()
 {
 	this->shader->useShaderProgram();
 	this->shader->notifyCamera();
-	this->shader->notifyLight();
-	this->shader->useAmbient(this->material->getAmbient());
-	this->shader->useDiffuse(this->material->getDiffuse());
-	this->shader->useShininess(this->material->getShininess());
-	this->shader->useSpecular(this->material->getSpecular());
+
+	if (Model* m = dynamic_cast<Model*>(this->model)) {
+		this->shader->notifyLight();
+		this->shader->useAmbient(this->material->getAmbient());
+		this->shader->useDiffuse(this->material->getDiffuse());
+		this->shader->useShininess(this->material->getShininess());
+		this->shader->useSpecular(this->material->getSpecular());
+	}
+	
 	this->shader->useTransformationMatrix(this->transformation->getMatrix());
 	this->shader->useTextureId(this->model->getTextureId());
 	this->model->drawArrays();
@@ -97,10 +108,12 @@ glm::vec3 DrawableObject::getXYZ()
 
 void DrawableObject::setTextureId(int id)
 {
-	this->model->setTextureID(id);
+	if (Model* m = dynamic_cast<Model*>(this->model))
+		m->setTextureID(id);
 }
 
 void DrawableObject::setTexture(const char* texture)
 {
-	this->texture = texture;
+	if (Model* m = dynamic_cast<Model*>(this->model))
+		m->setTexture(texture);
 }

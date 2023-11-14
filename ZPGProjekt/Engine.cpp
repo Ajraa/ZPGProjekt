@@ -25,13 +25,18 @@ std::vector<float> zs;
 
 void Engine::run()
 {
+	std::cout << "Start run" << std::endl;
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	
 	float alpha = 0.f;
 	float beta = 0.f;
 	float x = 0;
 
-	SkyCube* sc = new SkyCube();
+	const char* vertex = "shaders/vertex/skybox.ver";
+	const char* fragment = "shaders/fragment/skybox.frag";
+	Shader* shader = new Shader(vertex, fragment, this->camera);
+	DrawableObject* sc = new DrawableObject(shader);
+	sc->initialize();
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
@@ -48,13 +53,15 @@ void Engine::run()
 		
 		int i = 0;
 		
-		
-		sc->drawArrays();
+		sc->scale(10000);
+		sc->render();
+		objects[1]->render();
 		for (DrawableObject* object : this->objects) {
 			object->translate(xs[i], ys[i], zs[i]);
-			this->objects[0]->scale(200);
+			if ( i == 0)
+				this->objects[i]->scale(300);
+			//object->render();
 			i++;
-			object->render();
 		}
 
 		glfwPollEvents();
@@ -100,14 +107,22 @@ void Engine::createObjects()
 	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
-	//pl->setTexture("textures/grass.png");
 	xs.push_back((float)0);
 	ys.push_back((float)-1);
 	zs.push_back((float)0);
 
 
+	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (8 * 4))));
+	tr->setMaterial(pearl);
+	this->objects.push_back(tr);
+	tr->setTexture("textures/grass.png");
+	xs.push_back((float)0);
+	ys.push_back((float)0);
+	zs.push_back((float)0);
 
-	for (size_t i = 0; i < 20; i++) {
+
+
+	/*for (size_t i = 0; i < 20; i++) {
 		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
 		obj->setMaterial(pearl);
 		this->objects.push_back(obj);
@@ -151,6 +166,7 @@ void Engine::createObjects()
 		ys.push_back(0);
 		zs.push_back((float)(rand() % 100));
 	}
+	*/
 
 	int i = 10;
 	for (DrawableObject* object : this->objects) {
@@ -163,9 +179,9 @@ void Engine::createObjects()
 void Engine::initialization()
 {
 	this->camera = new Camera();
-	this->lights.push_back(new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(1.0, .0, .0, 1.0), 1, 1));
-	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(.0, 1.0, .0, 1.0), 1, 1));
-	this->lights.push_back(new Light(LightType::Direction, glm::vec3(0.0f, -5.0f, 0.0f), glm::vec4(.0, .0, 1.0, 1.0), 1, 1));
+	this->lights.push_back(new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 50.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights[2]->setDirection(glm::vec3(1.0, 0.0, 0.0));
 
 	glfwSetErrorCallback(Callback::error_callback);
