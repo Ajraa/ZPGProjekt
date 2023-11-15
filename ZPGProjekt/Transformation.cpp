@@ -23,6 +23,11 @@ void Transformation::translate(float x, float y, float z)
 	this->transformationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 }
 
+void Transformation::translate(glm::vec3 position)
+{
+	this->transformationMatrix = glm::translate(glm::mat4(1.0f), position);
+}
+
 void Transformation::scale(float scale)
 {
 	this->transformationMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale));

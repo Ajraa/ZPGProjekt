@@ -20,6 +20,7 @@ public:
 	void rotate(float degrees);
 	void rotate(float degrees, glm::vec3 point);
 	void translate(float x, float y, float z);
+	void translate(glm::vec3 position);
 	void scale(float scale);
 	void initialize();
 	void render();

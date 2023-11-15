@@ -26,7 +26,6 @@ public:
 private:
 	GLuint VAO;
 	GLuint VBO;
-	Shader* shader;
 	int textureId;
 };
 

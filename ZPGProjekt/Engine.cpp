@@ -36,6 +36,7 @@ void Engine::run()
 	Shader* shader = new Shader(vertex, fragment, this->camera);
 	DrawableObject* sc = new DrawableObject(shader);
 	sc->initialize();
+
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
@@ -50,16 +51,16 @@ void Engine::run()
 		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		sc->rotate(alpha);
-		sc->scale(0.2);
+		sc->translate(this->camera->getPosition());
+		sc->scale(50);
 		sc->render();
-		objects[1]->render();
+		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
 			object->translate(xs[i], ys[i], zs[i]);
-			if ( i == 0)
+			if ( i == 1)
 				this->objects[i]->scale(300);
-			//object->render();
+			object->render();
 			i++;
 		}
 
@@ -103,6 +104,13 @@ void Engine::createObjects()
 	
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (8 * 4))));
+	tr->setMaterial(pearl);
+	this->objects.push_back(tr);
+	tr->setTexture("textures/grass.png");
+	xs.push_back((float)0);
+	ys.push_back((float)0);
+	zs.push_back((float)0);
 	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
@@ -111,13 +119,7 @@ void Engine::createObjects()
 	zs.push_back((float)0);
 
 
-	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (6 * 4))));
-	tr->setMaterial(pearl);
-	this->objects.push_back(tr);
-	tr->setTexture("textures/grass.png");
-	xs.push_back((float)0);
-	ys.push_back((float)0);
-	zs.push_back((float)0);
+	
 
 
 
@@ -167,7 +169,7 @@ void Engine::createObjects()
 	}
 	*/
 
-	int i = 10;
+	int i = 1;
 	for (DrawableObject* object : this->objects) {
 		object->setTextureId(i++);
 		object->initialize();

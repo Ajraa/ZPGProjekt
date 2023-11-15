@@ -22,6 +22,7 @@ public:
 	virtual void rotate(float degrees);
 	virtual void rotate(float degrees, glm::vec3 point);
 	virtual void translate(float x, float y, float z);
+	virtual void translate(glm::vec3 position);
 	virtual void scale(float scale);
 	virtual void useTransform(GLint shader);
 	virtual bool isComposite();

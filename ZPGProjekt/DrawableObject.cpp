@@ -56,6 +56,11 @@ void DrawableObject::translate(float x, float y, float z)
 	this->transformation->translate(x, y, z);
 }
 
+void DrawableObject::translate(glm::vec3 position)
+{
+	this->transformation->translate(position);
+}
+
 void DrawableObject::scale(float scale)
 {
 	this->transformation->scale(scale);
@@ -79,8 +84,9 @@ void DrawableObject::render()
 		this->shader->useShininess(this->material->getShininess());
 		this->shader->useSpecular(this->material->getSpecular());
 	}
-	
 	this->shader->useTransformationMatrix(this->transformation->getMatrix());
+	
+	
 	this->shader->useTextureId(this->model->getTextureId());
 	this->model->drawArrays();
 }

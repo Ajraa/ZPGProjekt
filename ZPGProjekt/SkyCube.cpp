@@ -34,8 +34,9 @@ void SkyCube::createVBO()
 
 void SkyCube::drawArrays()
 {
+  std::cout << "Renderuju sky" << std::endl;
     glBindVertexArray(this->VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawArrays(GL_TRIANGLES, 0, 108);
 }
 
 int SkyCube::getTextureId()

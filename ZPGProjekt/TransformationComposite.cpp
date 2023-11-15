@@ -39,6 +39,14 @@ void TransformationComposite::translate(float x, float y, float z)
 	this->children.push_back(leaf);
 }
 
+void TransformationComposite::translate(glm::vec3 position)
+{
+	TransformationLeaf* leaf = new TransformationLeaf();
+	leaf->setParent(this);
+	leaf->translate(position);
+	this->children.push_back(leaf);
+}
+
 void TransformationComposite::scale(float scale)
 {
 	TransformationLeaf* leaf = new TransformationLeaf();

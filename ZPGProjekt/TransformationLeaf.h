@@ -11,6 +11,7 @@ public:
 	virtual void rotate(float degrees) override;
 	virtual void rotate(float degrees, glm::vec3 point);
 	virtual void translate(float x, float y, float z) override;
+	virtual void translate(glm::vec3 position) override;
 	virtual void scale(float scale) override;
 	void useTransform(GLint shader) override;
 	void rotateAround(float angle, glm::vec3 point, glm::vec3 origin) override;

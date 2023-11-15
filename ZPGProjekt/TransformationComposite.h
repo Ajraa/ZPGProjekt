@@ -13,6 +13,7 @@ public:
 	virtual void rotate(float degrees) override;
 	virtual void rotate(float degrees, glm::vec3 point) override;
 	virtual void translate(float x, float y, float z) override;
+	virtual void translate(glm::vec3 position) override;
 	virtual void scale(float scale) override;
 	virtual glm::mat4 getMatrix() override;
 	glm::vec3 getXYZ();
