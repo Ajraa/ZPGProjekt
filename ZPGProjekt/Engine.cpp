@@ -52,8 +52,8 @@ void Engine::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		sc->translate(this->camera->getPosition());
-		sc->scale(50);
 		sc->render();
+		
 		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
