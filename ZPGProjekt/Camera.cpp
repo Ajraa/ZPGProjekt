@@ -9,7 +9,7 @@ Camera::Camera()
 	this->alpha = 0;
 	this->fi = 0;
 	this->projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
-	this->eye = glm::vec3(5.0, 0, 0);
+	this->eye = glm::vec3(5.0, 1.0, 0.f);
 	this->target = glm::vec3(0, 0, 0);
 	this->up = glm::vec3(0.f, 1.f, 0.f);
 	this->model = glm::mat4(1.0f);
@@ -162,6 +162,11 @@ void Camera::updateShader(CameraObserver* shader)
 {
 	((Shader*)shader)->useProjection(this->projection);
 	((Shader*)shader)->useView(this->view);
+	
+}
+
+void Camera::updateShaderPosition(CameraObserver* shader)
+{
 	((Shader*)shader)->useCameraPosition(this->eye);
 	((Shader*)shader)->useCameraTarget(this->target);
 }

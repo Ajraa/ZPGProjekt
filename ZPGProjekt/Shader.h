@@ -26,6 +26,7 @@ public:
 	void useView(glm::mat4 view) override;
 	void setSubject(CameraSubject* subject) override;
 	void notifyCamera() override;
+	void notifyCameraPosition();
 	void addLight(LightSubject* light);
 	void setLight(std::vector<LightSubject*> lights);
 	void notifyLight() override;

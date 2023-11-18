@@ -36,6 +36,7 @@ public:
 	void useCameraPosition(GLuint shaderProgram);
 	void update(GLuint shaderProgram) override;
 	void updateShader(CameraObserver* shader);
+	void updateShaderPosition(CameraObserver* shader);
 	glm::vec3 getPosition();
 private:
 	glm::mat4 projection;

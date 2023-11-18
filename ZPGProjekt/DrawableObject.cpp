@@ -5,13 +5,19 @@ DrawableObject::DrawableObject(Shader* shader, Model* model)
 	this->shader = shader;
 	this->model = model;
 	this->transformation = new TransformationComposite();
-	this->texture = NULL;
 }
 
 DrawableObject::DrawableObject(Shader* shader)
 {
 	this->shader = shader;
 	this->model = new SkyCube();
+	this->transformation = new TransformationComposite();
+}
+
+DrawableObject::DrawableObject(Shader* shader, const char* texture, const char* obj)
+{
+	this->shader = shader;
+	this->model = new Model(obj, texture);
 	this->transformation = new TransformationComposite();
 }
 
@@ -78,6 +84,7 @@ void DrawableObject::render()
 	this->shader->notifyCamera();
 
 	if (Model* m = dynamic_cast<Model*>(this->model)) {
+		this->shader->notifyCameraPosition();
 		this->shader->notifyLight();
 		this->shader->useAmbient(this->material->getAmbient());
 		this->shader->useDiffuse(this->material->getDiffuse());
@@ -122,4 +129,10 @@ void DrawableObject::setTexture(const char* texture)
 {
 	if (Model* m = dynamic_cast<Model*>(this->model))
 		m->setTexture(texture);
+}
+
+void DrawableObject::setObj(const char* obj)
+{
+	if (Model* m = dynamic_cast<Model*>(this->model))
+		m->setObj(obj);
 }

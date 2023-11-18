@@ -58,7 +58,7 @@ void Engine::run()
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
 			object->translate(xs[i], ys[i], zs[i]);
-			if ( i == 1)
+			if ( i == 0)
 				this->objects[i]->scale(300);
 			object->render();
 			i++;
@@ -104,70 +104,50 @@ void Engine::createObjects()
 	
 	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(triangle, sizeof(triangle), (sizeof(triangle) / (8 * 4))));
-	tr->setMaterial(pearl);
-	this->objects.push_back(tr);
-	tr->setTexture("textures/grass.png");
-	xs.push_back((float)0);
-	ys.push_back((float)0);
-	zs.push_back((float)0);
 	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
+	pl->setTexture("textures/grass.png");
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
 	xs.push_back((float)0);
-	ys.push_back((float)-1);
+	ys.push_back((float)0);
 	zs.push_back((float)0);
 
+	DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
+	house->setMaterial(pearl);
+	this->objects.push_back(house);
+	xs.push_back((float)10);
+	ys.push_back((float)0);
+	zs.push_back((float)10);
 
 	
 
-
-
-	/*for (size_t i = 0; i < 20; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(sphere, sizeof(sphere), (sizeof(sphere) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)0);
-		zs.push_back((float)(rand() % 100));
+	for (size_t i = 0; i < 20; i++)
+	{
+		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
+		tr->setMaterial(pearl);
+		this->objects.push_back(tr);
+		DrawableObject* lf = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/leaves.obj", "Textures/leaf.png"));
+		lf->setMaterial(pearl);
+		this->objects.push_back(lf);
+		float x = rand() % 100;
+		float z = rand() % 100;
+		for (size_t j = 0; j < 2; j++)
+		{
+			xs.push_back(x);
+			ys.push_back(0);
+			zs.push_back(z);
+		}
 	}
 
-	for (size_t i = 0; i < 20; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(bushes, sizeof(bushes), (sizeof(bushes) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)0);
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 20; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(tree, sizeof(tree), (sizeof(tree) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)0);
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 20; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(suziFlat, sizeof(suziFlat), (sizeof(suziFlat) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
-		ys.push_back((float)0);
-		zs.push_back((float)(rand() % 100));
-	}
-
-	for (size_t i = 0; i < 20; i++) {
-		DrawableObject* obj = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(gift, sizeof(gift), (sizeof(gift) / (6 * 4))));
-		obj->setMaterial(pearl);
-		this->objects.push_back(obj);
-		xs.push_back((float)(rand() % 100));
+	for (size_t i = 0; i < 20; i++)
+	{
+		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
+		tr->setMaterial(pearl);
+		this->objects.push_back(tr);
+		xs.push_back(rand() % 100);
 		ys.push_back(0);
-		zs.push_back((float)(rand() % 100));
+		zs.push_back(rand() % 100);
 	}
-	*/
 
 	int i = 1;
 	for (DrawableObject* object : this->objects) {

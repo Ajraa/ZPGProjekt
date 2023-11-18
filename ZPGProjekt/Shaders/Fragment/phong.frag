@@ -79,12 +79,13 @@ void calculateSpotlight(int i) {
     if (theta > cos(radians(30.0))) {
         out_Color += (ambient + diffuse + specular) * objectColor * att;
     } else {
-        out_Color += 0.1 * ambient * objectColor;
+        out_Color += vec4(0.0);
     }
 }
 
 void main () {
-    out_Color = texture(textureUnitID, vt_out);
+    vec4 texColor = texture(textureUnitID, vt_out);
+    out_Color = vec4(0.0);
     for (int i = 0; i < 3; i++) {
 
         if (lights[i].type == 0)
@@ -97,5 +98,6 @@ void main () {
             calculateSpotlight(i);
               
     }
+   out_Color *= texColor;
 }
 

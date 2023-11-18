@@ -12,6 +12,7 @@ class DrawableObject
 public:
 	DrawableObject(Shader* shader, Model* model);
 	DrawableObject(Shader* shader);
+	DrawableObject(Shader* shader, const char* texture, const char* obj);
 	void setMaterial(Material* material);
 	void setShader(Shader* shader);
 	Shader* getShader();
@@ -30,11 +31,11 @@ public:
 	glm::vec3 getXYZ();
 	void setTextureId(int id);
 	void setTexture(const char* texture);
+	void setObj(const char* obj);
 private:
 	Transformation* transformation;
 	Renderable* model;
 	Shader* shader;
 	Material* material;
-	const char* texture;
 };
 

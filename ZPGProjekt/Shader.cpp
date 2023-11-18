@@ -132,6 +132,11 @@ void Shader::notifyCamera()
     ((Camera*)this->subject)->updateShader(this);
 }
 
+void Shader::notifyCameraPosition()
+{
+    ((Camera*)this->subject)->updateShaderPosition(this);
+}
+
 void Shader::addLight(LightSubject* light)
 {
     this->lights.push_back(light);
