@@ -126,17 +126,11 @@ void Engine::createObjects()
 		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
 		tr->setMaterial(pearl);
 		this->objects.push_back(tr);
-		DrawableObject* lf = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/leaves.obj", "Textures/leaf.png"));
-		lf->setMaterial(pearl);
-		this->objects.push_back(lf);
 		float x = rand() % 100;
 		float z = rand() % 100;
-		for (size_t j = 0; j < 2; j++)
-		{
-			xs.push_back(x);
-			ys.push_back(0);
-			zs.push_back(z);
-		}
+		xs.push_back(x);
+		ys.push_back(0);
+		zs.push_back(z);
 	}
 
 	for (size_t i = 0; i < 20; i++)
