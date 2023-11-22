@@ -32,6 +32,7 @@ public:
 	void setTextureId(int id);
 	void setTexture(const char* texture);
 	void setObj(const char* obj);
+	int getTextureId();
 private:
 	Transformation* transformation;
 	Renderable* model;

@@ -136,3 +136,8 @@ void DrawableObject::setObj(const char* obj)
 	if (Model* m = dynamic_cast<Model*>(this->model))
 		m->setObj(obj);
 }
+
+int DrawableObject::getTextureId()
+{
+	return this->model->getTextureId();
+}

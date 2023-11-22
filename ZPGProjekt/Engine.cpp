@@ -6,6 +6,13 @@
 #include "Models/tree.h"
 #include "Models/bushes.h"
 
+const char* vertex_shader = "shaders/vertex/sphereLight.ver";
+const char* constant = "shaders/fragment/shader.frag";
+const char* lambert = "shaders/fragment/lambert.frag";
+const char* phong = "shaders/fragment/phong.frag";
+const char* blinn = "shaders/fragment/blinn.frag";
+const char* phongReflector = "shaders/fragment/phongReflector.frag";
+
 Engine::~Engine()
 {
 	for (DrawableObject* object : this->objects)
@@ -19,6 +26,28 @@ void Engine::start()
 	this->run();
 }
 
+int x, y, newy;
+static void cursor_callback(GLFWwindow* window, double cx, double cy) { x = cx; y = cy; }
+
+bool click = false;
+GLfloat depth;
+static void button_callback(GLFWwindow* window, int button, int action, int mode) {
+	if (action == GLFW_PRESS) {
+		int width, height;
+		glfwGetFramebufferSize(window, &width, &height);
+		GLbyte color[4];
+		GLuint index; // identifikace tělesa
+		newy = height - y - 10;
+		glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+		glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+		printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth % f, stencil index % u\n",
+			x, y, color[0], color[1], color[2], color[3], depth, index);
+		click = true;
+	}
+
+}
+
 std::vector<float> xs;
 std::vector<float> ys;
 std::vector<float> zs;
@@ -26,6 +55,10 @@ std::vector<float> zs;
 void Engine::run()
 {
 	glEnable(GL_DEPTH_TEST); //Z-buffer
+	glEnable(GL_STENCIL_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glfwSetCursorPosCallback(window, cursor_callback);
+	glfwSetMouseButtonCallback(window, button_callback);
 	
 	float alpha = 0.f;
 	float beta = 0.f;
@@ -53,10 +86,30 @@ void Engine::run()
 		
 		sc->translate(this->camera->getPosition());
 		sc->render();
+
+		if (click) {
+			int width, height;
+			glfwGetFramebufferSize(window, &width, &height);
+			glm::vec4 viewPort = glm::vec4(0, 0, width, height);
+			glm::vec3 screenX = glm::vec3(x, newy, depth);
+			glm::vec3 pos = glm::unProject(screenX, this->camera->getModel(), this->camera->getProjection(), viewPort);
+			printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
+			Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+
+			DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
+			tr->setMaterial(pearl);
+			this->objects.push_back(tr);
+			xs.push_back(pos.x);
+			ys.push_back(pos.y);
+			zs.push_back(pos.z);
+
+			click = false;
+		}
 		
 		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
+			glStencilFunc(GL_ALWAYS, object->getTextureId(), 0xFF);
 			object->translate(xs[i], ys[i], zs[i]);
 			if ( i == 0)
 				this->objects[i]->scale(300);
@@ -85,12 +138,6 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-	const char* vertex_shader = "shaders/vertex/sphereLight.ver";
-	const char* constant = "shaders/fragment/shader.frag";
-	const char* lambert = "shaders/fragment/lambert.frag";
-	const char* phong = "shaders/fragment/phong.frag";
-	const char* blinn = "shaders/fragment/blinn.frag";
-	const char* phongReflector = "shaders/fragment/phongReflector.frag";
 
 	const float triangle[48] = {
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
@@ -232,4 +279,34 @@ void Engine::processUserInput()
 		glViewport(0, 0, currentWidth, currentHeight);
 		this->camera->setProjection(currentHeight, currentWidth);
 	}
+}
+
+void Engine::processClick()
+{
+	GLbyte color[4];
+	GLfloat depth;
+	GLuint index;
+
+	double x, y;
+	glfwGetCursorPos(this->window, &x, &y);
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+
+	int newy = width - y;
+
+	glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+	printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth% f, stencil index % u\n",
+		x, y, color[0], color[1], color[2], color[3], depth, index);
+
+	glm::vec4 viewPort = glm::vec4(0, 0, width, height);
+		//Můžeme nastavit vybrané těleso scena->setSelect(index-1);
+
+		//Můžeme vypočíst pozici v globálním souřadném systému.  
+	glm::vec3 screenX = glm::vec3(x, newy, depth);
+	glm::vec3 pos = glm::unProject(screenX, this->camera->getModel(), this->camera->getProjection(), viewPort);
+
+	printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
 }
