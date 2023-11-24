@@ -27,6 +27,7 @@ public:
 	void createObjects();
 	void initialization();
 	void processUserInput();
+	void processClick();
 private:
 	std::vector<Light*> lights;
 	GLFWwindow* window;

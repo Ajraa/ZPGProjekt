@@ -38,6 +38,11 @@ public:
 	void updateShader(CameraObserver* shader);
 	void updateShaderPosition(CameraObserver* shader);
 	glm::vec3 getPosition();
+	glm::vec3 getResolution();
+	glm::mat4 getProjection();
+	glm::mat4 getView();
+	glm::mat4 getModel();
+	
 private:
 	glm::mat4 projection;
 	glm::mat4 model;

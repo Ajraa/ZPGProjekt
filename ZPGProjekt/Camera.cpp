@@ -175,3 +175,23 @@ glm::vec3 Camera::getPosition()
 {
 	return this->eye;
 }
+
+glm::vec3 Camera::getResolution()
+{
+	return glm::vec3();
+}
+
+glm::mat4 Camera::getProjection()
+{
+	return this->projection;
+}
+
+glm::mat4 Camera::getView()
+{
+	return this->view;
+}
+
+glm::mat4 Camera::getModel()
+{
+	return this->model;
+}
