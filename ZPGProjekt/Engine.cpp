@@ -46,7 +46,7 @@ void Engine::run()
 		}
 
 		//this->camera->update();
-		
+		//komenty
 		alpha += 1;
 		beta += 0.1;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
