@@ -12,7 +12,6 @@
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp> // glm::value_ptr
 #include "Model.h"
-#include "Callback.h"
 #include "DrawableObject.h"
 #include "Camera.h"
 #include "Light.h"
@@ -34,4 +33,5 @@ private:
 	Camera* camera;
 	GLint status;
 	std::vector<DrawableObject*> objects;
+	int textureId = 1;
 };

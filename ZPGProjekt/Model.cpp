@@ -84,8 +84,8 @@ void Model::createVBO()
 void Model::drawArrays()
 {
     glBindVertexArray(this->VAO);
-    if (this->texture != NULL)
-        glBindTexture(GL_TEXTURE_2D, tID);
+    //if (this->texture != NULL)
+        //glBindTexture(GL_TEXTURE_2D, tID);
     glDrawArrays(GL_TRIANGLES, 0, count);
 }
 

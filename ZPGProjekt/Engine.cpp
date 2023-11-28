@@ -25,29 +25,6 @@ void Engine::start()
 	this->createObjects();
 	this->run();
 }
-
-int x, y, newy;
-static void cursor_callback(GLFWwindow* window, double cx, double cy) { x = cx; y = cy; }
-
-bool click = false;
-GLfloat depth;
-static void button_callback(GLFWwindow* window, int button, int action, int mode) {
-	if (action == GLFW_PRESS) {
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-		GLbyte color[4];
-		GLuint index; // identifikace tělesa
-		newy = height - y - 10;
-		glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-		glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-		glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-		printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth % f, stencil index % u\n",
-			x, y, color[0], color[1], color[2], color[3], depth, index);
-		click = true;
-	}
-
-}
-
 std::vector<float> xs;
 std::vector<float> ys;
 std::vector<float> zs;
@@ -57,8 +34,6 @@ void Engine::run()
 	glEnable(GL_DEPTH_TEST); //Z-buffer
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glfwSetCursorPosCallback(window, cursor_callback);
-	glfwSetMouseButtonCallback(window, button_callback);
 	
 	float alpha = 0.f;
 	float beta = 0.f;
@@ -85,27 +60,7 @@ void Engine::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		sc->translate(this->camera->getPosition());
-		sc->render();
-
-		if (click) {
-			int width, height;
-			glfwGetFramebufferSize(window, &width, &height);
-			glm::vec4 viewPort = glm::vec4(0, 0, width, height);
-			glm::vec3 screenX = glm::vec3(x, newy, depth);
-			glm::vec3 pos = glm::unProject(screenX, this->camera->getModel(), this->camera->getProjection(), viewPort);
-			printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
-			Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-
-			DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
-			tr->setMaterial(pearl);
-			this->objects.push_back(tr);
-			xs.push_back(pos.x);
-			ys.push_back(pos.y);
-			zs.push_back(pos.z);
-
-			click = false;
-		}
-		
+		sc->render();	
 		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
@@ -190,13 +145,14 @@ void Engine::createObjects()
 		zs.push_back(rand() % 100);
 	}
 
-	int i = 1;
 	for (DrawableObject* object : this->objects) {
-		object->setTextureId(i++);
+		object->setTextureId(this->textureId++);
 		object->initialize();
 		object->setLight(this->lights);
 	}
 }
+
+static void error_callback(int error, const char* description) { fputs(description, stderr); }
 
 void Engine::initialization()
 {
@@ -206,7 +162,7 @@ void Engine::initialization()
 	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 50.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights[2]->setDirection(glm::vec3(1.0, 0.0, 0.0));
 
-	glfwSetErrorCallback(Callback::error_callback);
+	glfwSetErrorCallback(error_callback);
 	if (!glfwInit()) {
 		fprintf(stderr, "ERROR: could not start GLFW3\n");
 		exit(EXIT_FAILURE);
@@ -269,6 +225,8 @@ void Engine::processUserInput()
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		this->camera->moveDown();
 	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+		this->processClick();
 
 	int currentWidth, currentHeight;
 	glfwGetFramebufferSize(window, &currentWidth, &currentHeight);
@@ -283,30 +241,39 @@ void Engine::processUserInput()
 
 void Engine::processClick()
 {
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
 	GLbyte color[4];
 	GLfloat depth;
 	GLuint index;
 
-	double x, y;
-	glfwGetCursorPos(this->window, &x, &y);
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
+	GLint x = viewport[2] / 2;
+	GLint y = viewport[3] / 2;
 
-	int newy = width - y;
+	glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glReadPixels(x, y, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-	glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+	glm::vec3 screenCenter = glm::vec3(x, y, depth);
 
-	printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth% f, stencil index % u\n",
-		x, y, color[0], color[1], color[2], color[3], depth, index);
+	glm::mat4 view = this->camera->getView();
+	glm::mat4 projection = this->camera->getProjection();
 
-	glm::vec4 viewPort = glm::vec4(0, 0, width, height);
-		//Můžeme nastavit vybrané těleso scena->setSelect(index-1);
 
-		//Můžeme vypočíst pozici v globálním souřadném systému.  
-	glm::vec3 screenX = glm::vec3(x, newy, depth);
-	glm::vec3 pos = glm::unProject(screenX, this->camera->getModel(), this->camera->getProjection(), viewPort);
-
+	glm::vec4 viewPort = glm::vec4(0, 0, viewport[2], viewport[3]);
+	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);
 	printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
+
+	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
+	tr->setMaterial(pearl);
+	this->objects.push_back(tr);
+	xs.push_back(pos.x);
+	ys.push_back(pos.y);
+	zs.push_back(pos.z);
+
+	tr->setTextureId(this->textureId++);
+	tr->initialize();
+	tr->setLight(this->lights);
 }
