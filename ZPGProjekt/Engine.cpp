@@ -225,7 +225,7 @@ void Engine::processUserInput()
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		this->camera->moveDown();
 	}
-	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		this->processClick();
 
 	int currentWidth, currentHeight;
