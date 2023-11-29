@@ -27,6 +27,7 @@ public:
 	void initialization();
 	void processUserInput();
 	void processClick();
+	void processBezierClick();
 private:
 	std::vector<Light*> lights;
 	GLFWwindow* window;
@@ -34,4 +35,6 @@ private:
 	GLint status;
 	std::vector<DrawableObject*> objects;
 	int textureId = 1;
+	std::vector<glm::mat4x3> bezier;
+	std::vector<glm::vec3> tempBez;
 };

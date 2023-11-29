@@ -45,6 +45,15 @@ void Engine::run()
 	DrawableObject* sc = new DrawableObject(shader);
 	sc->initialize();
 
+	glm::mat4 A = glm::mat4(glm::vec4(-1.0, 3.0, -3.0, 1.0),
+		glm::vec4(3.0, -6.0, 3.0, 0),
+		glm::vec4(-3.0, 3.0, 0, 0),
+		glm::vec4(1, 0, 0, 0));
+
+	float t = 0.5f;
+	float delta = 0.01;
+	int currentBez = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
@@ -61,11 +70,45 @@ void Engine::run()
 		
 		sc->translate(this->camera->getPosition());
 		sc->render();	
+
+		if (this->bezier.size() > 0) {
+			glm::mat4x3 B = bezier[currentBez];
+			glm::vec4 parameters = glm::vec4(t * t * t, t * t, t, 1.0f);
+			glm::vec3 p = parameters * A * glm::transpose(B);
+
+			this->objects[1]->translate(p);
+		}
+
+		if (bezier.size() > 0) {
+			if(t > 1.0f)
+				if (bezier.size() > currentBez + 1) {
+					std::cout << "Bez ++" << std::endl;
+					currentBez++;
+					t = 0;
+				}
+				else {
+					delta *= -1;
+					std::cout << "Swap++";
+				}
+
+			if(t < 0.0f)
+				if (currentBez > 0) {
+					std::cout << "Bez --" << std::endl;
+					currentBez--;
+					t = 1;
+				}
+				else {
+					delta *= -1;
+					std::cout << "Swap--";
+				}
+
+			t += delta;
+		}
 		
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
 			glStencilFunc(GL_ALWAYS, object->getTextureId(), 0xFF);
-			object->translate(xs[i], ys[i], zs[i]);
+			//object->translate(xs[i], ys[i], zs[i]);
 			if ( i == 0)
 				this->objects[i]->scale(300);
 			object->render();
@@ -93,18 +136,6 @@ void Engine::run()
 
 void Engine::createObjects()
 {
-
-	const float triangle[48] = {
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
-		 0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
-
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-		 0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
-		-0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f
-	};
-	
-	
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
 	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
 	pl->setTexture("textures/grass.png");
@@ -114,7 +145,14 @@ void Engine::createObjects()
 	ys.push_back((float)0);
 	zs.push_back((float)0);
 
-	DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
+	DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
+	house->setMaterial(pearl);
+	this->objects.push_back(house);
+	xs.push_back((float)10);
+	ys.push_back((float)0);
+	zs.push_back((float)10);
+
+	/*DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
 	house->setMaterial(pearl);
 	this->objects.push_back(house);
 	xs.push_back((float)10);
@@ -143,13 +181,13 @@ void Engine::createObjects()
 		xs.push_back(rand() % 100);
 		ys.push_back(0);
 		zs.push_back(rand() % 100);
-	}
+	}*/
 
 	for (DrawableObject* object : this->objects) {
 		object->setTextureId(this->textureId++);
 		object->initialize();
 		object->setLight(this->lights);
-	}
+	} 
 }
 
 static void error_callback(int error, const char* description) { fputs(description, stderr); }
@@ -196,8 +234,10 @@ void Engine::initialization()
 	glfwGetFramebufferSize(window, &width, &height);
 	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 }
 
+bool keyDown = false;
 void Engine::processUserInput()
 {
 
@@ -227,6 +267,13 @@ void Engine::processUserInput()
 	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		this->processClick();
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && !keyDown) {
+		keyDown = true;
+		this->processBezierClick();
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+		keyDown = false;
 
 	int currentWidth, currentHeight;
 	glfwGetFramebufferSize(window, &currentWidth, &currentHeight);
@@ -276,4 +323,39 @@ void Engine::processClick()
 	tr->setTextureId(this->textureId++);
 	tr->initialize();
 	tr->setLight(this->lights);
+}
+
+void Engine::processBezierClick()
+{
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	GLbyte color[4];
+	GLfloat depth;
+	GLuint index;
+
+	GLint x = viewport[2] / 2;
+	GLint y = viewport[3] / 2;
+
+	glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glReadPixels(x, y, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+	glm::vec3 screenCenter = glm::vec3(x, y, depth);
+
+	glm::mat4 view = this->camera->getView();
+	glm::mat4 projection = this->camera->getProjection();
+
+
+	glm::vec4 viewPort = glm::vec4(0, 0, viewport[2], viewport[3]);
+	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);
+	printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
+
+	this->tempBez.push_back(pos);
+	if (tempBez.size() == 4) {
+		this->bezier.push_back(glm::mat4x3(tempBez[0], tempBez[1], tempBez[2], tempBez[3]));
+		glm::vec3 tmp = glm::vec3(tempBez[3]);
+		this->tempBez.clear();
+		this->tempBez.push_back(tmp);
+	}
 }
