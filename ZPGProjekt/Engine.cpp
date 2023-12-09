@@ -108,7 +108,7 @@ void Engine::run()
 		int i = 0;
 		for (DrawableObject* object : this->objects) {
 			glStencilFunc(GL_ALWAYS, object->getTextureId(), 0xFF);
-			//object->translate(xs[i], ys[i], zs[i]);
+			object->translate(xs[i], ys[i], zs[i]);
 			if ( i == 0)
 				this->objects[i]->scale(300);
 			object->render();
@@ -295,16 +295,18 @@ void Engine::processClick()
 	GLfloat depth;
 	GLuint index;
 
-	GLint x = viewport[2] / 2;
-	GLint y = viewport[3] / 2;
+	double x, y;
+	//getting cursor position
+	glfwGetCursorPos(window, &x, &y);
+	
+	GLint yp = viewport[3];
 
-	glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-	glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	glReadPixels(x, y, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+	double newy = yp - y;
+	glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-	printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth% f, stencil index % u \n", x, y, color[0], color[1], color[2], color[3], depth, index);
-
-	glm::vec3 screenCenter = glm::vec3(x, y, depth);
+	glm::vec3 screenCenter = glm::vec3(x, newy, depth);
 
 	glm::mat4 view = this->camera->getView();
 	glm::mat4 projection = this->camera->getProjection();
@@ -336,14 +338,19 @@ void Engine::processBezierClick()
 	GLfloat depth;
 	GLuint index;
 
-	GLint x = viewport[2] / 2;
-	GLint y = viewport[3] / 2;
+	double x, y;
+	//getting cursor position
+	glfwGetCursorPos(window, &x, &y);
 
-	glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-	glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	glReadPixels(x, y, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+	GLint yp = viewport[3];
 
-	glm::vec3 screenCenter = glm::vec3(x, y, depth);
+	double newy = yp - y;
+	glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+
+	glm::vec3 screenCenter = glm::vec3(x, newy, depth);
 
 	glm::mat4 view = this->camera->getView();
 	glm::mat4 projection = this->camera->getProjection();
