@@ -15,7 +15,7 @@ void SkyCube::createVAO()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (GLvoid*)0);
 
     glActiveTexture(GL_TEXTURE0);
-    GLuint image = SOIL_load_OGL_cubemap("cubemap/posx.jpg", "cubemap/negx.jpg", "cubemap/posy.jpg", "cubemap/negy.jpg", "cubemap/posz.jpg", "cubemap/negz.jpg", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+    GLuint image = SOIL_load_OGL_cubemap("cubemap/posx.png", "cubemap/negx.png", "cubemap/posy.png", "cubemap/negy.png", "cubemap/posz.png", "cubemap/negz.png", SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
     if (image == NULL) {
         std::cout << "An error occurred while loading CubeMap." << std::endl;
         exit(EXIT_FAILURE);
