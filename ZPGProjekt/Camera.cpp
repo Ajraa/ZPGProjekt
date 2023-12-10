@@ -97,8 +97,6 @@ void Camera::moveCursor(double x, double y)
 	fi += xOffset;
 	alpha += yOffset;
 
-	std::cout << alpha << std::endl;
-
 	this->setTarget();
 	
 }

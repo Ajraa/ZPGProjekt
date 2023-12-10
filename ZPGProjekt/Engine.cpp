@@ -54,6 +54,18 @@ void Engine::run()
 	float delta = 0.01;
 	int currentBez = 0;
 
+	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+	DrawableObject* zombie = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
+	zombie->setMaterial(pearl);
+	this->objects.push_back(zombie);
+	xs.push_back((float)10);
+	ys.push_back((float)0);
+	zs.push_back((float)10);
+
+	zombie->setTextureId(this->textureId++);
+	zombie->initialize();
+	zombie->setLight(this->lights);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		this->processUserInput();
@@ -76,7 +88,8 @@ void Engine::run()
 			glm::vec4 parameters = glm::vec4(t * t * t, t * t, t, 1.0f);
 			glm::vec3 p = parameters * A * glm::transpose(B);
 
-			this->objects[1]->translate(p);
+			zombie->translate(p);
+			//std::cout << "t = " << t << " P=[ " << p[0] << ", " << p[1] << ", " << p[2] << "]" << std::endl;
 		}
 
 		if (bezier.size() > 0) {
@@ -141,14 +154,7 @@ void Engine::createObjects()
 	ys.push_back((float)0);
 	zs.push_back((float)0);
 
-	DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
-	house->setMaterial(pearl);
-	this->objects.push_back(house);
-	xs.push_back((float)10);
-	ys.push_back((float)0);
-	zs.push_back((float)10);
-
-	/*DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
+	DrawableObject* house = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
 	house->setMaterial(pearl);
 	this->objects.push_back(house);
 	xs.push_back((float)10);
@@ -177,7 +183,7 @@ void Engine::createObjects()
 		xs.push_back(rand() % 100);
 		ys.push_back(0);
 		zs.push_back(rand() % 100);
-	}*/
+	}
 
 	for (DrawableObject* object : this->objects) {
 		object->setTextureId(this->textureId++);
@@ -241,8 +247,6 @@ void Engine::processUserInput()
 {
 	double x, y;
 	glfwGetCursorPos(window, &x, &y);
-	
-	std::cout << x << " " << y << std::endl;
 
 	this->camera->moveCursor(x, y);
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
@@ -361,7 +365,7 @@ void Engine::processBezierClick()
 	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);
 	printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
 
-	this->tempBez.push_back(pos);
+	this->tempBez.push_back(glm::vec3(pos));
 	if (tempBez.size() == 4) {
 		this->bezier.push_back(glm::mat4x3(tempBez[0], tempBez[1], tempBez[2], tempBez[3]));
 		glm::vec3 tmp = glm::vec3(tempBez[3]);
