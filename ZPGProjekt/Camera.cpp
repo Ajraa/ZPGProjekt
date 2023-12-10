@@ -5,7 +5,7 @@ Camera::Camera()
 {
 	this->lastX = 400;
 	this->lastY = 300;
-	this->sensitivity = 0.01;
+	this->sensitivity = 0.5;
 	this->alpha = 0;
 	this->fi = 0;
 	this->projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
@@ -37,13 +37,15 @@ void Camera::useView()
 
 void Camera::setTarget()
 {
-	if (alpha > 89) alpha = 89;
-	if (fi > 89) fi = 89;
-	if (alpha < -89) alpha = -89;
-	if (fi < -89) fi = -89;
-	target.x = sin(alpha) * cos(fi);
-	target.z = sin(alpha) * sin(fi);
-	target.y = cos(alpha);
+	if (alpha > -15.f) alpha = -15.f;
+	if (alpha < -145.f) alpha = -145.f;
+
+	glm::vec3 dir = glm::vec3();
+
+	dir.x = sin(glm::radians(alpha)) * cos(glm::radians(fi));
+	dir.z = sin(glm::radians(alpha)) * sin(glm::radians(fi));
+	dir.y = cos(glm::radians(alpha));
+	target = glm::vec3(glm::normalize(dir));
 	this->updateCamera();
 }
 
@@ -91,8 +93,11 @@ void Camera::moveCursor(double x, double y)
 	lastX = x;
 	lastY = y;
 
+
 	fi += xOffset;
 	alpha += yOffset;
+
+	std::cout << alpha << std::endl;
 
 	this->setTarget();
 	

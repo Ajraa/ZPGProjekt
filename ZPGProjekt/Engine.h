@@ -37,4 +37,6 @@ private:
 	int textureId = 1;
 	std::vector<glm::mat4x3> bezier;
 	std::vector<glm::vec3> tempBez;
+	int previousWidth;
+	int previousHeight;
 };

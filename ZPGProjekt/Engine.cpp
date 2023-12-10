@@ -196,6 +196,9 @@ void Engine::initialization()
 	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 50.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights[2]->setDirection(glm::vec3(1.0, 0.0, 0.0));
 
+	this->previousWidth = 800;
+	this->previousHeight = 600;
+
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit()) {
 		fprintf(stderr, "ERROR: could not start GLFW3\n");
@@ -236,12 +239,11 @@ void Engine::initialization()
 bool keyDown = false;
 void Engine::processUserInput()
 {
-
-	int previousWidth = 800;
-	int previousHeight = 600;
 	double x, y;
-
 	glfwGetCursorPos(window, &x, &y);
+	
+	std::cout << x << " " << y << std::endl;
+
 	this->camera->moveCursor(x, y);
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		this->camera->moveForward();
@@ -292,6 +294,7 @@ void Engine::processClick()
 	GLuint index;
 
 	double x, y;
+
 	//getting cursor position
 	glfwGetCursorPos(window, &x, &y);
 	
