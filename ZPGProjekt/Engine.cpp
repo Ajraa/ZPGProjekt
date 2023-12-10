@@ -82,24 +82,20 @@ void Engine::run()
 		if (bezier.size() > 0) {
 			if(t > 1.0f)
 				if (bezier.size() > currentBez + 1) {
-					std::cout << "Bez ++" << std::endl;
 					currentBez++;
 					t = 0;
 				}
 				else {
 					delta *= -1;
-					std::cout << "Swap++";
 				}
 
 			if(t < 0.0f)
 				if (currentBez > 0) {
-					std::cout << "Bez --" << std::endl;
 					currentBez--;
 					t = 1;
 				}
 				else {
 					delta *= -1;
-					std::cout << "Swap--";
 				}
 
 			t += delta;
@@ -306,11 +302,12 @@ void Engine::processClick()
 	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
+	std::cout << "Clicked on pixel " << x << ", " << y <<  ", depth " << depth << ", stencil index " << index << std::endl;
+
 	glm::vec3 screenCenter = glm::vec3(x, newy, depth);
 
 	glm::mat4 view = this->camera->getView();
 	glm::mat4 projection = this->camera->getProjection();
-
 
 	glm::vec4 viewPort = glm::vec4(0, 0, viewport[2], viewport[3]);
 	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);
@@ -349,6 +346,7 @@ void Engine::processBezierClick()
 	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
+	std::cout << "Clicked on pixel " << x << ", " << y << ", depth " << depth << ", stencil index " << index << std::endl;
 
 	glm::vec3 screenCenter = glm::vec3(x, newy, depth);
 
