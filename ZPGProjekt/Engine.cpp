@@ -118,8 +118,8 @@ void Engine::run()
 		for (DrawableObject* object : this->objects) {
 			glStencilFunc(GL_ALWAYS, object->getTextureId(), 0xFF);
 			object->translate(xs[i], ys[i], zs[i]);
-			if ( i == 0)
-				this->objects[i]->scale(300);
+			/*if ( i == 0)
+				this->objects[i]->scale(300);*/
 			object->render();
 			i++;
 		}
@@ -146,8 +146,7 @@ void Engine::run()
 void Engine::createObjects()
 {
 	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model(plain, sizeof(plain), (sizeof(plain) / (6 * 4))));
-	pl->setTexture("textures/grass.png");
+	DrawableObject* pl = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/teren.obj", "textures/grass.png"));
 	pl->setMaterial(pearl);
 	this->objects.push_back(pl);
 	xs.push_back((float)0);
@@ -201,7 +200,7 @@ void Engine::initialization()
 	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 50.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights[2]->setDirection(glm::vec3(1.0, 0.0, 0.0));
-
+	this->textureId = 1;
 	this->previousWidth = 800;
 	this->previousHeight = 600;
 
@@ -243,6 +242,7 @@ void Engine::initialization()
 }
 
 bool keyDown = false;
+bool keyDownL = false;
 void Engine::processUserInput()
 {
 	double x, y;
@@ -267,8 +267,26 @@ void Engine::processUserInput()
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		this->camera->moveDown();
 	}
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+		this->curretModel = 1;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+		this->curretModel = 2;
+	if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+		this->curretModel = 3;
+	if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+		this->curretModel = 4;
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		this->curretModel = 5;
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !keyDownL) {
+		keyDownL = true;
 		this->processClick();
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+		keyDownL = false;
+
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && !keyDown) {
 		keyDown = true;
 		this->processBezierClick();
@@ -320,17 +338,42 @@ void Engine::processClick()
 	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);
 	printf("unProject [%f,%f,%f]\n", pos.x, pos.y, pos.z);
 
-	Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
-	DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
-	tr->setMaterial(pearl);
-	this->objects.push_back(tr);
-	xs.push_back(pos.x);
-	ys.push_back(pos.y);
-	zs.push_back(pos.z);
+	if (index == 1)
+	{
+		std::cout << "Build" << std::endl;
+		Material* pearl = new Material(glm::vec3(0.25, 0.20725, 0.20725), glm::vec3(1, 0.829, 0.829), glm::vec3(0.296648, 0.296648, 0.296648), 0.088);
+		DrawableObject* tr = this->getObject();
+		tr->setMaterial(pearl);
+		this->objects.push_back(tr);
+		xs.push_back(pos.x);
+		ys.push_back(pos.y);
+		zs.push_back(pos.z);
 
-	tr->setTextureId(this->textureId++);
-	tr->initialize();
-	tr->setLight(this->lights);
+		tr->setTextureId(this->textureId++);
+		tr->initialize();
+		tr->setLight(this->lights);
+	}
+	else
+	{
+		std::cout << "Delete" << std::endl;
+		int ind = -1;
+		bool e = false;
+		for (int i = 0; i < this->objects.size(); i++) {
+			if (index == this->objects[i]->getTextureId())
+			{
+				ind = i;
+				break;
+			}
+		}
+		if (ind != -1) {
+			this->objects.erase(objects.begin() + ind);
+			xs.erase(xs.begin() + ind);
+			ys.erase(ys.begin() + ind);
+			zs.erase(zs.begin() + ind);
+		}
+			
+			
+	}
 }
 
 void Engine::processBezierClick()
@@ -371,5 +414,30 @@ void Engine::processBezierClick()
 		glm::vec3 tmp = glm::vec3(tempBez[3]);
 		this->tempBez.clear();
 		this->tempBez.push_back(tmp);
+	}
+}
+
+DrawableObject* Engine::getObject()
+{
+	switch (curretModel)
+	{
+	case 1:
+		std::cout << "Tree" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
+	case 2:
+		std::cout << "Zombie" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
+	case 3:
+		std::cout << "House" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/house.obj", "Textures/house.png"));
+	case 4:
+		std::cout << "Wall" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zed.obj", "Textures/wooden_fence.png"));
+	case 5:
+		std::cout << "Sphere" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/sphere.obj", "Textures/earth.jpg"));
+	default:
+		std::cout << "Default" << std::endl;
+		return new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
 	}
 }

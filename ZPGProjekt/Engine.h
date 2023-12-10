@@ -28,15 +28,17 @@ public:
 	void processUserInput();
 	void processClick();
 	void processBezierClick();
+	DrawableObject* getObject();
 private:
 	std::vector<Light*> lights;
 	GLFWwindow* window;
 	Camera* camera;
 	GLint status;
 	std::vector<DrawableObject*> objects;
-	int textureId = 1;
+	int textureId;
 	std::vector<glm::mat4x3> bezier;
 	std::vector<glm::vec3> tempBez;
 	int previousWidth;
 	int previousHeight;
+	int curretModel;
 };
