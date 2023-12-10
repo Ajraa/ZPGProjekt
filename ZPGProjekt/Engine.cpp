@@ -6,7 +6,7 @@
 #include "Models/tree.h"
 #include "Models/bushes.h"
 
-const char* vertex_shader = "shaders/vertex/sphereLight.ver";
+const char* vertex_shader = "shaders/vertex/sphereLight.vert";
 const char* constant = "shaders/fragment/shader.frag";
 const char* lambert = "shaders/fragment/lambert.frag";
 const char* phong = "shaders/fragment/phong.frag";
@@ -39,7 +39,7 @@ void Engine::run()
 	float beta = 0.f;
 	float x = 0;
 
-	const char* vertex = "shaders/vertex/skybox.ver";
+	const char* vertex = "shaders/vertex/skybox.vert";
 	const char* fragment = "shaders/fragment/skybox.frag";
 	Shader* shader = new Shader(vertex, fragment, this->camera);
 	DrawableObject* sc = new DrawableObject(shader);
