@@ -41,10 +41,10 @@ void calculatePoint(int i) {
 }
 
 void calculateDirection(int i) {
-    vec3 lightDir = normalize(-lights[i].lightDirection);
+    vec3 lightDir = normalize(lights[i].lightDirection);
     vec3 viewDir = cameraPosition - ex_worldPosition.xyz/ex_worldPosition.w;
-    vec3 reflectDir = reflect(lightDir, normalize(ex_worldNormal));
-    float dot_product = max(dot(-lightDir, normalize(ex_worldNormal)), 0.0);
+    vec3 reflectDir = reflect(-lightDir, normalize(ex_worldNormal));
+    float dot_product = max(dot(lightDir, normalize(ex_worldNormal)), 0.0);
     float spec = pow(max(dot(normalize(viewDir), normalize(reflectDir)), 0.0), (matShininess * 128));
     vec4 specular = vec4(matSpecular, 1.0) * spec * lights[i].lightColor;
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
@@ -56,7 +56,7 @@ void calculateDirection(int i) {
     vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
     float dist = distance(lights[i].lightPosition, ( ex_worldPosition.xyz / ex_worldPosition.w));
     float att = 1.0 / (1.0 + 0.01*dist + 0.01*dist*dist);
-    out_Color += (ambient + diffuse + specular) * objectColor * att;
+    out_Color += (ambient + diffuse + specular) * objectColor;
 }
 
 void asfas(int i) {

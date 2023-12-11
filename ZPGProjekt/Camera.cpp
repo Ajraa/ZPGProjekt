@@ -37,8 +37,8 @@ void Camera::useView()
 
 void Camera::setTarget()
 {
-	if (alpha > -15.f) alpha = -15.f;
-	if (alpha < -145.f) alpha = -145.f;
+	if (alpha > -5.f) alpha = -5.f;
+	if (alpha < -179.f) alpha = -179.f;
 
 	glm::vec3 dir = glm::vec3();
 

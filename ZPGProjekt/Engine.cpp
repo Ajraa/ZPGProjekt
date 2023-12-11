@@ -46,9 +46,9 @@ void Engine::run()
 	sc->initialize();
 
 	glm::mat4 A = glm::mat4(glm::vec4(-1.0, 3.0, -3.0, 1.0),
-		glm::vec4(3.0, -6.0, 3.0, 0),
-		glm::vec4(-3.0, 3.0, 0, 0),
-		glm::vec4(1, 0, 0, 0));
+							glm::vec4(3.0, -6.0, 3.0, 0),
+							glm::vec4(-3.0, 3.0, 0, 0),
+							glm::vec4(1, 0, 0, 0));
 
 	float t = 0.5f;
 	float delta = 0.01;
@@ -162,26 +162,16 @@ void Engine::createObjects()
 
 	
 
-	for (size_t i = 0; i < 20; i++)
+	for (size_t i = 0; i < 40; i++)
 	{
 		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
 		tr->setMaterial(pearl);
 		this->objects.push_back(tr);
-		float x = rand() % 100;
-		float z = rand() % 100;
+		float x = rand() % 200 - 100;
+		float z = rand() % 200 - 100;
 		xs.push_back(x);
 		ys.push_back(0);
 		zs.push_back(z);
-	}
-
-	for (size_t i = 0; i < 20; i++)
-	{
-		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/zombie.obj", "Textures/zombie.png"));
-		tr->setMaterial(pearl);
-		this->objects.push_back(tr);
-		xs.push_back(rand() % 100);
-		ys.push_back(0);
-		zs.push_back(rand() % 100);
 	}
 
 	for (DrawableObject* object : this->objects) {
@@ -198,8 +188,7 @@ void Engine::initialization()
 	this->camera = new Camera();
 	this->lights.push_back(new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
-	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 50.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
-	this->lights[2]->setDirection(glm::vec3(1.0, 0.0, 0.0));
+	this->lights.push_back(new Light(LightType::Direction, glm::vec3(10.0f, 0.0f, 10.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
 	this->textureId = 1;
 	this->previousWidth = 800;
 	this->previousHeight = 600;
