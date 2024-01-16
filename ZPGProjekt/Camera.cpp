@@ -8,7 +8,10 @@ Camera::Camera()
 	this->sensitivity = 0.5;
 	this->alpha = 0;
 	this->fi = 0;
+
 	this->projection = glm::perspective(45.0f, 800.f / 600.f, 0.1f, 100.0f);
+	this->width = 800.f;
+	this->height = 600.f;
 	this->eye = glm::vec3(5.0, 1.0, 0.f);
 	this->target = glm::vec3(0, 0, 0);
 	this->up = glm::vec3(0.f, 1.f, 0.f);
@@ -37,15 +40,20 @@ void Camera::useView()
 
 void Camera::setTarget()
 {
-	if (alpha > -5.f) alpha = -5.f;
-	if (alpha < -179.f) alpha = -179.f;
+	//if (alpha > -5.f) alpha = -5.f;
+	//if (alpha < -179.f) alpha = -179.f;
+	if (alpha > 89.f) alpha = 89.f;
+	if (alpha < -89.f) alpha = -89.f;
 
 	glm::vec3 dir = glm::vec3();
 
-	dir.x = sin(glm::radians(alpha)) * cos(glm::radians(fi));
-	dir.z = sin(glm::radians(alpha)) * sin(glm::radians(fi));
-	dir.y = cos(glm::radians(alpha));
-	target = glm::vec3(glm::normalize(dir));
+	//dir.x = sin(glm::radians(alpha)) * cos(glm::radians(fi));
+	//dir.z = sin(glm::radians(alpha)) * sin(glm::radians(fi));
+	//dir.y = cos(glm::radians(alpha));
+	//target = glm::vec3(glm::normalize(dir));
+	target.x = (cos(glm::radians(fi)));
+	target.z = (sin(glm::radians(fi)));
+	target.y = sin(glm::radians(alpha));
 	this->updateCamera();
 }
 
@@ -128,6 +136,8 @@ void Camera::update()
 void Camera::setProjection(float height, float width)
 {
 	this->projection = glm::perspective(45.0f, width/height, 0.1f, 100.0f);
+	this->height = height;
+	this->width = width;
 }
 
 void Camera::useProjection(GLuint shaderProgram)
@@ -197,4 +207,18 @@ glm::mat4 Camera::getView()
 glm::mat4 Camera::getModel()
 {
 	return this->model;
+}
+
+void Camera::swapProjection()
+{
+	if (ort) {
+		this->projection = glm::perspective(45.0f, width / height, 0.1f, 100.0f);
+		this->ort = false;
+		std::cout << "Perspective" << std::endl;
+	}
+	else {
+		this->projection = glm::ortho(0, 400, 0, 400, -1, 400);
+		this->ort = true;
+		std::cout << "Ortho" << std::endl;
+	}
 }

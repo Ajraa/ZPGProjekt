@@ -118,6 +118,8 @@ void Engine::run()
 		for (DrawableObject* object : this->objects) {
 			glStencilFunc(GL_ALWAYS, object->getTextureId(), 0xFF);
 			object->translate(xs[i], ys[i], zs[i]);
+			//object->scale(1.5);
+			//object->rotate(beta);
 			/*if ( i == 0)
 				this->objects[i]->scale(300);*/
 			object->render();
@@ -162,7 +164,7 @@ void Engine::createObjects()
 
 	
 
-	for (size_t i = 0; i < 40; i++)
+	for (size_t i = 0; i < 5; i++)
 	{
 		DrawableObject* tr = new DrawableObject(new Shader(vertex_shader, phong, this->camera), new Model("objs/tree.obj", "Textures/tree.png"));
 		tr->setMaterial(pearl);
@@ -187,8 +189,9 @@ void Engine::initialization()
 {
 	this->camera = new Camera();
 	this->lights.push_back(new Reflector(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
-	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
-	this->lights.push_back(new Light(LightType::Direction, glm::vec3(10.0f, 0.0f, 10.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec4(0.385, 0.647, 0.812, 1.0), 1, 1));
+	this->lights.push_back(new Light(LightType::Point, glm::vec3(0.0f, 1.0f, 5.0f), glm::vec4(0.885, 0.047, 0.812, 1.0), 1, 1));
+	this->lights[2]->setDirection(glm::vec3(0.0, 1.0, 0.0));
 	this->textureId = 1;
 	this->previousWidth = 800;
 	this->previousHeight = 600;
@@ -256,6 +259,9 @@ void Engine::processUserInput()
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
 		this->camera->moveDown();
 	}
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		this->camera->swapProjection();
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		this->curretModel = 1;
@@ -316,7 +322,7 @@ void Engine::processClick()
 	glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 	glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-	std::cout << "Clicked on pixel " << x << ", " << y <<  ", depth " << depth << ", stencil index " << index << std::endl;
+	std::cout << "Clicked on pixel " << x << ", " << y << ", depth " << depth << ", stencil index " << index << std::endl;
 
 	glm::vec3 screenCenter = glm::vec3(x, newy, depth);
 
@@ -391,7 +397,6 @@ void Engine::processBezierClick()
 
 	glm::mat4 view = this->camera->getView();
 	glm::mat4 projection = this->camera->getProjection();
-
 
 	glm::vec4 viewPort = glm::vec4(0, 0, viewport[2], viewport[3]);
 	glm::vec3 pos = glm::unProject(screenCenter, view, projection, viewPort);

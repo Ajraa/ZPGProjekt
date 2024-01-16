@@ -42,7 +42,7 @@ public:
 	glm::mat4 getProjection();
 	glm::mat4 getView();
 	glm::mat4 getModel();
-	
+	void swapProjection();
 private:
 	glm::mat4 projection;
 	glm::mat4 model;
@@ -56,6 +56,9 @@ private:
 	double sensitivity;
 	double alpha;
 	double fi;
+	float width;
+	float height;
 	glm::vec3 cameraSpeed;
+	bool ort = false;
 };
 

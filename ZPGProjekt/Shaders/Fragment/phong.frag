@@ -70,7 +70,7 @@ void asfas(int i) {
     vec4 ambient = lights[i].lightColor * vec4(matAmbient, 1.0);
     vec4 objectColor = vec4(0.385, 0.647, 0.812, 1.0);
     float dist = distance(lights[i].lightPosition, ( ex_worldPosition.xyz / ex_worldPosition.w));
-    float att = 1.0 / (1.0 + 0.01*dist + 0.01*dist*dist);
+    float att = 1.0 / (.5 + 0.01*dist + 0.01*dist*dist);
     if (dot(ex_worldNormal , lightDir) <= 0.0) { 
         specular = vec4(0.0 , 0.0 , 0.0 , 0.0); 
     }
